@@ -1,0 +1,42 @@
+<div class="sidebar">
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <div class="logo-icon">FF</div>
+    <span class="logo-text">Fleet<span>Flow</span></span>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    @for (item of mainNav; track item.label) {
+      <a class="nav-item" [class.active]="activeItem() === item.label"
+         (click)="setActive(item.label)">
+        <span class="icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+        @if (item.label === 'Dispatch Board') {
+          <span class="nav-badge">3</span>
+        }
+      </a>
+    }
+
+    <div class="nav-label">Operations</div>
+    @for (item of secondaryNav; track item.label) {
+      <a class="nav-item" [class.active]="activeItem() === item.label"
+         (click)="setActive(item.label)">
+        <span class="icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Footer Nav -->
+  <div class="sidebar-footer">
+    @for (item of settingsNav; track item.label) {
+      <a class="nav-item" [class.active]="activeItem() === item.label"
+         (click)="setActive(item.label)">
+        <span class="icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </div>
+</div>
