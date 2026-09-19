@@ -58,44 +58,44 @@
         <div class="kpi-card animate-fade-up" [style.animation-delay]="(i * 60) + 'ms'">
           <div class="kpi-card-top">
             <div class="kpi-icon-wrap" [style.background]="'var(' + card.colorVar + ') + 12'">
-              <ng-container [ngSwitch]="card.icon">
-                <ng-container *ngSwitchCase="'loads'">
+              @switch (card.icon) {
+                @case ('loads') {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                   </svg>
-                </ng-container>
-                <ng-container *ngSwitchCase="'fleet'">
+                }
+                @case ('fleet') {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="1" y="3" width="15" height="13" rx="2"/>
                     <path d="M16 8h4l3 3v5h-7V8z"/>
                     <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
                   </svg>
-                </ng-container>
-                <ng-container *ngSwitchCase="'ontime'">
+                }
+                @case ('ontime') {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                   </svg>
-                </ng-container>
-                <ng-container *ngSwitchCase="'risk'">
+                }
+                @case ('risk') {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                     <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                   </svg>
-                </ng-container>
-                <ng-container *ngSwitchCase="'failed'">
+                }
+                @case ('failed') {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
                   </svg>
-                </ng-container>
-                <ng-container *ngSwitchDefault>
+                }
+                @default {
                   <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
                     <path d="M12 6v6l4 2"/>
                   </svg>
-                </ng-container>
-              </ng-container>
+                }
+              }
             </div>
             @if (card.trendUp === true) {
               <span class="kpi-trend trend-up">{{ card.trend }}</span>

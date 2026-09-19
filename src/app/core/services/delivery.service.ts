@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
-import { Delivery, DeliveryStatus, DeliveryFailureReason, DeliveryException } from '../../shared/models';
+import { Delivery, DeliveryFailureReason } from '../../shared/models';
 import { MOCK_DELIVERIES } from '../mock/mock-data';
 import { ExceptionService } from './exception.service';
 

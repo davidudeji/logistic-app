@@ -100,25 +100,27 @@ import { orderStatusBadge, orderStatusLabel } from '../../shared/utils/status.ut
 })
 export class OrdersListComponent {
   private orderService = inject(OrderService);
-  searchQuery = '';
-  statusFilter = '';
+  readonly searchQuery  = signal('');
+  readonly statusFilter = signal('');
 
   readonly orderStatusBadge = orderStatusBadge;
   readonly orderStatusLabel = orderStatusLabel;
 
   filteredOrders = computed(() => {
     let orders = this.orderService.orders();
-    if (this.searchQuery) {
-      const q = this.searchQuery.toLowerCase();
+    const q = this.searchQuery();
+    const s = this.statusFilter();
+    if (q) {
+      const ql = q.toLowerCase();
       orders = orders.filter(o =>
-        o.id.toLowerCase().includes(q) ||
-        o.customerName.toLowerCase().includes(q) ||
-        o.pickupAddress.city.toLowerCase().includes(q) ||
-        o.deliveryAddress.city.toLowerCase().includes(q)
+        o.id.toLowerCase().includes(ql) ||
+        o.customerName.toLowerCase().includes(ql) ||
+        o.pickupAddress.city.toLowerCase().includes(ql) ||
+        o.deliveryAddress.city.toLowerCase().includes(ql)
       );
     }
-    if (this.statusFilter) {
-      orders = orders.filter(o => o.status === this.statusFilter);
+    if (s) {
+      orders = orders.filter(o => o.status === s as any);
     }
     return orders;
   });
