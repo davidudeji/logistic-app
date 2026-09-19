@@ -1,0 +1,316 @@
+<header class="top-header">
+  <div class="header-left">
+    <div class="header-title-group">
+      <h1 class="header-title">New Dispatch</h1>
+      <span class="header-subtitle">Create and dispatch a load</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <a routerLink="/loads" class="btn btn-sm btn-secondary">Cancel</a>
+  </div>
+</header>
+
+<main class="page-container">
+
+  <!-- Stepper -->
+  @if (step() !== 'done') {
+    <div class="stepper">
+      @for (s of steps; track s.key; let i = $index) {
+        <div class="step-item" [class.active]="step() === s.key" [class.done]="stepIndex() > i">
+          <div class="step-circle">
+            @if (stepIndex() > i) {
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            } @else {
+              {{ i + 1 }}
+            }
+          </div>
+          <div class="step-label">{{ s.label }}</div>
+        </div>
+        @if (i < steps.length - 1) { <div class="step-line" [class.done]="stepIndex() > i"></div> }
+      }
+    </div>
+  }
+
+  <!-- Step: Select Orders -->
+  @if (step() === 'orders') {
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Select Orders</h2>
+        <span class="panel-count">{{ selectedOrders().length }} selected</span>
+      </div>
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Priority</th>
+              <th>Destination</th>
+              <th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of readyOrders(); track order.id) {
+              <tr [class.selected]="isOrderSelected(order)" (click)="toggleOrder(order)" style="cursor:pointer;">
+                <td>
+                  <div class="checkbox" [class.checked]="isOrderSelected(order)">
+                    @if (isOrderSelected(order)) {
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    }
+                  </div>
+                </td>
+                <td><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ order.id }}</span></td>
+                <td>{{ order.customerName }}</td>
+                <td><span class="badge" [ngClass]="priorityBadge(order.priority)">{{ order.priority }}</span></td>
+                <td class="muted">{{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }}</td>
+                <td class="muted">{{ totalPkgWeight(order) }} kg</td>
+              </tr>
+            }
+            @if (readyOrders().length === 0) {
+              <tr><td colspan="6">
+                <div class="state-container">
+                  <div class="state-title">No ready orders</div>
+                  <div class="state-desc">All available orders have been assigned or are pending confirmation.</div>
+                </div>
+              </td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="panel-footer">
+        <span class="muted-text">{{ selectedOrders().length }} order(s) · {{ totalWeight() }} kg total</span>
+        <button class="btn btn-primary" (click)="next()" [disabled]="selectedOrders().length === 0" id="ordersNextBtn">
+          Next: Select Driver
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Step: Select Driver -->
+  @if (step() === 'driver') {
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Select Driver</h2>
+        <span class="panel-count">{{ availableDrivers().length }} available</span>
+      </div>
+      <div class="selection-grid">
+        @for (driver of availableDrivers(); track driver.id) {
+          <div class="selection-card" [class.selected]="selectedDriver()?.id === driver.id"
+               (click)="selectedDriver.set(driver)" [id]="'driver-' + driver.id">
+            <div class="sel-avatar">{{ driver.avatarInitials }}</div>
+            <div class="sel-info">
+              <div class="sel-name">{{ driver.name }}</div>
+              <div class="sel-sub">{{ driver.phone }}</div>
+              @if (driver.onTimeRate != null) {
+                <div class="sel-meta">{{ driver.onTimeRate }}% on-time · {{ driver.totalDeliveries }} deliveries</div>
+              }
+            </div>
+            @if (selectedDriver()?.id === driver.id) {
+              <div class="sel-check">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+            }
+          </div>
+        }
+        @if (availableDrivers().length === 0) {
+          <div class="state-container"><div class="state-title">No drivers available</div></div>
+        }
+      </div>
+      <div class="panel-footer">
+        <button class="btn btn-secondary" (click)="back()">Back</button>
+        <button class="btn btn-primary" (click)="next()" [disabled]="!selectedDriver()" id="driverNextBtn">
+          Next: Select Vehicle
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Step: Select Vehicle -->
+  @if (step() === 'vehicle') {
+    <div class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Select Vehicle</h2>
+        <span class="panel-count">{{ availableVehicles().length }} available · {{ totalWeight() }} kg to carry</span>
+      </div>
+      <div class="selection-grid">
+        @for (vehicle of availableVehicles(); track vehicle.id) {
+          <div class="selection-card" [class.selected]="selectedVehicle()?.id === vehicle.id"
+               [class.over-capacity]="totalWeight() > vehicle.capacity"
+               (click)="selectedVehicle.set(vehicle)" [id]="'vehicle-' + vehicle.id">
+            <div class="sel-vehicle-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="3" width="15" height="13" rx="2"/>
+                <path d="M16 8h4l3 3v5h-7V8z"/>
+                <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
+            </div>
+            <div class="sel-info">
+              <div class="sel-name data-mono">{{ vehicle.registrationNumber }}</div>
+              <div class="sel-sub">{{ vehicle.make }} {{ vehicle.model }} · {{ vehicle.type }}</div>
+              <div class="sel-meta">Capacity: {{ vehicle.capacity }} kg
+                @if (totalWeight() > vehicle.capacity) {
+                  <span style="color:var(--error);margin-left:6px;">Over capacity!</span>
+                } @else {
+                  · Uses {{ capacityPctFor(vehicle) }}%
+                }
+              </div>
+              @if (vehicle.fuelLevel != null) {
+                <div class="progress-bar" style="margin-top:6px;max-width:100px;">
+                  <div class="progress-fill" [class]="fuelClass(vehicle.fuelLevel)" [style.width]="vehicle.fuelLevel + '%'"></div>
+                </div>
+              }
+            </div>
+            @if (selectedVehicle()?.id === vehicle.id) {
+              <div class="sel-check">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <div class="panel-footer">
+        <button class="btn btn-secondary" (click)="back()">Back</button>
+        <button class="btn btn-primary" (click)="next()"
+                [disabled]="!selectedVehicle() || (selectedVehicle() && totalWeight() > selectedVehicle()!.capacity)"
+                id="vehicleNextBtn">
+          Review Dispatch
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Step: Review -->
+  @if (step() === 'review') {
+    <div class="review-grid">
+      <!-- Summary -->
+      <div class="panel">
+        <div class="panel-header"><h2 class="panel-title">Dispatch Summary</h2></div>
+        <div class="panel-body review-summary">
+          <div class="review-row">
+            <span class="review-label">Orders</span>
+            <span>{{ selectedOrders().length }} order(s)</span>
+          </div>
+          @for (o of selectedOrders(); track o.id) {
+            <div class="review-order-row">
+              <span class="data-mono" style="color:var(--brand);font-size:12px;">{{ o.id }}</span>
+              <span class="muted-text">{{ o.deliveryAddress.city }}</span>
+            </div>
+          }
+          <div class="review-divider"></div>
+          <div class="review-row">
+            <span class="review-label">Driver</span>
+            <span style="font-weight:600;">{{ selectedDriver()?.name }}</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">Vehicle</span>
+            <span class="data-mono" style="font-weight:600;">{{ selectedVehicle()?.registrationNumber }}</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">Total Weight</span>
+            <span>{{ totalWeight() }} kg / {{ selectedVehicle()?.capacity }} kg capacity</span>
+          </div>
+          <div class="review-row">
+            <span class="review-label">Capacity Used</span>
+            <div style="flex:1;">
+              <div class="progress-bar">
+                <div class="progress-fill" [class]="capacityPct() > 90 ? 'warning' : ''" [style.width]="capacityPct() + '%'"></div>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);">{{ capacityPct() }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Validation -->
+      <div class="panel">
+        <div class="panel-header"><h2 class="panel-title">Validation</h2></div>
+        <div class="panel-body">
+          @if (validationResult(); as val) {
+            @if (val.valid) {
+              <div class="validation-ok">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                All checks passed. Ready to dispatch.
+              </div>
+            }
+            @for (err of val.errors; track err) {
+              <div class="validation-error">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                {{ err }}
+              </div>
+            }
+            @for (warn of val.warnings; track warn) {
+              <div class="validation-warn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                {{ warn }}
+              </div>
+            }
+          }
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-secondary" (click)="back()">Back</button>
+          <button class="btn btn-primary" (click)="dispatch()"
+                  [disabled]="isDispatching() || (validationResult() && !validationResult()!.valid)"
+                  id="dispatchBtn">
+            @if (isDispatching()) {
+              <span class="spinner" style="width:14px;height:14px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:white;"></span>
+              Dispatching...
+            } @else {
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Dispatch Load
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Done -->
+  @if (step() === 'done') {
+    <div class="done-card panel">
+      <div class="done-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2 class="done-title">Load Dispatched Successfully</h2>
+      <p class="done-sub">
+        Load <span class="data-mono" style="color:var(--brand);">{{ dispatchedLoadId() }}</span>
+        has been dispatched to {{ selectedDriver()?.name }}
+        in vehicle <span class="data-mono">{{ selectedVehicle()?.registrationNumber }}</span>.
+      </p>
+      <div class="done-actions">
+        <a [routerLink]="['/loads', dispatchedLoadId()]" class="btn btn-primary">View Load</a>
+        <button class="btn btn-secondary" (click)="reset()" id="newDispatchBtn">New Dispatch</button>
+        <a routerLink="/" class="btn btn-secondary">Dashboard</a>
+      </div>
+    </div>
+  }
+
+</main>
