@@ -1,0 +1,100 @@
+<header class="top-header">
+  <div class="header-left">
+    <div class="header-title-group">
+      <h1 class="header-title">Analytics</h1>
+      <span class="header-subtitle">Operational performance overview</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <button id="exportBtn" class="btn btn-sm btn-secondary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Export CSV
+    </button>
+  </div>
+</header>
+
+<main class="page-container">
+
+  <!-- KPI summary strip -->
+  <div class="analytics-kpi-grid">
+    @for (card of analyticsKpis(); track card.label) {
+      <div class="panel analytics-kpi-card animate-fade-up">
+        <div class="akpi-top">
+          <div>
+            <div class="kpi-value data-mono" style="font-size:22px;">{{ card.value }}</div>
+            <div class="kpi-label" style="font-size:12px;margin-top:2px;">{{ card.label }}</div>
+            <div class="kpi-sub">{{ card.sub }}</div>
+          </div>
+          <app-sparkline [data]="card.spark" [color]="card.color" [width]="60" [height]="36"></app-sparkline>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Chart row -->
+  <div class="analytics-chart-row">
+
+    <!-- Order Status Breakdown -->
+    <div class="panel" style="flex:1;">
+      <div class="panel-header">
+        <h2 class="panel-title">Order Status Breakdown</h2>
+        <span class="panel-count">{{ orderService.orders().length }} orders</span>
+      </div>
+      <div class="panel-body">
+        <app-bar-chart [items]="orderStatusBars()"></app-bar-chart>
+      </div>
+    </div>
+
+    <!-- Carrier On-Time Performance -->
+    <div class="panel" style="flex:1;">
+      <div class="panel-header">
+        <h2 class="panel-title">Carrier On-Time Rate</h2>
+        <span class="panel-count">{{ carrierService.carriers().length }} carriers</span>
+      </div>
+      <div class="panel-body">
+        <app-bar-chart [items]="carrierBars()" [defaultColor]="'#059669'"></app-bar-chart>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Fleet fuel levels -->
+  <div class="panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Fleet Fuel Levels</h2>
+      <span class="panel-count">{{ vehicleService.vehicles().length }} vehicles</span>
+    </div>
+    <div class="panel-body">
+      <div class="fleet-fuel-grid">
+        @for (v of vehicleService.vehicles(); track v.id) {
+          <div class="fuel-card">
+            <div class="fuel-card-top">
+              <span class="data-mono" style="font-size:12px;font-weight:700;color:var(--brand);">{{ v.registrationNumber }}</span>
+              <span class="badge" [ngClass]="vBadge(v.status)" style="font-size:10px;">{{ v.status }}</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">{{ v.type }} · {{ v.make }} {{ v.model }}</div>
+            @if (v.fuelLevel != null) {
+              <div class="progress-bar" style="height:10px;border-radius:6px;">
+                <div class="progress-fill" [class]="fuelClass(v.fuelLevel)"
+                     [style.width]="v.fuelLevel + '%'"
+                     [style.border-radius]="'6px'">
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;display:flex;justify-content:space-between;">
+                <span>Fuel</span>
+                <span class="data-mono" [style.color]="v.fuelLevel <= 20 ? 'var(--error)' : v.fuelLevel <= 40 ? 'var(--warning)' : 'var(--success)'">
+                  {{ v.fuelLevel }}%
+                </span>
+              </div>
+            }
+            <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Capacity: {{ v.capacity }} kg</div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</main>

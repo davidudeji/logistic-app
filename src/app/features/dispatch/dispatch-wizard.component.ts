@@ -7,6 +7,7 @@ import { LoadService } from '../../core/services/load.service';
 import { DriverService } from '../../core/services/driver.service';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { DispatchService } from '../../core/services/dispatch.service';
+import { ToastService } from '../../core/services/toast.service';
 import { Order, Driver, Vehicle } from '../../shared/models';
 
 type Step = 'orders' | 'driver' | 'vehicle' | 'review' | 'done';
@@ -24,6 +25,7 @@ export class DispatchWizardComponent {
   private driverService   = inject(DriverService);
   private vehicleService  = inject(VehicleService);
   private dispatchService = inject(DispatchService);
+  private toast           = inject(ToastService);
 
   readonly step            = signal<Step>('orders');
   readonly selectedOrders  = signal<Order[]>([]);
@@ -100,7 +102,6 @@ export class DispatchWizardComponent {
     if (!drv || !veh || this.selectedOrders().length === 0) return;
 
     this.isDispatching.set(true);
-    // Create the load first
     this.loadService.createLoad({
       orderIds: this.selectedOrders().map(o => o.id),
       driverId: drv.id,
@@ -121,6 +122,9 @@ export class DispatchWizardComponent {
         if (ok) {
           this.dispatchedLoadId.set(load.id);
           this.step.set('done');
+          this.toast.success(`Load ${load.id} dispatched to ${drv.name}`);
+        } else {
+          this.toast.error('Dispatch failed — validation error. Please review and retry.');
         }
       });
     });

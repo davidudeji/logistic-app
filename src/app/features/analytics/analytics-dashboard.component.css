@@ -1,0 +1,37 @@
+:host { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.analytics-kpi-card { padding: 16px 18px; }
+.akpi-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+
+.analytics-chart-row {
+  display: flex; gap: 16px;
+}
+
+.fleet-fuel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.fuel-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  background: var(--surface);
+  transition: box-shadow 150ms ease;
+}
+.fuel-card:hover { box-shadow: var(--shadow-1); }
+.fuel-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 900px) {
+  .analytics-chart-row { flex-direction: column; }
+}

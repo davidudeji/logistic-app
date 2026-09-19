@@ -57,40 +57,40 @@
       @for (card of kpiCards(); track card.label; let i = $index) {
         <div class="kpi-card animate-fade-up" [style.animation-delay]="(i * 60) + 'ms'">
           <div class="kpi-card-top">
-            <div class="kpi-icon-wrap" [style.background]="'var(' + card.colorVar + ') + 12'">
+            <div class="kpi-icon-wrap" [style.background]="card.color + '18'">
               @switch (card.icon) {
                 @case ('loads') {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                   </svg>
                 }
                 @case ('fleet') {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="1" y="3" width="15" height="13" rx="2"/>
                     <path d="M16 8h4l3 3v5h-7V8z"/>
                     <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
                   </svg>
                 }
                 @case ('ontime') {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                   </svg>
                 }
                 @case ('risk') {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                     <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                   </svg>
                 }
                 @case ('failed') {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
                   </svg>
                 }
                 @default {
-                  <svg class="kpi-icon" [style.color]="'var(' + card.colorVar + ')'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg class="kpi-icon" [style.color]="card.color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
                     <path d="M12 6v6l4 2"/>
                   </svg>
@@ -108,10 +108,15 @@
           <div class="kpi-value data-mono">{{ card.value }}</div>
           <div class="kpi-label">{{ card.label }}</div>
           <div class="kpi-sub">{{ card.sub }}</div>
+          <!-- Sparkline -->
+          <div class="kpi-sparkline">
+            <app-sparkline [data]="card.sparkData" [color]="card.color" [width]="88" [height]="28"></app-sparkline>
+          </div>
         </div>
       }
     </section>
   }
+
 
   <!-- Two-column: Map + Exception Center -->
   <div class="dash-two-col">

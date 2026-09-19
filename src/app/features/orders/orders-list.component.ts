@@ -1,15 +1,13 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../core/services/order.service';
-import { Order, OrderStatus } from '../../shared/models';
 import { orderStatusBadge, orderStatusLabel } from '../../shared/utils/status.utils';
 
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <header class="top-header">
       <div class="header-left">
@@ -24,11 +22,12 @@ import { orderStatusBadge, orderStatusLabel } from '../../shared/utils/status.ut
             </svg>
           </span>
           <input id="orderSearch" type="text" class="search-input" placeholder="Search orders..."
-                 [(ngModel)]="searchQuery" />
+                 [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" />
         </div>
       </div>
       <div class="header-right">
-        <select class="form-select" style="height:34px;width:160px;" [(ngModel)]="statusFilter">
+        <select class="form-select" style="height:34px;width:160px;"
+                [value]="statusFilter()" (change)="statusFilter.set($any($event.target).value)">
           <option value="">All Statuses</option>
           <option value="PENDING">Pending</option>
           <option value="CONFIRMED">Confirmed</option>
