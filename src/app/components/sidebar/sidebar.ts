@@ -18,93 +18,100 @@ interface NavItem {
     :host { display: flex; flex-direction: column; height: 100%; }
 
     .sidebar {
-      width: 228px; min-width: 228px;
-      background: #05090c;
+      width: 220px; min-width: 220px;
+      background: #fbfbfb;
       display: flex; flex-direction: column;
       height: 100%; overflow-y: auto; overflow-x: hidden;
-      border-right: 1px solid #1e2c31;
+      border-right: 1px solid #e5e7eb;
     }
 
     /* ── Logo ── */
     .sidebar-logo {
       display: flex; align-items: center; gap: 10px;
-      padding: 20px 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 20px 18px 18px;
+      border-bottom: 1px solid #e5e7eb;
       flex-shrink: 0;
     }
 
-    .logo-icon {
-      width: 30px; height: 30px;
-      background: #0071e3;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+    /* 3×3 block mark — rigid square grid */
+    .logo-mark {
+      display: grid;
+      grid-template-columns: repeat(3, 5px);
+      grid-template-rows: repeat(3, 5px);
+      gap: 2px;
       flex-shrink: 0;
-      box-shadow: 0 0 0 1px rgba(0,113,227,0.4);
     }
-    .logo-icon svg { color: white; }
+    .logo-mark span {
+      display: block;
+      width: 5px; height: 5px;
+      background: #000000;
+    }
 
     .logo-text {
-      font-family: 'Inter', 'Helvetica Neue', sans-serif;
-      font-size: 15px; font-weight: 800;
-      color: #fff; letter-spacing: -0.04em;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 15px; font-weight: 400;
+      color: #000000; letter-spacing: 0;
     }
-    .logo-text span { color: #38bdf8; }
 
     .logo-sub {
-      font-size: 9px; font-weight: 500;
-      color: #2a3c45; text-transform: uppercase;
-      letter-spacing: 0.1em;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12px; font-weight: 400;
+      color: #888888; letter-spacing: 0;
     }
 
     /* ── Nav ── */
-    .nav-section { padding: 10px 10px 6px; flex: 1; }
+    .nav-section { padding: 12px 12px 6px; flex: 1; }
 
     .nav-label {
-      font-size: 9.5px; font-weight: 600;
-      color: #2a3c45;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0 8px; margin: 18px 0 4px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 11px; font-weight: 400;
+      color: #888888;
+      letter-spacing: 0; text-transform: uppercase;
+      padding: 0 8px; margin: 16px 0 4px;
     }
 
     .nav-item {
       display: flex; align-items: center; gap: 9px;
-      padding: 7px 10px; border-radius: 9999px;   /* Apple pill nav */
-      font-size: 13px; font-weight: 500;
-      color: #5a7080; text-decoration: none;
+      padding: 7px 10px; border-radius: 4px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 14px; font-weight: 400;
+      color: #555555; text-decoration: none;
       cursor: pointer;
-      transition: background 130ms ease, color 130ms ease;
-      margin-bottom: 2px;
+      transition: background 120ms ease, color 120ms ease;
+      margin-bottom: 1px;
     }
     .nav-item:hover {
-      background: rgba(255,255,255,0.05);
-      color: #cbd5e1;
+      background: rgba(0,0,0,0.04);
+      color: #000000;
     }
     .nav-item.active-link {
-      background: rgba(255,255,255,0.08);
-      color: #ffffff; font-weight: 600;
+      background: rgba(0,0,0,0.07);
+      color: #000000;
     }
     .nav-item .icon-wrap {
-      width: 17px; height: 17px;
+      width: 16px; height: 16px;
       flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      opacity: 0.6;
+      opacity: 0.45;
     }
-    .nav-item:hover .icon-wrap    { opacity: 0.8; }
+    .nav-item:hover .icon-wrap    { opacity: 0.7; }
     .nav-item.active-link .icon-wrap { opacity: 1; }
 
     /* ── Alert badge ── */
     .nav-badge {
       margin-left: auto;
-      background: rgba(248,113,113,0.15);
-      color: #f87171;
-      font-size: 10px; font-weight: 700;
-      padding: 1px 7px; border-radius: 9999px;
-      min-width: 18px; text-align: center;
+      background: transparent;
+      border: 1px solid #7c1f1f;
+      color: #7c1f1f;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 10px; font-weight: 400;
+      padding: 0 5px; border-radius: 4px;
+      min-width: 16px; text-align: center;
     }
 
     /* ── Footer ── */
     .sidebar-footer {
-      padding: 10px 10px 14px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 10px 12px 16px;
+      border-top: 1px solid #e5e7eb;
       flex-shrink: 0;
     }
   `]

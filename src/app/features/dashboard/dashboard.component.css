@@ -8,7 +8,7 @@
 /* Two-column layout for map + exceptions */
 .dash-two-col {
   display: flex;
-  gap: 16px;
+  gap: var(--space-sm);
   min-height: 0;
 }
 
@@ -19,11 +19,6 @@
   display: flex;
   flex-direction: column;
   max-height: 520px;
-}
-
-.exc-count {
-  background: var(--error-bg);
-  color: var(--error);
 }
 
 /* Exception list */
@@ -37,7 +32,7 @@
   display: flex;
   gap: 0;
   border-bottom: 1px solid var(--border-subtle);
-  transition: background 120ms ease;
+  transition: background 100ms ease;
 }
 .exc-item:hover { background: var(--surface-hover); }
 .exc-item:last-child { border-bottom: none; }
@@ -49,13 +44,13 @@
 }
 
 .exc-CRITICAL .exc-severity-bar { background: var(--error); }
-.exc-HIGH .exc-severity-bar     { background: #F97316; }
-.exc-MEDIUM .exc-severity-bar   { background: var(--warning); }
-.exc-LOW .exc-severity-bar      { background: var(--text-disabled); }
+.exc-HIGH .exc-severity-bar     { background: var(--warning); }
+.exc-MEDIUM .exc-severity-bar   { background: var(--text-muted); }
+.exc-LOW .exc-severity-bar      { background: var(--border-strong); }
 
 .exc-body {
   flex: 1;
-  padding: 12px 14px 12px 12px;
+  padding: 10px 14px 10px 12px;
 }
 
 .exc-header-row {
@@ -66,20 +61,23 @@
 }
 
 .exc-id {
-  font-size: 11px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12px;
   color: var(--text-muted);
   margin-left: auto;
 }
 
 .exc-type {
-  font-size: 12.5px;
-  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 13px;
+  font-weight: 400;
   color: var(--text-primary);
   margin-bottom: 3px;
 }
 
 .exc-desc {
-  font-size: 11.5px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12px;
   color: var(--text-muted);
   line-height: 1.4;
   margin-bottom: 8px;
@@ -94,9 +92,9 @@
   gap: 6px;
 }
 
-/* KPI icon backgrounds — let inline style (color tint) take effect */
+/* KPI icon backgrounds */
 .kpi-icon-wrap {
-  background: transparent;
+  background: var(--border-subtle);
 }
 
 @media (max-width: 1024px) {
@@ -111,11 +109,11 @@
 
 /* KPI sparkline footer */
 .kpi-sparkline {
-  margin-top: 12px;
-  padding-top: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: flex-end;
-  height: 32px;
+  height: 30px;
   overflow: hidden;
 }
