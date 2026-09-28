@@ -18,82 +18,93 @@ interface NavItem {
     :host { display: flex; flex-direction: column; height: 100%; }
 
     .sidebar {
-      width: 240px; min-width: 240px;
-      background: #0F172A;
+      width: 228px; min-width: 228px;
+      background: #05090c;
       display: flex; flex-direction: column;
       height: 100%; overflow-y: auto; overflow-x: hidden;
+      border-right: 1px solid #1e2c31;
     }
 
+    /* ── Logo ── */
     .sidebar-logo {
       display: flex; align-items: center; gap: 10px;
-      padding: 18px 16px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       flex-shrink: 0;
     }
 
     .logo-icon {
-      width: 32px; height: 32px;
-      background: #2563EB;
+      width: 30px; height: 30px;
+      background: #0071e3;
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(0,113,227,0.4);
     }
     .logo-icon svg { color: white; }
 
     .logo-text {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 16px; font-weight: 800;
-      color: #fff; letter-spacing: -0.3px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 15px; font-weight: 800;
+      color: #fff; letter-spacing: -0.04em;
     }
-    .logo-text span { color: #60A5FA; }
+    .logo-text span { color: #38bdf8; }
 
     .logo-sub {
-      font-size: 9.5px; font-weight: 500;
-      color: #475569; text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: 9px; font-weight: 500;
+      color: #2a3c45; text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
+    /* ── Nav ── */
     .nav-section { padding: 10px 10px 6px; flex: 1; }
 
     .nav-label {
-      font-size: 10px; font-weight: 600;
-      color: #334155;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 0 8px; margin: 14px 0 4px;
+      font-size: 9.5px; font-weight: 600;
+      color: #2a3c45;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0 8px; margin: 18px 0 4px;
     }
 
     .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: 8px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 10px; border-radius: 9999px;   /* Apple pill nav */
       font-size: 13px; font-weight: 500;
-      color: #64748B; text-decoration: none;
+      color: #5a7080; text-decoration: none;
       cursor: pointer;
-      transition: background 150ms ease, color 150ms ease;
-      margin-bottom: 1px;
+      transition: background 130ms ease, color 130ms ease;
+      margin-bottom: 2px;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.05); color: #CBD5E1; }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: #cbd5e1;
+    }
     .nav-item.active-link {
-      background: rgba(37,99,235,0.15);
-      color: #FFFFFF; font-weight: 600;
+      background: rgba(255,255,255,0.08);
+      color: #ffffff; font-weight: 600;
     }
     .nav-item .icon-wrap {
-      width: 18px; height: 18px;
+      width: 17px; height: 17px;
       flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      opacity: 0.7;
+      opacity: 0.6;
     }
+    .nav-item:hover .icon-wrap    { opacity: 0.8; }
     .nav-item.active-link .icon-wrap { opacity: 1; }
 
+    /* ── Alert badge ── */
     .nav-badge {
       margin-left: auto;
-      background: #DC2626; color: white;
+      background: rgba(248,113,113,0.15);
+      color: #f87171;
       font-size: 10px; font-weight: 700;
-      padding: 1px 6px; border-radius: 99px;
+      padding: 1px 7px; border-radius: 9999px;
       min-width: 18px; text-align: center;
     }
 
+    /* ── Footer ── */
     .sidebar-footer {
-      padding: 12px 10px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.05);
       flex-shrink: 0;
     }
   `]

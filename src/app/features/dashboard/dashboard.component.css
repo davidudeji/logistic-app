@@ -94,9 +94,9 @@
   gap: 6px;
 }
 
-/* KPI icon backgrounds — let inline style take effect */
+/* KPI icon backgrounds — let inline style (color tint) take effect */
 .kpi-icon-wrap {
-  background: #f1f5f9;
+  background: transparent;
 }
 
 @media (max-width: 1024px) {
