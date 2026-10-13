@@ -1,6 +1,6 @@
 import { Injectable, inject, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, Subject, filter } from 'rxjs';
+import { Observable, Subject, filter, map } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 export interface SocketMessage<T = unknown> {
@@ -112,24 +112,7 @@ export class SocketConnectionService {
     return this.incomingMessages$.asObservable().pipe(
       filter((msg): msg is SocketMessage<T> => msg.event === event),
       filter((msg) => msg.data !== undefined),
-      // Map to data
-      new (class {
-        operator = {
-          call(subscriber: any, source: any) {
-            return source.subscribe({
-              next(x: SocketMessage<T>) {
-                subscriber.next(x.data);
-              },
-              error(err: any) {
-                subscriber.error(err);
-              },
-              complete() {
-                subscriber.complete();
-              },
-            });
-          },
-        };
-      })().operator as any
+      map((msg) => msg.data as T)
     );
   }
 

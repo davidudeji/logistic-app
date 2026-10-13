@@ -78,7 +78,8 @@ describe('ActionOverflowMenuComponent', () => {
   });
 
   it('should emit deleteConfirmed event when modal delete button is clicked', () => {
-    spyOn(component.deleteConfirmed, 'emit');
+    let emittedId: string | null = null;
+    component.deleteConfirmed.subscribe((id: string) => (emittedId = id));
 
     component.showDeleteModal.set(true);
     fixture.detectChanges();
@@ -86,7 +87,7 @@ describe('ActionOverflowMenuComponent', () => {
     const confirmDeleteBtn = fixture.nativeElement.querySelector('.modal-delete-btn');
     confirmDeleteBtn.click();
 
-    expect(component.deleteConfirmed.emit).toHaveBeenCalledWith('ITEM-001');
+    expect(emittedId).toBe('ITEM-001');
     expect(component.showDeleteModal()).toBe(false);
   });
 });

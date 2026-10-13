@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DispatchTable } from './dispatch-table';
+import { DispatchTableComponent } from './dispatch-table';
 
-describe('DispatchTable', () => {
-  let component: DispatchTable;
-  let fixture: ComponentFixture<DispatchTable>;
+describe('DispatchTableComponent', () => {
+  let component: DispatchTableComponent;
+  let fixture: ComponentFixture<DispatchTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DispatchTable],
+      imports: [DispatchTableComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DispatchTable);
+    fixture = TestBed.createComponent(DispatchTableComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
