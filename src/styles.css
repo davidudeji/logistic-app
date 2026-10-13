@@ -794,7 +794,10 @@ app-routes-list,
 app-deliveries-list,
 app-exceptions-list,
 app-carriers-list,
-app-analytics-dashboard {
+app-analytics-dashboard,
+app-fleet-monitoring-page,
+app-route-planning-page,
+app-delivery-detail-page {
   display: flex;
   flex-direction: column;
   height: 100%;

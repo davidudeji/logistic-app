@@ -1,13 +1,15 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { vehicleStatusBadge, vehicleStatusLabel, vehicleTypeLabel } from '../../shared/utils/status.utils';
+import { ActionOverflowMenuComponent } from '../alm/components/action-overflow-menu/action-overflow-menu.component';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-fleet-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ActionOverflowMenuComponent],
   template: `
     <header class="top-header">
       <div class="header-left">
@@ -68,7 +70,15 @@ import { vehicleStatusBadge, vehicleStatusLabel, vehicleTypeLabel } from '../../
                   </td>
                   <td class="muted">{{ v.currentDriverId ?? '—' }}</td>
                   <td><span class="badge" [ngClass]="vehicleStatusBadge(v.status)">{{ vehicleStatusLabel(v.status) }}</span></td>
-                  <td><a [routerLink]="['/fleet', v.id]" class="btn btn-xs btn-secondary">View</a></td>
+                  <td style="text-align: right;">
+                    <app-action-overflow-menu
+                      [entityId]="v.id"
+                      [entityName]="v.registrationNumber"
+                      (view)="onView(v.id)"
+                      (edit)="onEdit(v.id)"
+                      (deleteConfirmed)="onDelete(v.id)"
+                    ></app-action-overflow-menu>
+                  </td>
                 </tr>
               }
             </tbody>
@@ -84,6 +94,8 @@ import { vehicleStatusBadge, vehicleStatusLabel, vehicleTypeLabel } from '../../
 })
 export class FleetListComponent {
   readonly vehicleService     = inject(VehicleService);
+  private readonly router      = inject(Router);
+  private readonly toast       = inject(ToastService);
   readonly vehicleStatusBadge = vehicleStatusBadge;
   readonly vehicleStatusLabel = vehicleStatusLabel;
   readonly vehicleTypeLabel   = vehicleTypeLabel;
@@ -105,5 +117,19 @@ export class FleetListComponent {
     if (level <= 20) return 'error';
     if (level <= 40) return 'warning';
     return 'success';
+  }
+
+  onView(id?: string): void {
+    if (id) {
+      this.router.navigate(['/fleet', id]);
+    }
+  }
+
+  onEdit(id?: string): void {
+    this.toast.info(`Editing vehicle profile for ${id}`);
+  }
+
+  onDelete(id?: string): void {
+    this.toast.show(`Vehicle ${id} removed from active fleet.`, 'error');
   }
 }

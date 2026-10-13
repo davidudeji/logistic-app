@@ -57,14 +57,29 @@ export const routes: Routes = [
       import('./features/tracking/tracking-map.component').then(m => m.TrackingMapComponent),
   },
   {
+    path: 'routes/plan',
+    loadComponent: () =>
+      import('./features/alm/pages/route-planning-page/route-planning-page.component').then(m => m.RoutePlanningPageComponent),
+  },
+  {
     path: 'routes',
     loadComponent: () =>
       import('./features/routes/routes-list.component').then(m => m.RoutesListComponent),
   },
   {
+    path: 'deliveries/:id',
+    loadComponent: () =>
+      import('./features/alm/pages/delivery-detail-page/delivery-detail-page.component').then(m => m.DeliveryDetailPageComponent),
+  },
+  {
     path: 'deliveries',
     loadComponent: () =>
       import('./features/deliveries/deliveries-list.component').then(m => m.DeliveriesListComponent),
+  },
+  {
+    path: 'alm',
+    loadChildren: () =>
+      import('./features/alm/alm.routes').then(m => m.almRoutes),
   },
   {
     path: 'exceptions',
