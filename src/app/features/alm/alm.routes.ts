@@ -2,6 +2,13 @@ import { Routes } from '@angular/router';
 
 export const almRoutes: Routes = [
   {
+    path: 'operations',
+    loadComponent: () =>
+      import('./pages/logistics-operations-page/logistics-operations-page.component').then(
+        (m) => m.LogisticsOperationsPageComponent
+      ),
+  },
+  {
     path: 'fleet',
     loadComponent: () =>
       import('./pages/fleet-monitoring-page/fleet-monitoring-page.component').then(

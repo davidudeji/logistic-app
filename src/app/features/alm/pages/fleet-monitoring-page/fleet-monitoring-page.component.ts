@@ -96,20 +96,20 @@ import { ToastService } from '../../../../core/services/toast.service';
             <tbody>
               @for (v of fleetTelemetryService.vehiclesList(); track v.assetId) {
                 <tr>
-                  <td>
+                  <td data-label="Registration">
                     <span class="data-mono" style="font-weight:600;">{{ v.registrationNumber }}</span>
                   </td>
-                  <td class="muted">{{ v.assetId }}</td>
-                  <td>{{ v.driverName || 'Unassigned' }}</td>
-                  <td>{{ v.speedKph }} km/h · {{ v.heading }}°</td>
-                  <td>
+                  <td data-label="Asset ID" class="muted">{{ v.assetId }}</td>
+                  <td data-label="Driver">{{ v.driverName || 'Unassigned' }}</td>
+                  <td data-label="Speed & heading">{{ v.speedKph }} km/h · {{ v.heading }}°</td>
+                  <td data-label="Status">
                     <span class="badge" [ngClass]="badgeClass(v.status)">
                       {{ v.status }}
                     </span>
                   </td>
-                  <td class="muted">{{ v.latitude.toFixed(4) }}, {{ v.longitude.toFixed(4) }}</td>
-                  <td class="muted">{{ formatTime(v.lastUpdated) }}</td>
-                  <td style="text-align: right;">
+                  <td data-label="Coordinates" class="muted">{{ v.latitude.toFixed(4) }}, {{ v.longitude.toFixed(4) }}</td>
+                  <td data-label="Last update" class="muted">{{ formatTime(v.lastUpdated) }}</td>
+                  <td data-label="Actions" style="text-align: right;">
                     <!-- 3-Dot Overflow Menu with View, Edit, Delete -->
                     <app-action-overflow-menu
                       [entityId]="v.assetId"

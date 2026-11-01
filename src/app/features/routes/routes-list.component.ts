@@ -34,21 +34,21 @@ import { RouteService } from '../../core/services/route.service';
             <tbody>
               @for (route of routeService.routes(); track route.id) {
                 <tr>
-                  <td><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ route.id }}</span></td>
-                  <td>
+                  <td data-label="Route ID"><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ route.id }}</span></td>
+                  <td data-label="Load">
                     <a [routerLink]="['/loads', route.loadId]" class="data-mono" style="color:var(--brand);">{{ route.loadId }}</a>
                   </td>
-                  <td class="muted">{{ route.stops.length }}</td>
-                  <td class="muted">{{ route.totalDistance }} km</td>
-                  <td class="muted">{{ durationLabel(route.estimatedDuration) }}</td>
-                  <td>
+                  <td data-label="Stops" class="muted">{{ route.stops.length }}</td>
+                  <td data-label="Distance" class="muted">{{ route.totalDistance }} km</td>
+                  <td data-label="Est. duration" class="muted">{{ durationLabel(route.estimatedDuration) }}</td>
+                  <td data-label="Optimization">
                     @if (route.optimized) {
                       <span class="badge badge-success">Optimized</span>
                     } @else {
                       <span class="badge badge-neutral">Manual</span>
                     }
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span class="badge" [ngClass]="routeStatusBadge(route.status)">{{ route.status }}</span>
                   </td>
                 </tr>

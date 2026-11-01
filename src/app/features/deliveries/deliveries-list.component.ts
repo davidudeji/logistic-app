@@ -46,23 +46,23 @@ function deliveryStatusLabel(s: string): string {
             <tbody>
               @for (del of deliveries(); track del.id) {
                 <tr>
-                  <td>
+                  <td data-label="Delivery ID">
                     <a [routerLink]="['/deliveries', del.id]" class="data-mono" style="font-size:12px; font-weight:600; color:var(--brand);">
                       {{ del.id }}
                     </a>
                   </td>
-                  <td>
+                  <td data-label="Order">
                     <a [routerLink]="['/orders', del.orderId]" class="data-mono" style="color:var(--brand);font-weight:600;">
                       {{ del.orderId }}
                     </a>
                   </td>
-                  <td class="muted">{{ customerName(del.orderId) }}</td>
-                  <td class="muted">{{ destinationCity(del.orderId) }}</td>
-                  <td><span class="badge" [ngClass]="deliveryStatusBadge(del.status)">{{ statusLabel(del.status) }}</span></td>
-                  <td class="muted" style="font-size:12px;">
+                  <td data-label="Customer" class="muted">{{ customerName(del.orderId) }}</td>
+                  <td data-label="Destination" class="muted">{{ destinationCity(del.orderId) }}</td>
+                  <td data-label="Status"><span class="badge" [ngClass]="deliveryStatusBadge(del.status)">{{ statusLabel(del.status) }}</span></td>
+                  <td data-label="Completed" class="muted" style="font-size:12px;">
                     {{ del.completedAt ? (del.completedAt | date:'d MMM, HH:mm') : '—' }}
                   </td>
-                  <td style="text-align: right;">
+                  <td data-label="Actions" style="text-align: right;">
                     <app-action-overflow-menu
                       [entityId]="del.id"
                       [entityName]="del.id + ' (' + customerName(del.orderId) + ')'"
