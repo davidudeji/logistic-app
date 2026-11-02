@@ -32,6 +32,71 @@ export interface ActiveTrackingJob {
   latestPosition: TrackingPoint | null;
 }
 
+export interface PublicTrackingSnapshot {
+  driverFirstName: string;
+  driverPhone: string;
+  vehicleRegistration: string;
+  status: TrackingJobStatus;
+  position: { lat: number; lng: number } | null;
+  lastUpdatedAt: string | null;
+  eta: string | null;
+}
+
+export function isPublicTrackingToken(value: string): boolean {
+  return /^[A-Za-z0-9_-]{43}$/.test(value);
+}
+
+export function isPublicTrackingSnapshot(value: unknown): value is PublicTrackingSnapshot {
+  if (!value || typeof value !== 'object') return false;
+
+  const allowedFields = new Set([
+    'driverFirstName',
+    'driverPhone',
+    'vehicleRegistration',
+    'status',
+    'position',
+    'lastUpdatedAt',
+    'eta',
+  ]);
+  if (Object.keys(value).some((key) => !allowedFields.has(key))) return false;
+
+  const snapshot = value as Partial<PublicTrackingSnapshot>;
+  const hasValidStatus =
+    snapshot.status === 'assigned' ||
+    snapshot.status === 'in_transit' ||
+    snapshot.status === 'arrived' ||
+    snapshot.status === 'delivered';
+  const hasValidPosition =
+    snapshot.position === null ||
+    (typeof snapshot.position === 'object' &&
+      snapshot.position !== null &&
+      Object.keys(snapshot.position).every((key) => key === 'lat' || key === 'lng') &&
+      typeof snapshot.position.lat === 'number' &&
+      Number.isFinite(snapshot.position.lat) &&
+      snapshot.position.lat >= -90 &&
+      snapshot.position.lat <= 90 &&
+      typeof snapshot.position.lng === 'number' &&
+      Number.isFinite(snapshot.position.lng) &&
+      snapshot.position.lng >= -180 &&
+      snapshot.position.lng <= 180);
+
+  return (
+    typeof snapshot.driverFirstName === 'string' &&
+    snapshot.driverFirstName.trim().length > 0 &&
+    typeof snapshot.driverPhone === 'string' &&
+    /^[+0-9(). -]{5,30}$/.test(snapshot.driverPhone) &&
+    typeof snapshot.vehicleRegistration === 'string' &&
+    snapshot.vehicleRegistration.trim().length > 0 &&
+    hasValidStatus &&
+    hasValidPosition &&
+    (snapshot.lastUpdatedAt === null ||
+      (typeof snapshot.lastUpdatedAt === 'string' &&
+        !Number.isNaN(Date.parse(snapshot.lastUpdatedAt)))) &&
+    (snapshot.eta === null ||
+      (typeof snapshot.eta === 'string' && !Number.isNaN(Date.parse(snapshot.eta))))
+  );
+}
+
 export function isTrackingPoint(value: unknown): value is TrackingPoint {
   if (!value || typeof value !== 'object') return false;
 

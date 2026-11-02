@@ -57,6 +57,13 @@ export const routes: Routes = [
       import('./features/drivers/driver-detail.component').then(m => m.DriverDetailComponent),
   },
   {
+    path: 'track/:token',
+    loadComponent: () =>
+      import('./features/tracking/public-tracking.component').then(
+        (m) => m.PublicTrackingComponent
+      ),
+  },
+  {
     path: 'tracking',
     loadComponent: () =>
       import('./features/tracking/dispatcher-tracking.component').then(
