@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+}
+
+enum EmailMessageStatus {
+  queued
+  sent
+  delivered
+  bounced
+  complained
+  failed
+}
+
+model Company {
+  id           String     @id @default(cuid())
+  tenantId     String
+  name         String
+  billingEmail String?
+  address      String?
+  customers    Customer[]
+  invoices     Invoice[]
+
+  @@unique([tenantId, id])
+  @@index([tenantId])
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  tenantId  String
+  companyId String
+  name      String
+  email     String?
+  address   String?
+  tin       String?
+  company   Company   @relation(fields: [tenantId, companyId], references: [tenantId, id], onDelete: Restrict)
+  invoices  Invoice[]
+
+  @@unique([tenantId, id])
+  @@index([tenantId, companyId])
+}
+
+model Invoice {
+  id         String         @id @default(cuid())
+  tenantId   String
+  companyId  String
+  customerId String
+  number     String?
+  status     InvoiceStatus  @default(DRAFT)
+  dueDate    DateTime       @db.Date
+  pdfBytes   Bytes?
+  createdAt  DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime       @updatedAt @db.Timestamptz(3)
+  company    Company        @relation(fields: [tenantId, companyId], references: [tenantId, id], onDelete: Restrict)
+  customer   Customer       @relation(fields: [tenantId, customerId], references: [tenantId, id], onDelete: Restrict)
+  emails     EmailMessage[]
+
+  @@unique([tenantId, id])
+  @@unique([tenantId, number])
+  @@index([tenantId, status])
+}
+
+model EmailMessage {
+  id         String             @id @default(cuid())
+  tenantId   String
+  documentId String
+  toEmail    String
+  status     EmailMessageStatus @default(queued)
+  resendId   String?            @unique
+  error      String?
+  createdAt  DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime           @updatedAt @db.Timestamptz(3)
+  invoice    Invoice            @relation(fields: [tenantId, documentId], references: [tenantId, id], onDelete: Restrict)
+
+  @@unique([tenantId, id])
+  @@index([tenantId, documentId, createdAt])
+  @@index([tenantId, createdAt])
+}

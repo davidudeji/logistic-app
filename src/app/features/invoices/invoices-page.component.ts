@@ -2,8 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { InvoiceDraft, InvoiceLine, InvoiceStatus } from './invoice.model';
 import { InvoiceService, INVOICE_CUSTOMERS } from './invoice.service';
+import { InvoiceEmailService, SendableInvoice } from './invoice-email.service';
 import { formatMinorAsMajor, invoiceAmounts, parseMajorToMinor, validateQuantity } from './invoice-totals';
 import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../core/auth/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 type EditorTab = 'edit' | 'preview';
 type InvoiceFilter = 'ALL' | InvoiceStatus;
@@ -16,6 +19,8 @@ type InvoiceFilter = 'ALL' | InvoiceStatus;
 })
 export class InvoicesPageComponent implements OnInit, OnDestroy {
   private readonly invoiceService = inject(InvoiceService);
+  private readonly invoiceEmailService = inject(InvoiceEmailService);
+  private readonly auth = inject(AuthService);
   private readonly toast = inject(ToastService);
   private saveTimer: ReturnType<typeof setTimeout> | undefined;
   private expectedVersion = 0;
@@ -29,6 +34,11 @@ export class InvoicesPageComponent implements OnInit, OnDestroy {
   readonly saveState = signal<'saved' | 'saving' | 'unsaved' | 'error'>('saved');
   readonly lastSavedAt = signal('');
   readonly storageError = signal('');
+  readonly sendableInvoices = signal<SendableInvoice[]>([]);
+  readonly emailListLoading = signal(false);
+  readonly emailListError = signal('');
+  readonly emailBusyInvoiceId = signal<string | null>(null);
+  readonly canSendInvoices = computed(() => this.auth.hasRole('Administrator', 'Operations Manager'));
   readonly totals = computed(() => {
     const invoice = this.activeDraft();
     return invoice ? invoiceAmounts(invoice) : null;
@@ -58,6 +68,7 @@ export class InvoicesPageComponent implements OnInit, OnDestroy {
       this.storageError.set(this.errorMessage(error));
       this.toast.error(this.errorMessage(error));
     }
+    if (this.canSendInvoices()) void this.loadSendableInvoices();
   }
 
   ngOnDestroy(): void {
@@ -236,6 +247,71 @@ export class InvoicesPageComponent implements OnInit, OnDestroy {
 
   setCurrency(value: string): void {
     if (value === 'NGN' || value === 'USD') this.patchDraft({ currency: value });
+  }
+
+  async loadSendableInvoices(): Promise<void> {
+    this.emailListLoading.set(true);
+    this.emailListError.set('');
+    try {
+      const response = await firstValueFrom(this.invoiceEmailService.getSendableInvoices());
+      this.sendableInvoices.set(response.invoices);
+    } catch (error) {
+      this.emailListError.set(this.errorMessage(error));
+    } finally {
+      this.emailListLoading.set(false);
+    }
+  }
+
+  async sendInvoice(invoice: SendableInvoice): Promise<void> {
+    this.emailBusyInvoiceId.set(invoice.id);
+    try {
+      await firstValueFrom(this.invoiceEmailService.sendInvoice(invoice.id));
+      this.toast.success(`Invoice ${invoice.number} emailed to ${invoice.customer.email}.`);
+      await this.loadSendableInvoices();
+    } catch (error) {
+      this.toast.error(this.errorMessage(error));
+    } finally {
+      this.emailBusyInvoiceId.set(null);
+    }
+  }
+
+  async retryInvoiceEmail(invoice: SendableInvoice): Promise<void> {
+    if (!invoice.lastEmail) return;
+    this.emailBusyInvoiceId.set(invoice.id);
+    try {
+      await firstValueFrom(this.invoiceEmailService.retryEmail(invoice.lastEmail.id));
+      this.toast.success(`Email retry queued for invoice ${invoice.number}.`);
+      await this.loadSendableInvoices();
+    } catch (error) {
+      this.toast.error(this.errorMessage(error));
+    } finally {
+      this.emailBusyInvoiceId.set(null);
+    }
+  }
+
+  emailActionLabel(invoice: SendableInvoice): string {
+    switch (invoice.lastEmail?.status) {
+      case 'queued': return 'Sending…';
+      case 'sent': return 'Sent';
+      case 'delivered': return 'Delivered';
+      case 'failed': return 'Retry email';
+      default: return 'Send email';
+    }
+  }
+
+  emailActionDisabled(invoice: SendableInvoice): boolean {
+    return this.emailBusyInvoiceId() === invoice.id
+      || invoice.lastEmail?.status === 'queued'
+      || invoice.lastEmail?.status === 'sent'
+      || invoice.lastEmail?.status === 'delivered';
+  }
+
+  runEmailAction(invoice: SendableInvoice): void {
+    if (invoice.lastEmail?.status === 'failed') {
+      void this.retryInvoiceEmail(invoice);
+    } else {
+      void this.sendInvoice(invoice);
+    }
   }
 
   setTaxCategory(index: number, value: string): void {

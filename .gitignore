@@ -8,6 +8,8 @@
 
 # Node
 /node_modules
+/alm-backend/node_modules/
+/alm-backend/.env
 npm-debug.log
 yarn-error.log
 

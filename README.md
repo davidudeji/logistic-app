@@ -48,7 +48,7 @@ ng test
 
 Open **Invoices** from the navigation to create and edit invoice drafts. The editor includes customer details, Nigerian VAT fields, integer-minor-unit totals with per-line rounding, autosave, and a Classic A4 print preview. Drafts are stored in this browser under the demo tenant; they are not shared or suitable as legal records.
 
-This is the first UI/data-model slice of the invoicing workflow. Server-backed tenant isolation, transactional numbering and finalization, immutable snapshots, archived PDFs, and email delivery are not implemented yet.
+The invoice list includes email actions for invoices already finalized and stored by the backend. Sending and retrying require the Administrator or Operations Manager role. Browser-local drafts cannot be sent: server-backed finalization and draft synchronization are not implemented. Email delivery uses the customer email stored on the server; stored PDF support is still pending.
 
 ## Running end-to-end tests
 

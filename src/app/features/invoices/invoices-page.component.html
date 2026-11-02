@@ -284,6 +284,55 @@
       </article>
     </section>
 
+    @if (canSendInvoices()) {
+      <section class="invoice-list-card email-ready-card" aria-label="Finalized invoices for email">
+        <div class="list-toolbar">
+          <div>
+            <h2>Finalized invoices</h2>
+            <p>Only server-saved invoices can be emailed</p>
+          </div>
+          <button type="button" class="btn btn-secondary" [disabled]="emailListLoading()" (click)="loadSendableInvoices()">
+            {{ emailListLoading() ? 'Refreshing…' : 'Refresh' }}
+          </button>
+        </div>
+        @if (emailListError()) {
+          <div class="storage-error" role="alert">{{ emailListError() }}</div>
+        }
+        <div class="invoice-table-wrap">
+          <table class="invoice-table">
+            <thead>
+              <tr><th>Invoice</th><th>Customer</th><th>Due date</th><th>Status</th><th><span class="visually-hidden">Email action</span></th></tr>
+            </thead>
+            <tbody>
+              @for (invoice of sendableInvoices(); track invoice.id) {
+                <tr>
+                  <td data-label="Invoice"><span class="document-id">{{ invoice.number }}</span></td>
+                  <td data-label="Customer"><strong>{{ invoice.customer.name }}</strong><small>{{ invoice.customer.email || 'No email address' }}</small></td>
+                  <td data-label="Due date">{{ formatDate(invoice.dueDate) }}</td>
+                  <td data-label="Email status"><span class="status-pill status-open">{{ invoice.lastEmail?.status || 'Ready' }}</span></td>
+                  <td data-label="Action">
+                    <button
+                      type="button"
+                      class="row-action"
+                      [disabled]="emailActionDisabled(invoice) || !invoice.customer.email"
+                      (click)="runEmailAction(invoice)">
+                      {{ emailBusyInvoiceId() === invoice.id ? 'Sending…' : emailActionLabel(invoice) }}
+                    </button>
+                  </td>
+                </tr>
+              } @empty {
+                @if (!emailListLoading()) {
+                  <tr><td colspan="5"><div class="empty-state"><strong>No finalized invoices available to email</strong><span>Drafts saved in this browser do not appear here.</span></div></td></tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    } @else {
+      <div class="local-notice">Email sending is available to Administrators and Operations Managers.</div>
+    }
+
     <section class="invoice-list-card">
       <div class="list-toolbar">
         <div>

@@ -46,6 +46,10 @@ All endpoints are mounted under the `/api/v1` namespace:
 | `GET` | `/api/v1/epod/:epodId/download-url` | Generate short-lived presigned URL | Auditor, Operations Manager, Administrator |
 | `PATCH` | `/api/v1/deliveries/:deliveryId/status` | Update delivery status (idempotent) | Authenticated Users |
 | `POST` | `/api/v1/deliveries/sync` | Batch sync offline delivery mutations | Authenticated Users |
+| `GET` | `/api/v1/invoices/email-ready` | List finalized invoices available for email | Operations Manager, Administrator |
+| `POST` | `/api/v1/invoices/:id/send` | Email a finalized invoice | Operations Manager, Administrator |
+| `POST` | `/api/v1/emails/:id/retry` | Retry a failed invoice email | Operations Manager, Administrator |
+| `POST` | `/api/v1/webhooks/resend` | Receive signed Resend delivery events | Resend signature |
 
 ---
 
@@ -89,7 +93,13 @@ All endpoints are mounted under the `/api/v1` namespace:
 ```bash
 cd alm-backend
 npm install
+npm run db:generate
+npm run db:deploy
 npm start
 ```
 
 Runs on port `5000` by default.
+
+Invoice email delivery uses the server-only environment variables `RESEND_API_KEY`, `RESEND_WEBHOOK_SECRET`, `MAIL_FROM_ADDRESS`, `EMAIL_DAILY_CAP_PER_TENANT` and `APP_NAME`. Configure the Resend webhook URL as `/api/v1/webhooks/resend` and preserve the raw request body so its signature can be verified.
+
+Invoice email routes require an authenticated Administrator or Operations Manager and are scoped to the authenticated tenant. The UI lists only finalized `OPEN` or `PAID` records with invoice numbers; browser-local drafts cannot be sent. Email recipients are read from the tenant-scoped customer record. The current mailer attaches stored `Invoice.pdfBytes` when present; until PDF storage is wired, it attaches a valid placeholder PDF marked with a TODO in the service code.
