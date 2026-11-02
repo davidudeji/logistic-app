@@ -57,13 +57,17 @@ export class SocketTrackingTransport implements TrackingTransport {
   }
 
   async sendPosition(jobId: string, point: TrackingPoint): Promise<void> {
-    if (point.jobId !== jobId || !isTrackingPoint(point)) {
-      throw new Error('The tracking point must be valid and match the requested job.');
+    return this.sendPositions(jobId, [point]);
+  }
+
+  async sendPositions(jobId: string, points: TrackingPoint[]): Promise<void> {
+    if (!points.length || points.some((point) => point.jobId !== jobId || !isTrackingPoint(point))) {
+      throw new Error('Every tracking point must be valid and match the requested job.');
     }
 
     await firstValueFrom(
       this.http.post<void>(`${environment.apiBaseUrl}/tracking/${encodeURIComponent(jobId)}/points`, {
-        points: [point],
+        points,
       })
     );
   }

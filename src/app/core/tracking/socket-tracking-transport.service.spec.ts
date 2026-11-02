@@ -58,7 +58,7 @@ describe('SocketTrackingTransport', () => {
     };
 
     await expect(service.sendPosition('JOB-001', point)).rejects.toThrow(
-      'The tracking point must be valid and match the requested job.'
+      'Every tracking point must be valid and match the requested job.'
     );
     httpTestingController.expectNone(
       'http://localhost:5000/api/v1/tracking/JOB-001/points'

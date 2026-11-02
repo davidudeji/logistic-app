@@ -28,6 +28,9 @@ import { switchMap } from 'rxjs';
       @if (load()) {
         <div class="header-right">
           <span class="badge" [ngClass]="loadStatusBadge(load()!.status)">{{ loadStatusLabel(load()!.status) }}</span>
+          <a [routerLink]="['/driver/tracking', load()!.id]" class="btn btn-sm btn-secondary">
+            Driver trip
+          </a>
         </div>
       }
     </header>

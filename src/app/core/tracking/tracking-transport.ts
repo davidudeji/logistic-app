@@ -6,6 +6,7 @@ export interface TrackingTransport {
   connect(jobId: string): void;
   positions$(jobId: string): Observable<TrackingPoint>;
   sendPosition(jobId: string, point: TrackingPoint): Promise<void>;
+  sendPositions?(jobId: string, points: TrackingPoint[]): Promise<void>;
   disconnect(): void;
 }
 
