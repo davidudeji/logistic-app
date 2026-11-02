@@ -26,6 +26,12 @@ export class DispatcherTrackingService {
   readonly historyLoading = signal(false);
   readonly historyError = signal<string | null>(null);
 
+  constructor() {
+    this.transport.errors$?.subscribe((error) => {
+      this.errorMessage.set(`Live updates failed for job ${error.jobId}: ${error.message}`);
+    });
+  }
+
   refreshActiveJobs(): void {
     const requestId = ++this.activeRequestId;
     this.isLoading.set(true);
@@ -148,6 +154,8 @@ export class DispatcherTrackingService {
       const subscription = this.transport.positions$(job.jobId).subscribe({
         next: (point) => this.updateLivePosition(job.jobId, point),
         error: (error: unknown) => {
+          this.positionSubscriptions.delete(job.jobId);
+          this.transport.disconnect(job.jobId);
           this.errorMessage.set(
             error instanceof Error ? error.message : `Live updates failed for job ${job.jobId}.`
           );
@@ -181,5 +189,6 @@ export class DispatcherTrackingService {
         return { ...job, latestPosition: point };
       })
     );
+    this.errorMessage.set(null);
   }
 }

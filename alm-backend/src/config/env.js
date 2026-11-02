@@ -43,5 +43,24 @@ export const config = {
     100,
     'EMAIL_DAILY_CAP_PER_TENANT',
   ),
+  tracking: {
+    integrationModule: process.env.TRACKING_INTEGRATION_MODULE || '',
+    retentionDays: positiveInteger(process.env.TRACKING_RETENTION_DAYS, 30, 'TRACKING_RETENTION_DAYS'),
+    publicDeliveryGraceHours: positiveInteger(
+      process.env.TRACKING_PUBLIC_DELIVERY_GRACE_HOURS,
+      2,
+      'TRACKING_PUBLIC_DELIVERY_GRACE_HOURS',
+    ),
+    driverRateLimitPerMinute: positiveInteger(
+      process.env.TRACKING_DRIVER_RATE_LIMIT_PER_MINUTE,
+      120,
+      'TRACKING_DRIVER_RATE_LIMIT_PER_MINUTE',
+    ),
+    publicRateLimitPerMinute: positiveInteger(
+      process.env.TRACKING_PUBLIC_RATE_LIMIT_PER_MINUTE,
+      60,
+      'TRACKING_PUBLIC_RATE_LIMIT_PER_MINUTE',
+    ),
+  },
   logLevel: process.env.LOG_LEVEL || 'info',
 };

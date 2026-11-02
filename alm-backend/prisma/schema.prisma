@@ -86,3 +86,34 @@ model EmailMessage {
   @@index([tenantId, documentId, createdAt])
   @@index([tenantId, createdAt])
 }
+
+model LocationPoint {
+  id         String   @id @default(cuid())
+  tenantId   String   @map("tenant_id")
+  jobId      String   @map("job_id")
+  vehicleId  String   @map("vehicle_id")
+  lat        Float
+  lng        Float
+  accuracy   Float
+  speed      Float?
+  heading    Float?
+  recordedAt DateTime @db.Timestamptz(3) @map("recorded_at")
+  createdAt  DateTime @default(now()) @db.Timestamptz(3) @map("created_at")
+
+  @@index([jobId, recordedAt])
+  @@index([tenantId, jobId, recordedAt])
+  @@index([vehicleId, recordedAt])
+  @@map("location_points")
+}
+
+model PublicTrackingToken {
+  tokenHash String    @id @map("token_hash")
+  tenantId  String    @map("tenant_id")
+  jobId     String    @map("job_id")
+  createdAt DateTime  @default(now()) @db.Timestamptz(3) @map("created_at")
+  expiresAt DateTime? @db.Timestamptz(3) @map("expires_at")
+  revokedAt DateTime? @db.Timestamptz(3) @map("revoked_at")
+
+  @@index([tenantId, jobId])
+  @@map("public_tracking_tokens")
+}

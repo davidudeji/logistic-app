@@ -11,13 +11,16 @@ import {
   filter,
   firstValueFrom,
   map,
+  merge,
+  mergeMap,
   switchMap,
   timer,
+  throwError,
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { TrackingPoint, isTrackingPoint } from '../../features/tracking/tracking.model';
 import { environment } from '../../../environments/environment';
-import { TrackingTransport } from './tracking-transport';
+import { TrackingTransport, TrackingTransportError } from './tracking-transport';
 
 export type TrackingConnectionState = 'disconnected' | 'connecting' | 'connected' | 'polling';
 
@@ -27,6 +30,9 @@ export class SocketTrackingTransport implements TrackingTransport {
   private readonly authService = inject(AuthService);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly incomingPositions = new Subject<TrackingPoint>();
+  private readonly incomingErrors = new Subject<TrackingTransportError>();
+  private readonly transportErrors = new Subject<TrackingTransportError>();
+  readonly errors$ = this.transportErrors.asObservable();
   private readonly activeJobs = new Set<string>();
   private readonly pollingSubscriptions = new Map<string, Subscription>();
 
@@ -53,7 +59,13 @@ export class SocketTrackingTransport implements TrackingTransport {
   }
 
   positions$(jobId: string): Observable<TrackingPoint> {
-    return this.incomingPositions.asObservable().pipe(filter((point) => point.jobId === jobId));
+    return merge(
+      this.incomingPositions.asObservable().pipe(filter((point) => point.jobId === jobId)),
+      this.incomingErrors.asObservable().pipe(
+        filter((error) => error.jobId === jobId),
+        mergeMap((error) => throwError(() => new Error(error.message)))
+      )
+    );
   }
 
   async sendPosition(jobId: string, point: TrackingPoint): Promise<void> {
@@ -113,11 +125,20 @@ export class SocketTrackingTransport implements TrackingTransport {
 
     this.socket.on('disconnect', (reason) => {
       this.lastError.set(`Tracking connection disconnected: ${reason}`);
+      this.activeJobs.forEach((jobId) => {
+        this.transportErrors.next({
+          jobId,
+          message: `Tracking connection disconnected: ${reason}`,
+        });
+      });
       this.startPollingForActiveJobs();
     });
 
     this.socket.on('connect_error', (error: Error) => {
       this.lastError.set(error.message);
+      this.activeJobs.forEach((jobId) => {
+        this.transportErrors.next({ jobId, message: error.message });
+      });
       this.startPollingForActiveJobs();
     });
 
@@ -128,6 +149,24 @@ export class SocketTrackingTransport implements TrackingTransport {
       }
 
       this.incomingPositions.next(payload);
+    });
+
+    this.socket.on('tracking:error', (payload: unknown) => {
+      if (
+        !payload ||
+        typeof payload !== 'object' ||
+        !('jobId' in payload) ||
+        typeof payload.jobId !== 'string' ||
+        !('message' in payload) ||
+        typeof payload.message !== 'string'
+      ) {
+        this.lastError.set('Received an invalid tracking subscription error from the server.');
+        return;
+      }
+
+      this.lastError.set(payload.message);
+      this.transportErrors.next({ jobId: payload.jobId, message: payload.message });
+      this.incomingErrors.next({ jobId: payload.jobId, message: payload.message });
     });
 
     this.socket.connect();
@@ -155,22 +194,28 @@ export class SocketTrackingTransport implements TrackingTransport {
               })
               .pipe(
                 catchError((error: unknown) => {
-                  this.lastError.set(
-                    error instanceof Error ? error.message : 'Tracking polling request failed.'
-                  );
+                  const message = error instanceof Error
+                    ? error.message
+                    : 'Tracking polling request failed.';
+                  this.lastError.set(message);
+                  this.transportErrors.next({ jobId, message });
                   return EMPTY;
                 })
               )
           ),
           map((points) => {
             if (!Array.isArray(points)) {
-              this.lastError.set('Tracking history response is not a list of positions.');
+              const message = 'Tracking history response is not a list of positions.';
+              this.lastError.set(message);
+              this.transportErrors.next({ jobId, message });
               return undefined;
             }
 
             const point = points.at(-1);
             if (point && !isTrackingPoint(point)) {
-              this.lastError.set('Received an invalid tracking position from polling.');
+              const message = 'Received an invalid tracking position from polling.';
+              this.lastError.set(message);
+              this.transportErrors.next({ jobId, message });
               return undefined;
             }
 

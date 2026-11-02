@@ -17,6 +17,7 @@ alm-backend/
 │   │   ├── deliveries/      # Delivery status management and idempotency checks
 │   │   ├── epod/            # Secure document uploads, OpenAI GPT-4o Vision audits
 │   │   └── sync/            # Batch synchronization for offline IndexedDB mutations
+│   │   └── tracking/        # GPS persistence, scoped public links, SSE and Socket.IO updates
 │   ├── routes/              # Express API route mapping
 │   ├── app.js               # Express application configuration
 │   └── server.js            # HTTP and Socket.IO server entrypoint
@@ -47,6 +48,13 @@ All endpoints are mounted under the `/api/v1` namespace:
 | `POST` | `/api/v1/invoices/:id/send` | Email a finalized invoice | Operations Manager, Administrator |
 | `POST` | `/api/v1/emails/:id/retry` | Retry a failed invoice email | Operations Manager, Administrator |
 | `POST` | `/api/v1/webhooks/resend` | Receive signed Resend delivery events | Resend signature |
+| `POST` | `/api/v1/tracking/:jobId/points` | Store an assigned driver's location batch | Driver |
+| `GET` | `/api/v1/tracking/active` | Latest locations for assigned active jobs | Dispatcher, Operations Manager, Administrator |
+| `GET` | `/api/v1/tracking/:jobId/history` | Retained location history | Dispatcher, Operations Manager, Administrator |
+| `POST` | `/api/v1/tracking/:jobId/public-token` | Create a job-scoped customer link | Dispatcher, Operations Manager, Administrator |
+| `GET` | `/api/v1/tracking/public/:token` | Read a limited public tracking snapshot | Public token |
+| `GET` | `/api/v1/tracking/stream` | Authenticated dispatcher SSE stream | Dispatcher, Operations Manager, Administrator |
+| `GET` | `/api/v1/tracking/public/:token/stream` | Job-scoped public SSE stream | Public token |
 
 ---
 
@@ -61,6 +69,12 @@ npm start
 ```
 
 Runs on port `5000` by default.
+
+Tracking persists points and customer-token hashes in PostgreSQL. Apply the migration with `npm run db:deploy`; the server runs a cleanup at startup and once per day to remove location points older than 30 days.
+
+This repository does not contain production identity or job-assignment providers. Tracking endpoints fail closed in production until `TRACKING_INTEGRATION_MODULE` points to a deployment-owned module exporting `configure({ configureTrackingIntegration, prisma })`. That module must register both a real HTTP/Socket.IO authentication adapter and tenant-scoped job-assignment methods. Do not use the development mock identity as production authentication. The integration contract is documented in [../docs/tracking-api.md](../docs/tracking-api.md).
+
+Tracking-specific defaults are `TRACKING_RETENTION_DAYS=30`, `TRACKING_PUBLIC_DELIVERY_GRACE_HOURS=2`, `TRACKING_DRIVER_RATE_LIMIT_PER_MINUTE=120`, and `TRACKING_PUBLIC_RATE_LIMIT_PER_MINUTE=60`. The frontend tracking map and transport use OpenStreetMap and the same-origin/backend URLs in the Angular environment; neither requires a paid key.
 
 Invoice email delivery uses the server-only environment variables `RESEND_API_KEY`, `RESEND_WEBHOOK_SECRET`, `MAIL_FROM_ADDRESS`, `EMAIL_DAILY_CAP_PER_TENANT` and `APP_NAME`. Configure the Resend webhook URL as `/api/v1/webhooks/resend` and preserve the raw request body so its signature can be verified.
 

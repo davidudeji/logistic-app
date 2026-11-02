@@ -11,12 +11,14 @@ import { deliveryController } from '../modules/deliveries/delivery.controller.js
 import { epodController } from '../modules/epod/epod.controller.js';
 import { syncController } from '../modules/sync/sync.controller.js';
 import { emailRouter } from '../modules/email/email.routes.js';
+import { trackingRouter } from '../modules/tracking/tracking.routes.js';
 
 export const router = Router();
 
 // Apply general rate limiter
 router.use(rateLimit({ windowMs: 60000, max: 200 }));
 router.use(emailRouter);
+router.use(trackingRouter);
 
 // ── Health Check ─────────────────────────────────────────────
 router.get('/alm/health', (req, res) => {
