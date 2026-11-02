@@ -72,8 +72,17 @@ export class SocketTrackingTransport implements TrackingTransport {
     );
   }
 
-  disconnect(): void {
-    this.activeJobs.clear();
+  disconnect(jobId?: string): void {
+    if (jobId) {
+      if (!this.activeJobs.delete(jobId)) return;
+      this.socket?.emit('tracking:unsubscribe', { jobId });
+      this.pollingSubscriptions.get(jobId)?.unsubscribe();
+      this.pollingSubscriptions.delete(jobId);
+      if (this.activeJobs.size > 0) return;
+    } else {
+      this.activeJobs.clear();
+    }
+
     this.pollingSubscriptions.forEach((subscription) => subscription.unsubscribe());
     this.pollingSubscriptions.clear();
     this.socket?.removeAllListeners();

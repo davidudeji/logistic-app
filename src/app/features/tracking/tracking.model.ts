@@ -21,6 +21,17 @@ export interface TrackingPoint {
   timestamp: string;
 }
 
+export type TrackingJobStatus = 'assigned' | 'in_transit' | 'arrived' | 'delivered';
+
+export interface ActiveTrackingJob {
+  jobId: string;
+  vehicleId: string;
+  vehicleRegistration: string;
+  driverFirstName: string;
+  status: TrackingJobStatus;
+  latestPosition: TrackingPoint | null;
+}
+
 export function isTrackingPoint(value: unknown): value is TrackingPoint {
   if (!value || typeof value !== 'object') return false;
 
@@ -48,5 +59,24 @@ export function isTrackingPoint(value: unknown): value is TrackingPoint {
         point.heading <= 360)) &&
     typeof point.timestamp === 'string' &&
     !Number.isNaN(Date.parse(point.timestamp))
+  );
+}
+
+export function isActiveTrackingJob(value: unknown): value is ActiveTrackingJob {
+  if (!value || typeof value !== 'object') return false;
+
+  const job = value as Partial<ActiveTrackingJob>;
+  return (
+    typeof job.jobId === 'string' &&
+    job.jobId.length > 0 &&
+    typeof job.vehicleId === 'string' &&
+    typeof job.vehicleRegistration === 'string' &&
+    typeof job.driverFirstName === 'string' &&
+    (job.status === 'assigned' ||
+      job.status === 'in_transit' ||
+      job.status === 'arrived' ||
+      job.status === 'delivered') &&
+    (job.latestPosition === null ||
+      (isTrackingPoint(job.latestPosition) && job.latestPosition.jobId === job.jobId))
   );
 }

@@ -137,6 +137,7 @@ export class SidebarComponent {
   readonly opsNav = [
     { label: 'Fleet',         icon: 'fleet',     route: '/fleet' },
     { label: 'Drivers',       icon: 'drivers',   route: '/drivers' },
+    { label: 'Live Tracking', icon: 'tracking',  route: '/tracking' },
     { label: 'Routes',        icon: 'routes',    route: '/routes' },
   ];
 

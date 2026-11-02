@@ -7,7 +7,7 @@ export interface TrackingTransport {
   positions$(jobId: string): Observable<TrackingPoint>;
   sendPosition(jobId: string, point: TrackingPoint): Promise<void>;
   sendPositions?(jobId: string, points: TrackingPoint[]): Promise<void>;
-  disconnect(): void;
+  disconnect(jobId?: string): void;
 }
 
 export const TRACKING_TRANSPORT = new InjectionToken<TrackingTransport>('TRACKING_TRANSPORT');
