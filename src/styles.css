@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────── */
 
 /* leaflet CSS is loaded via angular.json styles array */
+@import './app/features/invoices/invoices-page.component.css';
 
 /* ─── block.xyz Design Tokens ────────────────────────────────
    Minimal · High-contrast · Monochrome
@@ -194,6 +195,32 @@ h4, h5, h6 {
   overflow: hidden;
   min-width: 0;
   background: var(--bg);
+}
+
+@media print {
+  html, body, .app-shell, .main-area {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  app-sidebar, app-toast-outlet, .invoice-header, .invoices-header, .mobile-tabs,
+  .editor-panel, .preview-toolbar, .preview-caption, .invoice-list-page {
+    display: none !important;
+  }
+  .invoice-editor {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  .preview-panel { display: flex !important; }
+  .invoice-paper {
+    width: 210mm !important;
+    min-height: 0 !important;
+    padding: 12mm !important;
+    border: 0 !important;
+  }
 }
 
 /* ─── Top Header ──────────────────────────────────────────── */

@@ -44,6 +44,12 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
+## Invoicing workspace
+
+Open **Invoices** from the navigation to create and edit invoice drafts. The editor includes customer details, Nigerian VAT fields, integer-minor-unit totals with per-line rounding, autosave, and a Classic A4 print preview. Drafts are stored in this browser under the demo tenant; they are not shared or suitable as legal records.
+
+This is the first UI/data-model slice of the invoicing workflow. Server-backed tenant isolation, transactional numbering and finalization, immutable snapshots, archived PDFs, and email delivery are not implemented yet.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:

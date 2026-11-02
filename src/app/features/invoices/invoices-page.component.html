@@ -1,0 +1,352 @@
+@if (activeDraft(); as draft) {
+  <header class="top-header invoice-header">
+    <div class="header-left">
+      <button class="btn btn-sm btn-secondary" type="button" (click)="closeEditor()" aria-label="Back to invoices">
+        <span aria-hidden="true">←</span> Invoices
+      </button>
+      <div class="header-title-group">
+        <h1 class="header-title">New invoice</h1>
+        <span class="header-subtitle">Draft · number assigned when finalized</span>
+      </div>
+    </div>
+    <div class="header-right editor-actions">
+      <span class="save-indicator" aria-live="polite">
+        @switch (saveState()) {
+          @case ('saving') { Saving… }
+          @case ('unsaved') { Unsaved changes }
+          @case ('error') { Not saved }
+          @default {
+            @if (lastSavedAt()) { Saved {{ lastSavedAt() }} WAT }
+            @else { Saved locally }
+          }
+        }
+      </span>
+      <button class="btn btn-secondary" type="button" (click)="printPreview()">Print preview</button>
+      <button class="btn btn-primary" type="button" (click)="saveNow()">Save draft</button>
+    </div>
+  </header>
+
+  <div class="mobile-tabs" role="tablist" aria-label="Invoice editor view">
+    <button type="button" role="tab" [attr.aria-selected]="editorTab() === 'edit'" [class.selected]="editorTab() === 'edit'" (click)="editorTab.set('edit')">Edit</button>
+    <button type="button" role="tab" [attr.aria-selected]="editorTab() === 'preview'" [class.selected]="editorTab() === 'preview'" (click)="editorTab.set('preview')">Preview</button>
+  </div>
+
+  <main class="invoice-editor">
+    <section class="editor-panel" [class.mobile-hidden]="editorTab() !== 'edit'" aria-label="Invoice details">
+      <div class="section-heading">
+        <div>
+          <h2>Invoice details</h2>
+          <p>Changes save automatically as a draft.</p>
+        </div>
+        <span class="template-chip">Classic · A4</span>
+      </div>
+
+      <div class="form-grid">
+        <label class="field field-wide">
+          <span>Customer</span>
+          <select [value]="draft.customerId" (change)="updateCustomer(eventValue($event))">
+            @for (customer of customers; track customer.id) {
+              <option [value]="customer.id">{{ customer.name }}</option>
+            }
+          </select>
+        </label>
+        <label class="field">
+          <span>Issue date</span>
+          <input type="date" [value]="draft.issueDate" (input)="patchDraft({ issueDate: eventValue($event) })">
+        </label>
+        <label class="field">
+          <span>Due date</span>
+          <input type="date" [value]="draft.dueDate" (input)="patchDraft({ dueDate: eventValue($event) })">
+        </label>
+        <label class="field">
+          <span>Customer email</span>
+          <input type="email" [value]="draft.customerEmail" (input)="patchDraft({ customerEmail: eventValue($event) })">
+        </label>
+        <label class="field">
+          <span>Customer TIN <small>Optional</small></span>
+          <input type="text" [value]="draft.customerTin" (input)="patchDraft({ customerTin: eventValue($event) })">
+        </label>
+        <label class="field field-wide">
+          <span>Billing address</span>
+          <input type="text" [value]="draft.customerAddress" (input)="patchDraft({ customerAddress: eventValue($event) })">
+        </label>
+        <label class="field">
+          <span>Reference <small>Optional</small></span>
+          <input type="text" placeholder="PO or shipment reference" [value]="draft.reference" (input)="patchDraft({ reference: eventValue($event) })">
+        </label>
+        <label class="field">
+          <span>Currency</span>
+          <select [value]="draft.currency" (change)="setCurrency(eventValue($event))">
+            <option value="NGN">NGN · Nigerian naira</option>
+            <option value="USD">USD · US dollar</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="line-section">
+        <div class="section-heading compact">
+          <div>
+            <h2>Line items</h2>
+            <p>Tax is rounded per line and stored in minor units.</p>
+          </div>
+          <button type="button" class="text-button" (click)="addLine()">+ Add line</button>
+        </div>
+        <div class="line-table-wrap">
+          <table class="line-table">
+            <thead>
+              <tr><th>Description</th><th>Qty</th><th>Unit price</th><th>Tax</th><th>Amount</th><th><span class="visually-hidden">Actions</span></th></tr>
+            </thead>
+            <tbody>
+              @for (line of draft.lines; track line.id; let i = $index) {
+                <tr>
+                  <td data-label="Description">
+                    <input class="line-description" type="text" aria-label="Line item description" placeholder="Service or item" [value]="line.description" (input)="updateLine(i, { description: eventValue($event) })">
+                  </td>
+                  <td data-label="Qty">
+                    <input class="line-number" type="number" min="0" step="0.001" aria-label="Quantity" [value]="line.quantity" (input)="updateLine(i, { quantity: eventValue($event) })">
+                  </td>
+                  <td data-label="Unit price">
+                    <input class="line-number" type="number" min="0" step="0.01" aria-label="Unit price" [value]="majorAmount(line.unitPriceMinor)" (input)="updateLinePrice(i, eventValue($event))">
+                  </td>
+                  <td data-label="Tax">
+                    <select class="line-tax" aria-label="Tax category" [value]="line.taxCategory" (change)="setTaxCategory(i, eventValue($event))">
+                      <option value="standard">VAT 7.5%</option>
+                      <option value="zero-rated">Zero-rated</option>
+                      <option value="exempt">Exempt</option>
+                    </select>
+                  </td>
+                  <td data-label="Amount" class="line-amount">{{ money(lineTotal(i), draft.currency) }}</td>
+                  <td class="line-actions">
+                    <button type="button" class="icon-action" [disabled]="i === 0" [attr.aria-label]="'Move line ' + (i + 1) + ' up'" (click)="moveLine(i, -1)">↑</button>
+                    <button type="button" class="icon-action" [disabled]="i === draft.lines.length - 1" [attr.aria-label]="'Move line ' + (i + 1) + ' down'" (click)="moveLine(i, 1)">↓</button>
+                    <button type="button" class="icon-action remove-action" [attr.aria-label]="'Remove line ' + (i + 1)" (click)="removeLine(i)">×</button>
+                  </td>
+                </tr>
+              } @empty {
+                <tr><td class="empty-lines" colspan="6">No line items yet. Add a line to calculate the invoice total.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tax-settings">
+        <div>
+          <h3>Tax settings</h3>
+          <p>Confirm freight tax treatment with your Nigerian tax adviser.</p>
+        </div>
+        <label class="check-field">
+          <input type="checkbox" [checked]="draft.vatRegistered" (change)="patchDraft({ vatRegistered: eventChecked($event) })">
+          <span>VAT registered <small>Standard VAT is 7.5%</small></span>
+        </label>
+        <label class="check-field">
+          <input type="checkbox" [checked]="draft.taxInclusive" (change)="patchDraft({ taxInclusive: eventChecked($event) })">
+          <span>Prices include VAT</span>
+        </label>
+        <label class="field tin-field">
+          <span>Supplier TIN</span>
+          <input type="text" placeholder="Enter your tax ID" [value]="draft.issuerTin" (input)="patchDraft({ issuerTin: eventValue($event) })">
+        </label>
+      </div>
+
+      <label class="field terms-field">
+        <span>Payment terms</span>
+        <input type="text" [value]="draft.terms" (input)="patchDraft({ terms: eventValue($event) })">
+      </label>
+
+      <div class="editor-note">
+        Drafts are stored in this browser only. Sending, immutable numbering and archived PDFs require a server-backed finalize workflow.
+      </div>
+    </section>
+
+    <section class="preview-panel" [class.mobile-hidden]="editorTab() !== 'preview'" aria-label="Live invoice preview">
+      <div class="preview-toolbar">
+        <div>
+          <span class="preview-label">LIVE PREVIEW</span>
+          <span class="preview-size">A4 · Classic · {{ draft.currency }}</span>
+        </div>
+        <button type="button" class="print-button" (click)="printPreview()">Print</button>
+      </div>
+
+      <article class="invoice-paper">
+        <div class="paper-topline">
+          <div class="issuer-lockup">
+            <div class="brand-mark" aria-hidden="true">{{ monogram(draft.issuerName) }}</div>
+            <div>
+              <strong>{{ draft.issuerName || 'Your company name' }}</strong>
+              <span>{{ draft.issuerAddress || 'Company address' }}</span>
+              @if (draft.issuerTin) { <span>TIN {{ draft.issuerTin }}</span> }
+            </div>
+          </div>
+          <div class="paper-title">
+            <h2>INVOICE</h2>
+            <span class="draft-number">DRAFT · NUMBER PENDING</span>
+          </div>
+        </div>
+
+        <div class="paper-rule"></div>
+        <div class="paper-parties">
+          <div>
+            <span class="paper-overline">BILL TO</span>
+            <strong>{{ draft.customerName || 'Customer name' }}</strong>
+            <span>{{ draft.customerAddress || 'Billing address' }}</span>
+            @if (draft.customerEmail) { <span>{{ draft.customerEmail }}</span> }
+            @if (draft.customerTin) { <span>TIN {{ draft.customerTin }}</span> }
+          </div>
+          <div class="paper-dates">
+            <div><span>Issued</span><strong>{{ formatDate(draft.issueDate) }}</strong></div>
+            <div><span>Due date</span><strong>{{ formatDate(draft.dueDate) }}</strong></div>
+            @if (draft.reference) { <div><span>Reference</span><strong>{{ draft.reference }}</strong></div> }
+            <div><span>Created</span><strong>{{ formatCreatedAt(draft.createdAt) }}</strong></div>
+          </div>
+        </div>
+
+        <table class="paper-lines">
+          <thead>
+            <tr><th>Description</th><th>Qty</th><th>Unit price</th><th>Amount</th></tr>
+          </thead>
+          <tbody>
+            @for (line of draft.lines; track line.id; let i = $index) {
+              <tr>
+                <td>{{ line.description || 'Service or item' }}<small>{{ line.taxCategory === 'standard' ? 'VAT 7.5%' : line.taxCategory }}</small></td>
+                <td>{{ line.quantity }}</td>
+                <td>{{ money(line.unitPriceMinor, draft.currency) }}</td>
+                <td>{{ money(lineTotal(i), draft.currency) }}</td>
+              </tr>
+            } @empty {
+              <tr><td class="paper-empty" colspan="4">Add line items to preview your invoice.</td></tr>
+            }
+          </tbody>
+        </table>
+
+        @if (totals(); as total) {
+          <div class="paper-total-area">
+            <div class="paper-totals">
+              <div><span>Subtotal</span><strong>{{ money(total.subtotalMinor, draft.currency) }}</strong></div>
+              @if (draft.vatRegistered && total.taxMinor !== '0') {
+                <div><span>VAT {{ draft.taxInclusive ? '(included)' : '' }}</span><strong>{{ money(total.taxMinor, draft.currency) }}</strong></div>
+              }
+              <div class="balance-row"><span>Balance due</span><strong>{{ money(total.totalMinor, draft.currency) }}</strong></div>
+            </div>
+          </div>
+        }
+
+        <div class="paper-footer">
+          <div><strong>Payment terms</strong><span>{{ draft.terms || '—' }}</span></div>
+          <div class="footer-note">
+            @if (draft.vatRegistered) { VAT registered · VAT 7.5% where applicable }
+            @else { VAT not charged · supplier not VAT registered }
+          </div>
+        </div>
+      </article>
+      <p class="preview-caption">Preview uses the same saved draft data. A number is assigned only when the server-backed finalize flow is enabled.</p>
+    </section>
+  </main>
+} @else {
+  <header class="top-header invoices-header">
+    <div class="header-left">
+      <div class="header-title-group">
+        <h1 class="header-title">Invoices</h1>
+        <span class="header-subtitle">Create, review and manage customer billing</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-primary" type="button" (click)="createInvoice()">
+        <span aria-hidden="true">+</span> New invoice
+      </button>
+    </div>
+  </header>
+
+  <main class="invoice-list-page">
+    <div class="local-notice">
+      <span class="notice-dot" aria-hidden="true"></span>
+      Demo workspace · drafts are saved in this browser
+    </div>
+    @if (storageError()) {
+      <div class="storage-error" role="alert">{{ storageError() }}</div>
+    }
+
+    <section class="summary-grid" aria-label="Invoice summary">
+      <article class="summary-card">
+        <span class="summary-label">Draft invoices</span>
+        <strong>{{ draftCount() }}</strong>
+        <span class="summary-foot">Ready for review</span>
+      </article>
+      <article class="summary-card">
+        <span class="summary-label">Open balance</span>
+        <strong>{{ money(openAmount()) }}</strong>
+        <span class="summary-foot">Across finalized invoices</span>
+      </article>
+      <article class="summary-card summary-tip">
+        <span class="summary-label">Next step</span>
+        <strong>Finalize with confidence</strong>
+        <span class="summary-foot">Numbers are assigned at finalization</span>
+      </article>
+    </section>
+
+    <section class="invoice-list-card">
+      <div class="list-toolbar">
+        <div>
+          <h2>All invoices</h2>
+          <p>{{ filteredInvoices().length }} documents</p>
+        </div>
+        <div class="list-controls">
+          <label class="search-control">
+            <span class="visually-hidden">Search invoices</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
+            </svg>
+            <input type="search" placeholder="Search customer or reference" [value]="searchQuery()" (input)="searchQuery.set(eventValue($event))">
+          </label>
+          <select aria-label="Filter invoices by status" [value]="statusFilter()" (change)="setStatusFilter(eventValue($event))">
+            <option value="ALL">All statuses</option>
+            <option value="DRAFT">Draft</option>
+            <option value="OPEN">Open</option>
+            <option value="PAID">Paid</option>
+            <option value="VOID">Void</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="invoice-table-wrap">
+        <table class="invoice-table">
+          <thead>
+            <tr><th>Document</th><th>Customer</th><th>Issue date</th><th>Due date</th><th>Amount</th><th>Status</th><th><span class="visually-hidden">Action</span></th></tr>
+          </thead>
+          <tbody>
+            @for (invoice of filteredInvoices(); track invoice.id) {
+              <tr>
+                <td data-label="Document">
+                  @if (invoice.number) { <span class="document-id">{{ invoice.number }}</span> }
+                  @else { <span class="document-id draft-id">Draft · number pending</span> }
+                </td>
+                <td data-label="Customer"><strong>{{ invoice.customerName }}</strong><small>{{ invoice.customerEmail }}</small></td>
+                <td data-label="Issue date">{{ formatDate(invoice.issueDate) }}</td>
+                <td data-label="Due date">{{ formatDate(invoice.dueDate) }}</td>
+                <td data-label="Amount" class="amount-cell">{{ money(invoiceAmountsFor(invoice), invoice.currency) }}</td>
+                <td data-label="Status"><span class="status-pill" [class.status-draft]="invoice.status === 'DRAFT'" [class.status-open]="invoice.status === 'OPEN'" [class.status-paid]="invoice.status === 'PAID'" [class.status-void]="invoice.status === 'VOID'">{{ statusLabel(invoice.status) }}</span></td>
+                <td data-label="Action">
+                  @if (invoice.status === 'DRAFT') {
+                    <button type="button" class="row-action" (click)="editInvoice(invoice.id)">Edit <span aria-hidden="true">→</span></button>
+                  } @else {
+                    <span class="locked-note">Locked</span>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-icon" aria-hidden="true">＋</div>
+                  <strong>No invoices match your filters</strong>
+                  <span>Create an invoice draft or change your search.</span>
+                  <button type="button" class="btn btn-secondary" (click)="createInvoice()">Create a draft</button>
+                </div>
+              </td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="list-footnote">Draft data is stored locally for this prototype. Do not use for legal or tax filing records.</p>
+  </main>
+}
