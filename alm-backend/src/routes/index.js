@@ -4,7 +4,6 @@ import { authorize } from '../middleware/authorize.js';
 import { rateLimit } from '../middleware/rate-limit.js';
 import { validateRequest } from '../middleware/validate-request.js';
 
-import { telemetryController } from '../modules/telemetry/telemetry.controller.js';
 import { routingController } from '../modules/routing/routing.controller.js';
 import { validateOptimizeRouteRequest } from '../modules/routing/routing.validation.js';
 import { etaController } from '../modules/eta/eta.controller.js';
@@ -28,21 +27,6 @@ router.get('/alm/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
-
-// ── Fleet Telemetry Endpoints ─────────────────────────────────
-router.get(
-  '/fleet/telemetry',
-  authenticate,
-  authorize(['Fleet Manager', 'Dispatcher', 'Operations Manager', 'Administrator']),
-  (req, res, next) => telemetryController.getFleetTelemetry(req, res, next)
-);
-
-router.get(
-  '/fleet/:assetId/telemetry',
-  authenticate,
-  authorize(['Fleet Manager', 'Dispatcher', 'Operations Manager', 'Administrator']),
-  (req, res, next) => telemetryController.getVehicleTelemetryHistory(req, res, next)
-);
 
 // ── Route Optimization Endpoints ──────────────────────────────
 router.post(

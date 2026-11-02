@@ -115,10 +115,8 @@ import { FleetService, DispatchJob } from '../../services/fleet';
       <!-- Plain div — Leaflet attaches here via ViewChild -->
       <div #mapContainer class="map-el"></div>
 
-      <!-- Live Badge -->
       <div class="live-badge">
-        <span class="live-dot"></span>
-        Live
+        Dispatch snapshot
       </div>
 
       <!-- Legend -->

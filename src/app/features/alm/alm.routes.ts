@@ -9,13 +9,6 @@ export const almRoutes: Routes = [
       ),
   },
   {
-    path: 'fleet',
-    loadComponent: () =>
-      import('./pages/fleet-monitoring-page/fleet-monitoring-page.component').then(
-        (m) => m.FleetMonitoringPageComponent
-      ),
-  },
-  {
     path: 'routes',
     loadComponent: () =>
       import('./pages/route-planning-page/route-planning-page.component').then(
@@ -31,7 +24,7 @@ export const almRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'fleet',
+    redirectTo: 'operations',
     pathMatch: 'full',
   },
 ];

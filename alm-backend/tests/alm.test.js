@@ -1,52 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { telemetryService } from '../src/modules/telemetry/telemetry.service.js';
 import { routingService } from '../src/modules/routing/routing.service.js';
 import { etaService } from '../src/modules/eta/eta.service.js';
 import { epodService } from '../src/modules/epod/epod.service.js';
 import { syncService } from '../src/modules/sync/sync.service.js';
-
-test('ALM Feature A: Telemetry validation and ingestion', async (t) => {
-  await t.test('accepts valid driver location broadcast', () => {
-    const ping = telemetryService.validateAndIngestBroadcast({
-      assetId: 'VEH-TRK-TEST',
-      longitude: 3.35,
-      latitude: 6.6,
-      heading: 90,
-      speedKph: 50,
-      telemetryTimestamp: new Date().toISOString(),
-    });
-
-    assert.equal(ping.assetId, 'VEH-TRK-TEST');
-    assert.equal(ping.speedKph, 50);
-    assert.ok(ping.eventId);
-    assert.ok(ping.receivedAt);
-  });
-
-  await t.test('rejects invalid coordinates', () => {
-    assert.throws(() => {
-      telemetryService.validateAndIngestBroadcast({
-        assetId: 'VEH-TRK-TEST',
-        longitude: 250, // invalid lon
-        latitude: 6.6,
-        telemetryTimestamp: new Date().toISOString(),
-      });
-    }, /longitude must be a valid number between -180 and 180/);
-  });
-
-  await t.test('rejects future timestamps > 10m', () => {
-    const farFuture = new Date(Date.now() + 1000 * 60 * 60).toISOString();
-    assert.throws(() => {
-      telemetryService.validateAndIngestBroadcast({
-        assetId: 'VEH-TRK-TEST',
-        longitude: 3.35,
-        latitude: 6.6,
-        telemetryTimestamp: farFuture,
-      });
-    }, /cannot be more than 10 minutes in the future/);
-  });
-});
 
 test('ALM Feature B: Route optimization sequence mapping', async (t) => {
   await t.test('preserves original delivery IDs and calculates route', async () => {

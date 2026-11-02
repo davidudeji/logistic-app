@@ -138,7 +138,6 @@ export class SidebarComponent {
     { label: 'Fleet',         icon: 'fleet',     route: '/fleet' },
     { label: 'Drivers',       icon: 'drivers',   route: '/drivers' },
     { label: 'Routes',        icon: 'routes',    route: '/routes' },
-    { label: 'Live Tracking', icon: 'tracking',  route: '/tracking' },
   ];
 
   readonly deliveryNav = [

@@ -2,7 +2,6 @@ import http from 'node:http';
 import { Server as SocketIOServer } from 'socket.io';
 import { app } from './app.js';
 import { config } from './config/env.js';
-import { setupTelemetrySocket } from './modules/telemetry/telemetry.socket.js';
 
 const server = http.createServer(app);
 
@@ -13,9 +12,6 @@ const io = new SocketIOServer(server, {
     methods: ['GET', 'POST'],
   },
 });
-
-// Setup real-time telemetry events
-setupTelemetrySocket(io);
 
 server.listen(config.port, () => {
   console.log(`====================================================`);
