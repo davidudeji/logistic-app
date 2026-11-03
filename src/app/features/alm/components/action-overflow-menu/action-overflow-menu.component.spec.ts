@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 import { ActionOverflowMenuComponent } from './action-overflow-menu.component';
 
 describe('ActionOverflowMenuComponent', () => {
@@ -78,7 +79,7 @@ describe('ActionOverflowMenuComponent', () => {
   });
 
   it('should emit deleteConfirmed event when modal delete button is clicked', () => {
-    spyOn(component.deleteConfirmed, 'emit');
+    vi.spyOn(component.deleteConfirmed, 'emit');
 
     component.showDeleteModal.set(true);
     fixture.detectChanges();

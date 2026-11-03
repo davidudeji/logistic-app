@@ -165,16 +165,6 @@ export interface Route {
   createdAt: string;
 }
 
-// ─── Vehicle Position (Tracking) ─────────────────────────
-export interface VehiclePosition {
-  vehicleId: string;
-  latitude: number;
-  longitude: number;
-  speed: number; // km/h
-  heading?: number; // degrees
-  timestamp: string;
-}
-
 // ─── Delivery ETA ─────────────────────────────────────────
 export type ETAStatus = 'ON_TIME' | 'AT_RISK' | 'LATE';
 

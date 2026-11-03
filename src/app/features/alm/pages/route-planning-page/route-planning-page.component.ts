@@ -20,8 +20,8 @@ import { ToastService } from '../../../../core/services/toast.service';
         </div>
       </div>
       <div class="header-right">
-        <a [routerLink]="['/alm/fleet']" class="btn btn-secondary btn-sm">
-          Fleet Map
+        <a [routerLink]="['/fleet']" class="btn btn-secondary btn-sm">
+          Fleet
         </a>
       </div>
     </header>

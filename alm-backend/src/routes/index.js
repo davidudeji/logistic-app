@@ -4,18 +4,21 @@ import { authorize } from '../middleware/authorize.js';
 import { rateLimit } from '../middleware/rate-limit.js';
 import { validateRequest } from '../middleware/validate-request.js';
 
-import { telemetryController } from '../modules/telemetry/telemetry.controller.js';
 import { routingController } from '../modules/routing/routing.controller.js';
 import { validateOptimizeRouteRequest } from '../modules/routing/routing.validation.js';
 import { etaController } from '../modules/eta/eta.controller.js';
 import { deliveryController } from '../modules/deliveries/delivery.controller.js';
 import { epodController } from '../modules/epod/epod.controller.js';
 import { syncController } from '../modules/sync/sync.controller.js';
+import { emailRouter } from '../modules/email/email.routes.js';
+import { trackingRouter } from '../modules/tracking/tracking.routes.js';
 
 export const router = Router();
 
 // Apply general rate limiter
 router.use(rateLimit({ windowMs: 60000, max: 200 }));
+router.use(emailRouter);
+router.use(trackingRouter);
 
 // ── Health Check ─────────────────────────────────────────────
 router.get('/alm/health', (req, res) => {
@@ -26,21 +29,6 @@ router.get('/alm/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
-
-// ── Fleet Telemetry Endpoints ─────────────────────────────────
-router.get(
-  '/fleet/telemetry',
-  authenticate,
-  authorize(['Fleet Manager', 'Dispatcher', 'Operations Manager', 'Administrator']),
-  (req, res, next) => telemetryController.getFleetTelemetry(req, res, next)
-);
-
-router.get(
-  '/fleet/:assetId/telemetry',
-  authenticate,
-  authorize(['Fleet Manager', 'Dispatcher', 'Operations Manager', 'Administrator']),
-  (req, res, next) => telemetryController.getVehicleTelemetryHistory(req, res, next)
-);
 
 // ── Route Optimization Endpoints ──────────────────────────────
 router.post(

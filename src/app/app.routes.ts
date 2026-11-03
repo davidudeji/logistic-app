@@ -23,6 +23,11 @@ export const routes: Routes = [
       import('./features/orders/order-detail.component').then(m => m.OrderDetailComponent),
   },
   {
+    path: 'invoices',
+    loadComponent: () =>
+      import('./features/invoices/invoices-page.component').then(m => m.InvoicesPageComponent),
+  },
+  {
     path: 'loads',
     loadComponent: () =>
       import('./features/loads/loads-list.component').then(m => m.LoadsListComponent),
@@ -58,9 +63,25 @@ export const routes: Routes = [
       import('./features/drivers/driver-detail.component').then(m => m.DriverDetailComponent),
   },
   {
+    path: 'track/:token',
+    loadComponent: () =>
+      import('./features/tracking/public-tracking.component').then(
+        (m) => m.PublicTrackingComponent
+      ),
+  },
+  {
     path: 'tracking',
     loadComponent: () =>
-      import('./features/tracking/tracking-map.component').then(m => m.TrackingMapComponent),
+      import('./features/tracking/dispatcher-tracking.component').then(
+        (m) => m.DispatcherTrackingComponent
+      ),
+  },
+  {
+    path: 'driver/tracking/:jobId',
+    loadComponent: () =>
+      import('./features/tracking/driver-tracking.component').then(
+        (m) => m.DriverTrackingComponent
+      ),
   },
   {
     path: 'routes/plan',
