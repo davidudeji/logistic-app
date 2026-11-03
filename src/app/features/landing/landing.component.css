@@ -1,0 +1,512 @@
+/* ═══════════════════════════════════════════════════════════════
+   Trunkline Landing — 5-Scene Scroll Story
+   Design tokens from spec:
+     --accent:    #F0661A  (orange)
+     --ink:       #10202B
+     --bg:        #E6EAE8
+     --surface:   #F4F6F3
+   Fonts: Big Shoulders Display 800 (display), IBM Plex Sans 400/500,
+          IBM Plex Mono 500 (data labels)
+   ─────────────────────────────────────────────────────────────── */
+
+/* ── Google Fonts (Big Shoulders Display, IBM Plex Sans, IBM Plex Mono) */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+/* ── Landing-scoped tokens ── */
+:host {
+  /* Spec colors */
+  --l-bg:        #E6EAE8;
+  --l-surface:   #F4F6F3;
+  --l-ink:       #10202B;
+  --l-muted:     #566770;
+  --l-line:      #C8D1CE;
+  --l-accent:    #F0661A;
+  --l-on-accent: #10202B;
+
+  /* Type */
+  --l-font-display: 'Big Shoulders Display', 'Arial Black', sans-serif;
+  --l-font-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --l-font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Layout */
+  --l-gutter: 24px;
+  --l-radius: 4px;
+
+  display: block;
+  background: var(--l-bg);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STICKY CTA — always reachable
+═══════════════════════════════════════════════════════════════ */
+.sticky-cta {
+  position: fixed;
+  bottom: 28px;
+  right: var(--l-gutter);
+  z-index: 9000;
+  background: var(--l-accent);
+  color: var(--l-on-accent);
+  font-family: var(--l-font-display);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: var(--l-radius);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 12px rgba(240, 102, 26, 0.35);
+  line-height: 1;
+}
+.sticky-cta:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCENES — shared base
+═══════════════════════════════════════════════════════════════ */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--l-ink);
+}
+
+.scene-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Scrims ── */
+.scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.scrim-bottom {
+  background: linear-gradient(to top, rgba(16,32,43,0.82) 0%, rgba(16,32,43,0.0) 55%);
+}
+.scrim-top {
+  background: linear-gradient(to bottom, rgba(16,32,43,0.60) 0%, rgba(16,32,43,0.0) 45%);
+}
+.scrim-full {
+  background: rgba(16,32,43,0.45);
+}
+.scrim-dark {
+  background: rgba(16,32,43,0.68);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCENE 1 — Highway aerial
+═══════════════════════════════════════════════════════════════ */
+.scene-1 { background: #1a2f3d; }
+
+.s1-img-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Crop: show only source x 228-468 of 600px → object-position left adjusted */
+.s1-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% center; /* ~228-468 of 600px range */
+  display: block;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.s1-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--l-gutter) 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 600px;
+}
+
+.s1-eyebrow {
+  font-family: var(--l-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--l-accent);
+  opacity: 0.9;
+}
+
+.s1-headline {
+  font-family: var(--l-font-display);
+  font-size: clamp(36px, 7vw, 52px);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.0;
+  color: var(--l-surface);
+  letter-spacing: -0.01em;
+  opacity: 0; /* animated in */
+}
+
+.s1-sub {
+  font-family: var(--l-font-body);
+  font-size: clamp(13px, 2vw, 16px);
+  font-weight: 400;
+  color: rgba(244,246,243,0.80);
+  line-height: 1.55;
+  opacity: 0; /* animated in */
+}
+
+/* ── CTA Button ── */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--l-accent);
+  color: var(--l-on-accent);
+  font-family: var(--l-font-display);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 13px 24px;
+  border-radius: var(--l-radius);
+  align-self: flex-start;
+  transition: opacity 0.15s ease;
+  opacity: 0; /* animated in */
+  line-height: 1;
+}
+.cta-btn:hover { opacity: 0.88; }
+.cta-btn--large {
+  font-size: 16px;
+  padding: 16px 32px;
+  gap: 10px;
+}
+
+.s1-cta { /* handled by .cta-btn */ }
+
+/* ══════════════════════════════════════════════════════════════
+   SCENE 2 — Truck top-view + callouts
+═══════════════════════════════════════════════════════════════ */
+.scene-2 { background: #0f1e28; }
+
+.s2-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s2-truck {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  opacity: 0;
+  will-change: transform;
+}
+
+/* Callouts */
+.s2-callout {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  opacity: 0;
+}
+
+.callout-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--l-accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(240,102,26,0.3);
+}
+
+.callout-line {
+  width: 28px;
+  height: 1px;
+  background: rgba(244,246,243,0.5);
+}
+
+.callout-text {
+  font-family: var(--l-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--l-surface);
+  background: rgba(16,32,43,0.75);
+  padding: 4px 8px;
+  border-radius: var(--l-radius);
+  border: 1px solid rgba(200,209,206,0.2);
+  white-space: nowrap;
+}
+
+/* Positions — tuned for 1920×960 truck-closed.jpg cab at left */
+.s2-callout--tl { top: 28%; left: 22%; flex-direction: row; }
+.s2-callout--tr { top: 28%; right: 18%; flex-direction: row-reverse; }
+.s2-callout--bl { bottom: 30%; left: 22%; flex-direction: row; }
+.s2-callout--br { bottom: 30%; right: 18%; flex-direction: row-reverse; }
+
+.s2-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--l-gutter) 56px;
+  opacity: 0;
+}
+
+.s2-title h2 {
+  font-family: var(--l-font-display);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--l-surface);
+  line-height: 1.05;
+  max-width: 480px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCENE 3 — Iris reveal
+═══════════════════════════════════════════════════════════════ */
+.scene-3 { background: #0d1b25; }
+
+.s3-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  filter: brightness(0.4);
+  z-index: 1;
+}
+
+/* Iris layer */
+.s3-iris {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: circle(0% at 50% 50%);
+  will-change: clip-path;
+}
+
+.s3-truck-open {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Crates — multiply blend */
+.s3-crates {
+  position: absolute;
+  bottom: 80px;
+  right: var(--l-gutter);
+  width: clamp(180px, 30vw, 320px);
+  height: auto;
+  z-index: 8;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.s3-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--l-gutter) 56px;
+  opacity: 0;
+}
+
+.s3-caption h2 {
+  font-family: var(--l-font-display);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--l-surface);
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+
+.s3-caption p {
+  font-family: var(--l-font-body);
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: rgba(244,246,243,0.75);
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCENE 4 — Container sweep + stats
+═══════════════════════════════════════════════════════════════ */
+.scene-4 { background: #0a1820; }
+
+/* Container image — crop: show only from x 121 right */
+.s4-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% center; /* approx x 121+ of 300px */
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Crates — bottom-left, multiply */
+.s4-crates {
+  position: absolute;
+  bottom: 80px;
+  left: var(--l-gutter);
+  width: clamp(160px, 25vw, 280px);
+  height: auto;
+  z-index: 8;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Stats overlay */
+.s4-stats {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  gap: 40px;
+  padding: 0 var(--l-gutter) 56px;
+  flex-wrap: wrap;
+}
+
+.s4-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+}
+
+.stat-value {
+  font-family: var(--l-font-display);
+  font-size: clamp(36px, 7vw, 56px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--l-accent);
+  line-height: 1.0;
+}
+
+.stat-label {
+  font-family: var(--l-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(244,246,243,0.65);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCENE 5 — CTA finale
+═══════════════════════════════════════════════════════════════ */
+.scene-5 { background: #0f1e28; }
+
+.s5-truck {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.s5-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+  padding: 0 var(--l-gutter);
+}
+
+.s5-headline {
+  font-family: var(--l-font-display);
+  font-size: clamp(40px, 9vw, 72px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--l-surface);
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  opacity: 0;
+}
+
+.s5-cta {
+  opacity: 0;
+  align-self: center;
+}
+
+.s5-fine {
+  font-family: var(--l-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(200,209,206,0.55);
+  opacity: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REDUCED MOTION — show all content instantly
+═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .rm-show { opacity: 1 !important; transform: none !important; }
+  .s3-iris { clip-path: circle(75% at 50% 50%) !important; }
+  .cta-btn { opacity: 1 !important; }
+  .s5-cta  { opacity: 1 !important; }
+  .s5-headline { opacity: 1 !important; }
+  .s2-title { opacity: 1 !important; }
+  .s4-stat { opacity: 1 !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .s1-content { padding-bottom: 80px; }
+  .s4-stats { gap: 20px; }
+
+  .s2-callout--tl { top: 20%; left: 8%; }
+  .s2-callout--tr { top: 20%; right: 8%; }
+  .s2-callout--bl { bottom: 24%; left: 8%; }
+  .s2-callout--br { bottom: 24%; right: 8%; }
+
+  .s3-crates { bottom: 60px; width: 140px; }
+  .s4-crates { bottom: 60px; width: 120px; }
+  .sticky-cta { bottom: 16px; right: 16px; font-size: 13px; padding: 11px 18px; }
+}
+

@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import request from 'supertest';
+import { app } from '../src/app.js';
 
 import { telemetryService } from '../src/modules/telemetry/telemetry.service.js';
 import { routingService } from '../src/modules/routing/routing.service.js';
@@ -149,4 +151,49 @@ test('ALM Feature E: Offline batch synchronization', async (t) => {
     assert.equal(secondRun.successCount, 1);
     assert.equal(secondRun.results[0].status, 'DELIVERED');
   });
+});
+
+test('COD cash ledger records collections, matched remittances, and enforces the cap', async () => {
+  const token = 'jwt_mock_token_alm_USR-ADMIN-01';
+  const riderId = 'DRV-LEDGER-01';
+  const orderId = 'ORD-LEDGER-01';
+
+  const collection = await request(app)
+    .post('/api/v1/cash-ledger/collections')
+    .set('Authorization', `Bearer ${token}`)
+    .send({ riderId, orderId, amountKobo: 3500000, clientMutationId: 'ledger-collect-01' });
+
+  assert.equal(collection.status, 201);
+  assert.equal(collection.body.entry.type, 'COD_COLLECTED');
+  assert.equal(collection.body.balanceKobo, 3500000);
+
+  const cap = await request(app)
+    .put(`/api/v1/cash-ledger/riders/${riderId}/cap`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ capKobo: 3500000 });
+
+  assert.equal(cap.status, 200);
+  assert.equal(cap.body.assignmentEligible, false);
+
+  const remittance = await request(app)
+    .post('/api/v1/cash-ledger/remittances')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      riderId,
+      reference: 'BANK-REF-LEDGER-01',
+      clientMutationId: 'ledger-remit-01',
+      allocations: [{ orderId, amountKobo: 3500000 }],
+    });
+
+  assert.equal(remittance.status, 201);
+  assert.equal(remittance.body.balanceKobo, 0);
+  assert.equal(remittance.body.assignmentEligible, true);
+
+  const ledger = await request(app)
+    .get(`/api/v1/cash-ledger/riders/${riderId}`)
+    .set('Authorization', `Bearer ${token}`);
+
+  assert.equal(ledger.status, 200);
+  assert.equal(ledger.body.entries.length, 2);
+  assert.deepEqual(ledger.body.entries.map(entry => entry.type), ['COD_COLLECTED', 'REMITTANCE_MATCHED']);
 });

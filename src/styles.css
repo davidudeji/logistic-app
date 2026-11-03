@@ -803,3 +803,9 @@ app-delivery-detail-page {
   height: 100%;
   overflow: hidden;
 }
+
+/* Landing page — full-bleed, no overflow clipping */
+app-landing {
+  display: block;
+  width: 100%;
+}
