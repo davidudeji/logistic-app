@@ -66,9 +66,9 @@ import { ToastService } from '../../core/services/toast.service';
                         <div class="progress-fill" [class]="fuelClass(v.fuelLevel)" [style.width]="v.fuelLevel + '%'"></div>
                       </div>
                       <span style="font-size:11px;color:var(--text-muted);">{{ v.fuelLevel }}%</span>
-                    } @else { — }
+                    } @else { - }
                   </td>
-                  <td data-label="Driver" class="muted">{{ v.currentDriverId ?? '—' }}</td>
+                  <td data-label="Driver" class="muted">{{ v.currentDriverId ?? '-' }}</td>
                   <td data-label="Status"><span class="badge" [ngClass]="vehicleStatusBadge(v.status)">{{ vehicleStatusLabel(v.status) }}</span></td>
                   <td data-label="Actions" style="text-align: right;">
                     <app-action-overflow-menu

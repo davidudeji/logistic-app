@@ -19,50 +19,26 @@ interface NavItem {
 
     .sidebar {
       width: 220px; min-width: 220px;
-      background: #fbfbfb;
+      background: #061432;
       display: flex; flex-direction: column;
       height: 100%; overflow-y: auto; overflow-x: hidden;
-      border-right: 1px solid #e5e7eb;
+      border-right: 1px solid #1d2b49;
     }
 
     /* ── Logo ── */
     .sidebar-logo {
-      display: flex; align-items: center; gap: 10px;
-      padding: 20px 18px 18px;
-      border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center;
+      min-height: 78px;
+      padding: 16px;
+      border-bottom: 1px solid #1d2b49;
       flex-shrink: 0;
       color: inherit; text-decoration: none;
     }
     .sidebar-logo:focus-visible {
-      outline: 2px solid #000000;
+      outline: 2px solid #00cce5;
       outline-offset: -2px;
     }
-
-    /* 3×3 block mark — rigid square grid */
-    .logo-mark {
-      display: grid;
-      grid-template-columns: repeat(3, 5px);
-      grid-template-rows: repeat(3, 5px);
-      gap: 2px;
-      flex-shrink: 0;
-    }
-    .logo-mark span {
-      display: block;
-      width: 5px; height: 5px;
-      background: #000000;
-    }
-
-    .logo-text {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 15px; font-weight: 400;
-      color: #000000; letter-spacing: 0;
-    }
-
-    .logo-sub {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 12px; font-weight: 400;
-      color: #888888; letter-spacing: 0;
-    }
+    .logo-image { display: block; width: 100%; max-width: 188px; height: auto; }
 
     /* ── Nav ── */
     .nav-section { padding: 12px 12px 6px; flex: 1; }
@@ -70,7 +46,7 @@ interface NavItem {
     .nav-label {
       font-family: 'Times New Roman', Times, serif;
       font-size: 11px; font-weight: 400;
-      color: #888888;
+      color: #8594ae;
       letter-spacing: 0; text-transform: uppercase;
       padding: 0 8px; margin: 16px 0 4px;
     }
@@ -80,18 +56,18 @@ interface NavItem {
       padding: 7px 10px; border-radius: 4px;
       font-family: 'Times New Roman', Times, serif;
       font-size: 14px; font-weight: 400;
-      color: #555555; text-decoration: none;
+      color: #c1ccdc; text-decoration: none;
       cursor: pointer;
       transition: background 120ms ease, color 120ms ease;
       margin-bottom: 1px;
     }
     .nav-item:hover {
-      background: rgba(0,0,0,0.04);
-      color: #000000;
+      background: rgba(0,204,229,0.08);
+      color: #f5f8ff;
     }
     .nav-item.active-link {
-      background: rgba(0,0,0,0.07);
-      color: #000000;
+      background: rgba(0,204,229,0.14);
+      color: #00cce5;
     }
     .nav-item .icon-wrap {
       width: 16px; height: 16px;
@@ -105,8 +81,8 @@ interface NavItem {
     .nav-badge {
       margin-left: auto;
       background: transparent;
-      border: 1px solid #7c1f1f;
-      color: #7c1f1f;
+      border: 1px solid #ff941f;
+      color: #ffb451;
       font-family: 'Times New Roman', Times, serif;
       font-size: 10px; font-weight: 400;
       padding: 0 5px; border-radius: 4px;
@@ -116,14 +92,15 @@ interface NavItem {
     /* ── Footer ── */
     .sidebar-footer {
       padding: 10px 12px 16px;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid #1d2b49;
       flex-shrink: 0;
     }
 
     @media (max-width: 760px) {
       :host { width: 100%; min-width: 0; height: auto; }
-      .sidebar { width: 100%; min-width: 0; height: auto; overflow: hidden; border-right: 0; border-bottom: 1px solid #e5e7eb; }
-      .sidebar-logo { padding: 8px 12px; border-bottom: 0; }
+      .sidebar { width: 100%; min-width: 0; height: auto; overflow: hidden; border-right: 0; border-bottom: 1px solid #1d2b49; }
+      .sidebar-logo { min-height: 54px; padding: 8px 12px; border-bottom: 0; }
+      .logo-image { max-width: 156px; }
       .nav-section { display: flex; flex: none; gap: 2px; overflow-x: auto; overflow-y: hidden; padding: 4px 8px 8px; white-space: nowrap; }
       .nav-label { display: none; }
       .nav-item { flex: 0 0 auto; min-height: 44px; margin-bottom: 0; padding: 8px 10px; }

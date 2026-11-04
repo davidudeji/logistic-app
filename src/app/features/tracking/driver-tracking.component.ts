@@ -81,7 +81,7 @@ import { DriverTrackingService, GpsSignalState, TripStatus } from '../../core/tr
         <div class="sync-status" [attr.data-state]="tracking.syncState()">
           @switch (tracking.syncState()) {
             @case ('syncing') { Uploading saved GPS points… }
-            @case ('offline') { Offline — {{ tracking.pendingCount() }} point(s) saved for sync. }
+            @case ('offline') { Offline - {{ tracking.pendingCount() }} point(s) saved for sync. }
             @case ('error') { GPS points are saved locally; upload will retry when possible. }
             @default { {{ tracking.pendingCount() }} point(s) waiting to sync. }
           }

@@ -353,7 +353,7 @@ export class InvoicesPageComponent implements OnInit, OnDestroy {
   }
 
   formatDate(date: string): string {
-    if (!date) return '—';
+    if (!date) return '-';
     const value = new Date(`${date}T12:00:00`);
     return new Intl.DateTimeFormat('en-NG', {
       day: 'numeric',

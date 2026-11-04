@@ -38,11 +38,11 @@
 
     <div class="header-divider"></div>
 
-    <div class="user-avatar-group">
-      <div class="user-avatar">SJ</div>
+    <div class="user-avatar-group" aria-label="Admin profile">
+      <div class="user-avatar">A</div>
       <div class="user-info">
-        <span class="user-name">Sarah Johnson</span>
-        <span class="user-role">Operations Manager</span>
+        <span class="user-name">Admin</span>
+        <span class="user-role">Administrator</span>
       </div>
     </div>
   </div>
@@ -221,8 +221,8 @@
                   {{ load.reference }}
                 </span>
               </td>
-              <td>{{ load.driverId ?? '—' }}</td>
-              <td>{{ load.vehicleId ?? '—' }}</td>
+              <td>{{ load.driverId ?? '-' }}</td>
+              <td>{{ load.vehicleId ?? '-' }}</td>
               <td class="muted">{{ load.completedStops }} / {{ load.totalStops }}</td>
               <td style="min-width:120px;">
                 <div class="progress-bar" style="margin-bottom:4px;">

@@ -8,7 +8,7 @@ export interface BarChartItem {
 }
 
 /**
- * Simple SVG horizontal bar chart — no external library needed.
+ * Simple SVG horizontal bar chart - no external library needed.
  */
 @Component({
   selector: 'app-bar-chart',

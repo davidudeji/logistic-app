@@ -1,0 +1,19 @@
+.section-dark { background: var(--navy); color: #fff; }
+.section-light { background: #fff; color: var(--ink); }
+.section-paper { background: var(--paper); color: var(--ink); }
+.fleet { background: linear-gradient(180deg, var(--navy) 0, #fff 120px, #fff 100%); }
+.dispatch { background: linear-gradient(180deg, #fff 0, var(--paper) 120px, var(--paper) 100%); }
+.invoicing { background: linear-gradient(180deg, var(--paper) 0, var(--navy) 120px, var(--navy) 100%); }
+.intelligence { background: linear-gradient(180deg, var(--navy) 0, #fff 120px, #fff 100%); }
+.platform, .fleet, .dispatch, .invoicing, .intelligence, .site-footer { scroll-margin-top: 72px; }
+.section-shell { padding-top: clamp(82px, 10vw, 142px); padding-bottom: clamp(82px, 10vw, 142px); }
+.section-shell .eyebrow { color: #8293a7; }
+.section-shell .eyebrow-dark { color: #526277; }
+.chapter-tag { color: currentColor; font-size: 9px; font-variant-numeric: tabular-nums; letter-spacing: .08em; opacity: .7; white-space: nowrap; }
+.section-dark h2 { color: #fff; }
+.section-dark h3 { color: #fff; }
+.section-shell h2 { font-size: clamp(38px, 5.1vw, 68px); line-height: 1.03; }
+.section-dark h2 span { color: #00cce5; }
+.section-light h2 span, .section-paper h2 span { color: #008da3; }
+.body-copy { max-width: 430px; margin: 22px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+.body-copy-light { color: #a9b5c3; }
