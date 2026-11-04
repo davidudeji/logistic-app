@@ -31,6 +31,11 @@ interface NavItem {
       padding: 20px 18px 18px;
       border-bottom: 1px solid #e5e7eb;
       flex-shrink: 0;
+      color: inherit; text-decoration: none;
+    }
+    .sidebar-logo:focus-visible {
+      outline: 2px solid #000000;
+      outline-offset: -2px;
     }
 
     /* 3×3 block mark — rigid square grid */

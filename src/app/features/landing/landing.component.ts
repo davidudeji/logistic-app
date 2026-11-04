@@ -40,6 +40,16 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private readonly onScroll = () => this.ScrollTrigger?.update();
   private readonly onTick = (time: number) => this.lenis?.raf(time * 1000);
 
+  private get animationEngine(): typeof import('gsap').gsap {
+    if (!this.gsap) throw new Error('GSAP has not been initialized.');
+    return this.gsap;
+  }
+
+  private get scrollTriggerPlugin(): typeof import('gsap/ScrollTrigger').ScrollTrigger {
+    if (!this.ScrollTrigger) throw new Error('ScrollTrigger has not been initialized.');
+    return this.ScrollTrigger;
+  }
+
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
     this.zone.runOutsideAngular(() => this.initAnimations());
@@ -56,25 +66,25 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
       this.gsap = gsapMod.gsap ?? gsapMod.default;
       this.ScrollTrigger = stMod.ScrollTrigger;
-      this.gsap.registerPlugin(this.ScrollTrigger);
+      this.animationEngine.registerPlugin(this.scrollTriggerPlugin);
 
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const LenisClass = lenisMod.default;
       this.lenis = new LenisClass({ lerp: 0.08, autoRaf: false });
       this.lenis.on('scroll', this.onScroll);
-      this.gsap.ticker.add(this.onTick);
-      this.gsap.ticker.lagSmoothing(0);
+      this.animationEngine.ticker.add(this.onTick);
+      this.animationEngine.ticker.lagSmoothing(0);
 
       const root = this.el.nativeElement;
-      this.ctx = this.gsap.context(() => {
+      this.ctx = this.animationEngine.context(() => {
         this.buildScene1(root);
         this.buildScene2(root);
         this.buildScene3(root);
         this.buildScene4(root);
         this.buildScene5(root);
       }, root);
-      this.ScrollTrigger.refresh();
+      this.scrollTriggerPlugin.refresh();
     } catch (error) {
       console.error('Unable to initialize the landing-page scroll story.', error);
       this.destroyAnimations();
@@ -89,7 +99,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const sub = pin.querySelector('.s1-sub') as HTMLElement;
     const cta = pin.querySelector('.s1-cta') as HTMLElement;
 
-    const tl = this.gsap.timeline({
+    const tl = this.animationEngine.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
@@ -117,7 +127,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const callouts = pin.querySelectorAll<HTMLElement>('.s2-callout');
     const title = pin.querySelector('.s2-title') as HTMLElement;
 
-    const tl = this.gsap.timeline({
+    const tl = this.animationEngine.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
@@ -144,7 +154,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const crates = pin.querySelector('.s3-crates') as HTMLElement;
     const caption = pin.querySelector('.s3-caption') as HTMLElement;
 
-    const tl = this.gsap.timeline({
+    const tl = this.animationEngine.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
@@ -174,7 +184,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const crates = pin.querySelector('.s4-crates') as HTMLElement;
     const stats = pin.querySelectorAll<HTMLElement>('.s4-stat');
 
-    const tl = this.gsap.timeline({
+    const tl = this.animationEngine.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
@@ -202,7 +212,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const headline = pin.querySelector('.s5-headline') as HTMLElement;
     const cta = pin.querySelector('.s5-cta') as HTMLElement;
 
-    const tl = this.gsap.timeline({
+    const tl = this.animationEngine.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',

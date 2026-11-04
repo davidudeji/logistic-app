@@ -2,13 +2,19 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./features/landing/landing.component').then(m => m.LandingComponent),
+    data: { hideSidebar: true, layout: 'landing' },
+  },
+  {
     path: 'landing',
     loadComponent: () =>
       import('./features/landing/landing.component').then(m => m.LandingComponent),
     data: { hideSidebar: true, layout: 'landing' },
   },
   {
-    path: '',
+    path: 'dashboard',
     loadComponent: () =>
       import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
   },

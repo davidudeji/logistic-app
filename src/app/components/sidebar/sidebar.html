@@ -1,6 +1,6 @@
 <div class="sidebar">
   <!-- Brand mark: 3x3 block grid -->
-  <div class="sidebar-logo">
+  <a class="sidebar-logo" routerLink="/" aria-label="NexusOps home">
     <div class="logo-mark">
       <span></span><span></span><span></span>
       <span></span><span></span><span></span>
@@ -10,7 +10,7 @@
       <div class="logo-text">NexusOps</div>
       <div class="logo-sub">Logistics Platform</div>
     </div>
-  </div>
+  </a>
 
   <!-- Navigation -->
   <nav class="nav-section">
@@ -18,7 +18,7 @@
     <!-- Core Operations -->
     <div class="nav-label">Operations</div>
 
-    <a class="nav-item" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+    <a class="nav-item" routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
       <span class="icon-wrap">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
