@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   OnDestroy,
   AfterViewInit,
   NgZone,
@@ -26,20 +25,20 @@ const BRAND = {
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css',
 })
-export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LandingComponent implements AfterViewInit, OnDestroy {
   readonly brand = BRAND;
 
   private platformId = inject(PLATFORM_ID);
   private zone = inject(NgZone);
-  private el = inject(ElementRef);
+  private el = inject(ElementRef<HTMLElement>);
 
-  // GSAP / Lenis refs — loaded dynamically so SSR never touches them
-  private gsap: any;
-  private ScrollTrigger: any;
-  private lenis: any;
-  private ctx: any; // gsap.context()
-
-  ngOnInit() {}
+  private gsap?: typeof import('gsap').gsap;
+  private ScrollTrigger?: typeof import('gsap/ScrollTrigger').ScrollTrigger;
+  private lenis?: InstanceType<typeof import('lenis').default>;
+  private ctx?: ReturnType<typeof import('gsap').gsap.context>;
+  private destroyed = false;
+  private readonly onScroll = () => this.ScrollTrigger?.update();
+  private readonly onTick = (time: number) => this.lenis?.raf(time * 1000);
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -47,39 +46,39 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async initAnimations() {
-    // Dynamic imports — avoids SSR issues
-    const gsapMod = await import('gsap');
-    const stMod = await import('gsap/ScrollTrigger');
-    const lenisMod = await import('lenis');
+    try {
+      const [gsapMod, stMod, lenisMod] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+        import('lenis'),
+      ]);
+      if (this.destroyed) return;
 
-    this.gsap = gsapMod.gsap ?? gsapMod.default;
-    this.ScrollTrigger = stMod.ScrollTrigger;
-    const LenisClass = lenisMod.default;
+      this.gsap = gsapMod.gsap ?? gsapMod.default;
+      this.ScrollTrigger = stMod.ScrollTrigger;
+      this.gsap.registerPlugin(this.ScrollTrigger);
 
-    this.gsap.registerPlugin(this.ScrollTrigger);
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    // Lenis smooth-scroll
-    this.lenis = new LenisClass({ lerp: 0.08 });
-    this.lenis.on('scroll', this.ScrollTrigger.update);
-    this.gsap.ticker.add((time: number) => this.lenis.raf(time * 1000));
-    this.gsap.ticker.lagSmoothing(0);
+      const LenisClass = lenisMod.default;
+      this.lenis = new LenisClass({ lerp: 0.08, autoRaf: false });
+      this.lenis.on('scroll', this.onScroll);
+      this.gsap.ticker.add(this.onTick);
+      this.gsap.ticker.lagSmoothing(0);
 
-    const root = this.el.nativeElement as HTMLElement;
-
-    // Reduced-motion guard
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      this.showReducedMotion(root);
-      return;
+      const root = this.el.nativeElement;
+      this.ctx = this.gsap.context(() => {
+        this.buildScene1(root);
+        this.buildScene2(root);
+        this.buildScene3(root);
+        this.buildScene4(root);
+        this.buildScene5(root);
+      }, root);
+      this.ScrollTrigger.refresh();
+    } catch (error) {
+      console.error('Unable to initialize the landing-page scroll story.', error);
+      this.destroyAnimations();
     }
-
-    this.ctx = this.gsap.context(() => {
-      this.buildScene1(root);
-      this.buildScene2(root);
-      this.buildScene3(root);
-      this.buildScene4(root);
-      this.buildScene5(root);
-    }, root);
   }
 
   // ── SCENE 1 — Highway aerial zoom-out ────────────────────────────
@@ -116,6 +115,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     const pin = root.querySelector('.scene-2') as HTMLElement;
     const truck = pin.querySelector('.s2-truck') as HTMLElement;
     const callouts = pin.querySelectorAll<HTMLElement>('.s2-callout');
+    const title = pin.querySelector('.s2-title') as HTMLElement;
 
     const tl = this.gsap.timeline({
       scrollTrigger: {
@@ -132,6 +132,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     callouts.forEach((c, i) => {
       tl.fromTo(c, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.18, ease: 'back.out(1.4)' }, 0.18 + i * 0.12);
     });
+    tl.fromTo(title, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.35);
     // Exit fade
     tl.to(pin.querySelector('.scene-inner'), { opacity: 0, duration: 0.15, ease: 'power1.in' }, 0.88);
   }
@@ -217,19 +218,19 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
       .fromTo(cta, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, ease: 'back.out(1.5)', duration: 0.25 }, 0.55);
   }
 
-  private showReducedMotion(root: HTMLElement) {
-    // Just make everything visible instantly
-    root.querySelectorAll<HTMLElement>('.rm-show').forEach(el => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
+  private destroyAnimations() {
+    this.ctx?.revert();
+    this.ctx = undefined;
+    if (this.lenis) {
+      this.lenis.off('scroll', this.onScroll);
+      this.lenis.destroy();
+      this.lenis = undefined;
+    }
+    this.gsap?.ticker.remove(this.onTick);
   }
 
   ngOnDestroy() {
-    this.ctx?.revert();
-    this.lenis?.destroy();
-    this.gsap?.ticker.remove((time: number) => this.lenis?.raf(time * 1000));
-    this.ScrollTrigger?.getAll().forEach((t: any) => t.kill());
+    this.destroyed = true;
+    this.destroyAnimations();
   }
 }
-

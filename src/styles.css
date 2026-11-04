@@ -102,6 +102,54 @@
   --shadow-lg: var(--shadow-2);
 }
 
+/* ─── Trunkline landing palette ──────────────────────────── */
+:root {
+  --tl-bg: #E6EAE8;
+  --tl-surface: #F4F6F3;
+  --tl-ink: #10202B;
+  --tl-muted: #566770;
+  --tl-line: #C8D1CE;
+  --tl-accent: #F0661A;
+  --tl-on-accent: #10202B;
+  --tl-photo-text: #F4F6F3;
+  --tl-photo-muted: color-mix(in srgb, #F4F6F3 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #10202B 84%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #10202B 52%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #F0661A 30%, transparent);
+}
+
+:root[data-theme='dark'] {
+  --tl-bg: #081017;
+  --tl-surface: #0E1A23;
+  --tl-ink: #E7EEF0;
+  --tl-muted: #8FA3AE;
+  --tl-line: #223540;
+  --tl-accent: #FF7A33;
+  --tl-on-accent: #10202B;
+  --tl-photo-text: #E7EEF0;
+  --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --tl-bg: #081017;
+    --tl-surface: #0E1A23;
+    --tl-ink: #E7EEF0;
+    --tl-muted: #8FA3AE;
+    --tl-line: #223540;
+    --tl-accent: #FF7A33;
+    --tl-on-accent: #10202B;
+    --tl-photo-text: #E7EEF0;
+    --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
+    --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
+    --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
+    --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+  }
+}
+
 /* ─── Base Reset ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

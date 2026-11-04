@@ -5,10 +5,12 @@
 
 /* ── Landing layout: no sidebar, full-bleed ── */
 .app-shell.landing-layout {
-  overflow-y: auto;   /* Lenis needs a scrollable root */
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
 }
 
 .app-shell.landing-layout .main-area {
-  overflow: visible;  /* allow scene pinning via GSAP ScrollTrigger */
+  min-height: 100vh;
+  overflow: visible;
 }
-
