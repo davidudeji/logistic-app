@@ -66,18 +66,18 @@ import { orderStatusBadge, orderStatusLabel } from '../../shared/utils/status.ut
             <tbody>
               @for (order of filteredOrders(); track order.id) {
                 <tr>
-                  <td><span class="order-id data-mono" style="color:var(--brand);font-weight:600;">{{ order.id }}</span></td>
-                  <td style="font-weight:500;">{{ order.customerName }}</td>
-                  <td><span class="badge" [ngClass]="priorityBadge(order.priority)">{{ order.priority }}</span></td>
-                  <td class="muted">{{ order.pickupAddress.city }}</td>
-                  <td class="muted">{{ order.deliveryAddress.city }}</td>
-                  <td class="muted" style="font-size:12px;">
+                  <td data-label="Order ID"><span class="order-id data-mono" style="color:var(--brand);font-weight:600;">{{ order.id }}</span></td>
+                  <td data-label="Customer" style="font-weight:500;">{{ order.customerName }}</td>
+                  <td data-label="Priority"><span class="badge" [ngClass]="priorityBadge(order.priority)">{{ order.priority }}</span></td>
+                  <td data-label="Pickup" class="muted">{{ order.pickupAddress.city }}</td>
+                  <td data-label="Destination" class="muted">{{ order.deliveryAddress.city }}</td>
+                  <td data-label="Delivery window" class="muted" style="font-size:12px;">
                     @if (order.deliveryWindow) {
                       {{ order.deliveryWindow.start | date:'HH:mm' }} – {{ order.deliveryWindow.end | date:'HH:mm' }}
                     } @else { — }
                   </td>
-                  <td><span class="badge" [ngClass]="orderStatusBadge(order.status)">{{ orderStatusLabel(order.status) }}</span></td>
-                  <td>
+                  <td data-label="Status"><span class="badge" [ngClass]="orderStatusBadge(order.status)">{{ orderStatusLabel(order.status) }}</span></td>
+                  <td data-label="Action">
                     <a [routerLink]="['/orders', order.id]" class="btn btn-xs btn-secondary">View</a>
                   </td>
                 </tr>

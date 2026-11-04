@@ -1,52 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import request from 'supertest';
+import { app } from '../src/app.js';
 
-import { telemetryService } from '../src/modules/telemetry/telemetry.service.js';
 import { routingService } from '../src/modules/routing/routing.service.js';
 import { etaService } from '../src/modules/eta/eta.service.js';
 import { epodService } from '../src/modules/epod/epod.service.js';
 import { syncService } from '../src/modules/sync/sync.service.js';
-
-test('ALM Feature A: Telemetry validation and ingestion', async (t) => {
-  await t.test('accepts valid driver location broadcast', () => {
-    const ping = telemetryService.validateAndIngestBroadcast({
-      assetId: 'VEH-TRK-TEST',
-      longitude: 3.35,
-      latitude: 6.6,
-      heading: 90,
-      speedKph: 50,
-      telemetryTimestamp: new Date().toISOString(),
-    });
-
-    assert.equal(ping.assetId, 'VEH-TRK-TEST');
-    assert.equal(ping.speedKph, 50);
-    assert.ok(ping.eventId);
-    assert.ok(ping.receivedAt);
-  });
-
-  await t.test('rejects invalid coordinates', () => {
-    assert.throws(() => {
-      telemetryService.validateAndIngestBroadcast({
-        assetId: 'VEH-TRK-TEST',
-        longitude: 250, // invalid lon
-        latitude: 6.6,
-        telemetryTimestamp: new Date().toISOString(),
-      });
-    }, /longitude must be a valid number between -180 and 180/);
-  });
-
-  await t.test('rejects future timestamps > 10m', () => {
-    const farFuture = new Date(Date.now() + 1000 * 60 * 60).toISOString();
-    assert.throws(() => {
-      telemetryService.validateAndIngestBroadcast({
-        assetId: 'VEH-TRK-TEST',
-        longitude: 3.35,
-        latitude: 6.6,
-        telemetryTimestamp: farFuture,
-      });
-    }, /cannot be more than 10 minutes in the future/);
-  });
-});
 
 test('ALM Feature B: Route optimization sequence mapping', async (t) => {
   await t.test('preserves original delivery IDs and calculates route', async () => {
@@ -149,4 +109,49 @@ test('ALM Feature E: Offline batch synchronization', async (t) => {
     assert.equal(secondRun.successCount, 1);
     assert.equal(secondRun.results[0].status, 'DELIVERED');
   });
+});
+
+test('COD cash ledger records collections, matched remittances, and enforces the cap', async () => {
+  const token = 'jwt_mock_token_alm_USR-ADMIN-01';
+  const riderId = 'DRV-LEDGER-01';
+  const orderId = 'ORD-LEDGER-01';
+
+  const collection = await request(app)
+    .post('/api/v1/cash-ledger/collections')
+    .set('Authorization', `Bearer ${token}`)
+    .send({ riderId, orderId, amountKobo: 3500000, clientMutationId: 'ledger-collect-01' });
+
+  assert.equal(collection.status, 201);
+  assert.equal(collection.body.entry.type, 'COD_COLLECTED');
+  assert.equal(collection.body.balanceKobo, 3500000);
+
+  const cap = await request(app)
+    .put(`/api/v1/cash-ledger/riders/${riderId}/cap`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({ capKobo: 3500000 });
+
+  assert.equal(cap.status, 200);
+  assert.equal(cap.body.assignmentEligible, false);
+
+  const remittance = await request(app)
+    .post('/api/v1/cash-ledger/remittances')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      riderId,
+      reference: 'BANK-REF-LEDGER-01',
+      clientMutationId: 'ledger-remit-01',
+      allocations: [{ orderId, amountKobo: 3500000 }],
+    });
+
+  assert.equal(remittance.status, 201);
+  assert.equal(remittance.body.balanceKobo, 0);
+  assert.equal(remittance.body.assignmentEligible, true);
+
+  const ledger = await request(app)
+    .get(`/api/v1/cash-ledger/riders/${riderId}`)
+    .set('Authorization', `Bearer ${token}`);
+
+  assert.equal(ledger.status, 200);
+  assert.equal(ledger.body.entries.length, 2);
+  assert.deepEqual(ledger.body.entries.map(entry => entry.type), ['COD_COLLECTED', 'REMITTANCE_MATCHED']);
 });

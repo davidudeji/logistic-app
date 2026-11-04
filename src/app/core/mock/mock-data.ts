@@ -1,6 +1,6 @@
 import {
   Customer, Order, Load, Driver, Vehicle, Route, Delivery,
-  DeliveryException, Carrier, DashboardKpi, VehiclePosition,
+  DeliveryException, Carrier, DashboardKpi,
   Address
 } from '../../shared/models';
 
@@ -274,12 +274,3 @@ export const MOCK_DASHBOARD_KPI: DashboardKpi = {
   criticalExceptions: 2,
   deliveredToday: 18,
 };
-
-// ─── Vehicle Positions (for live tracking) ────────────────
-
-export const MOCK_VEHICLE_POSITIONS: VehiclePosition[] = [
-  { vehicleId: 'VEH-TRK-101', latitude: 6.6018, longitude: 3.3515, speed: 62, heading: 45, timestamp: new Date().toISOString() },
-  { vehicleId: 'VEH-VAN-201', latitude: 9.0620, longitude: 7.4980, speed: 88, heading: 20, timestamp: new Date().toISOString() },
-  { vehicleId: 'VEH-TRK-102', latitude: 11.9700, longitude: 8.5400, speed: 0,  heading: 0,  timestamp: new Date().toISOString() },
-  { vehicleId: 'VEH-VAN-202', latitude: 4.8150,  longitude: 7.0400, speed: 55, heading: 180,timestamp: new Date().toISOString() },
-];

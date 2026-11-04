@@ -64,17 +64,17 @@ import { loadStatusBadge, loadStatusLabel } from '../../shared/utils/status.util
             <tbody>
               @for (load of filteredLoads(); track load.id) {
                 <tr>
-                  <td><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ load.reference }}</span></td>
-                  <td class="muted">{{ load.driverId ?? '—' }}</td>
-                  <td class="muted">{{ load.vehicleId ?? '—' }}</td>
-                  <td class="muted">{{ load.completedStops }} / {{ load.totalStops }}</td>
-                  <td style="min-width:110px;">
+                  <td data-label="Reference"><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ load.reference }}</span></td>
+                  <td data-label="Driver" class="muted">{{ load.driverId ?? '—' }}</td>
+                  <td data-label="Vehicle" class="muted">{{ load.vehicleId ?? '—' }}</td>
+                  <td data-label="Stops" class="muted">{{ load.completedStops }} / {{ load.totalStops }}</td>
+                  <td data-label="Progress" style="min-width:110px;">
                     <div class="progress-bar"><div class="progress-fill" [style.width]="progress(load) + '%'"></div></div>
                     <span style="font-size:11px;color:var(--text-muted);">{{ progress(load) }}%</span>
                   </td>
-                  <td class="muted">{{ load.scheduledDate | date:'d MMM' }}</td>
-                  <td><span class="badge" [ngClass]="loadStatusBadge(load.status)">{{ loadStatusLabel(load.status) }}</span></td>
-                  <td><a [routerLink]="['/loads', load.id]" class="btn btn-xs btn-secondary">View</a></td>
+                  <td data-label="Scheduled" class="muted">{{ load.scheduledDate | date:'d MMM' }}</td>
+                  <td data-label="Status"><span class="badge" [ngClass]="loadStatusBadge(load.status)">{{ loadStatusLabel(load.status) }}</span></td>
+                  <td data-label="Action"><a [routerLink]="['/loads', load.id]" class="btn btn-xs btn-secondary">View</a></td>
                 </tr>
               }
             </tbody>

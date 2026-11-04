@@ -1,0 +1,218 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     TRUNKLINE — 5-Scene Scroll-Story Landing Page
+     Scenes are stacked; each pins for its duration then unpins.
+     All scene content also has .rm-show for reduced-motion mode.
+════════════════════════════════════════════════════════════════ -->
+
+<!-- ── Sticky Quote Button (always reachable) ──────────────── -->
+<a class="sticky-cta rm-show" [routerLink]="brand.ctaRoute" aria-label="Get a quote">
+  {{ brand.ctaLabel }}
+</a>
+
+<!-- ══════════════════════════════════════════════════════════════
+  SCENE 1 — Highway aerial: zoom-out + headline reveal
+══════════════════════════════════════════════════════════════ -->
+<section class="scene scene-1" aria-label="Scene 1: Highway">
+  <div class="scene-inner">
+    <!-- Cropped highway: show only x 228-468 of 600 px source -->
+    <div class="s1-img-wrap">
+      <picture>
+        <source srcset="/1001502850.jpg" type="image/jpeg" />
+        <img
+          class="s1-img"
+          src="/1001502850.jpg"
+          alt="Aerial highway view"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+      <div class="scrim scrim-bottom"></div>
+    </div>
+
+    <div class="s1-content rm-show">
+      <span class="s1-eyebrow">{{ brand.name }}</span>
+      <h1 class="s1-headline rm-show">{{ brand.tagline }}</h1>
+      <p class="s1-sub rm-show">
+        Real-time dispatch. Live tracking. Zero surprises.
+      </p>
+      <a class="s1-cta cta-btn rm-show" [routerLink]="brand.ctaRoute">
+        {{ brand.ctaLabel }}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+  SCENE 2 — Truck top-view + feature callouts
+══════════════════════════════════════════════════════════════ -->
+<section class="scene scene-2" aria-label="Scene 2: Fleet overview">
+  <div class="scene-inner s2-layout">
+    <picture>
+      <source srcset="/1001502851.jpg" type="image/jpeg" />
+      <img
+        class="s2-truck rm-show"
+        src="/1001502851.jpg"
+        alt="Top-down view of closed truck cab"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+    <div class="scrim scrim-top"></div>
+
+    <!-- Feature callouts -->
+    <div class="s2-callout s2-callout--tl rm-show" data-label="Live GPS">
+      <div class="callout-dot"></div>
+      <div class="callout-line"></div>
+      <span class="callout-text">Live GPS</span>
+    </div>
+    <div class="s2-callout s2-callout--tr rm-show" data-label="ETA Engine">
+      <div class="callout-dot"></div>
+      <div class="callout-line"></div>
+      <span class="callout-text">ETA Engine</span>
+    </div>
+    <div class="s2-callout s2-callout--bl rm-show" data-label="Driver App">
+      <div class="callout-dot"></div>
+      <div class="callout-line"></div>
+      <span class="callout-text">Driver App</span>
+    </div>
+    <div class="s2-callout s2-callout--br rm-show" data-label="Load Planner">
+      <div class="callout-dot"></div>
+      <div class="callout-line"></div>
+      <span class="callout-text">Load Planner</span>
+    </div>
+
+    <div class="s2-title rm-show">
+      <h2>Every vehicle. Every load. One view.</h2>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+  SCENE 3 — Iris reveal: open truck + crate inventory
+══════════════════════════════════════════════════════════════ -->
+<section class="scene scene-3" aria-label="Scene 3: Cargo visibility">
+  <div class="scene-inner">
+    <!-- Base: closed truck (already shown in bg) -->
+    <picture>
+      <source srcset="/1001502851.jpg" type="image/jpeg" />
+      <img class="s3-base" src="/1001502851.jpg" alt="" aria-hidden="true" loading="lazy" />
+    </picture>
+
+    <!-- Iris overlay: open truck -->
+    <div class="s3-iris">
+      <picture>
+        <source srcset="/1001502858.jpg" type="image/jpeg" />
+        <img
+          class="s3-truck-open rm-show"
+          src="/1001502858.jpg"
+          alt="Truck with rear doors open showing cargo"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </div>
+
+    <!-- Crates cut-out (multiply blend) -->
+    <picture>
+      <source srcset="/1001502863.png" type="image/png" />
+      <img
+        class="s3-crates rm-show"
+        src="/1001502863.png"
+        alt="Stacked freight crates"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+
+    <div class="scrim scrim-bottom"></div>
+
+    <div class="s3-caption rm-show">
+      <h2>Cargo visibility from door to door.</h2>
+      <p>Track every unit. Spot exceptions before customers do.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+  SCENE 4 — Container sweep + stats
+══════════════════════════════════════════════════════════════ -->
+<section class="scene scene-4" aria-label="Scene 4: Scale">
+  <div class="scene-inner">
+    <div class="scrim scrim-full"></div>
+
+    <!-- Container image (only show from x 121 right) -->
+    <picture>
+      <source srcset="/1001502862.webp" type="image/webp" />
+      <img
+        class="s4-container rm-show"
+        src="/1001502862.webp"
+        alt="Shipping containers"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+
+    <!-- Crates multiply -->
+    <picture>
+      <source srcset="/1001502863.png" type="image/png" />
+      <img
+        class="s4-crates rm-show"
+        src="/1001502863.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+
+    <!-- Stats overlay -->
+    <div class="s4-stats">
+      <div class="s4-stat rm-show">
+        <span class="stat-value">142</span>
+        <span class="stat-label">Active loads today</span>
+      </div>
+      <div class="s4-stat rm-show">
+        <span class="stat-value">91%</span>
+        <span class="stat-label">On-time delivery</span>
+      </div>
+      <div class="s4-stat rm-show">
+        <span class="stat-value">61</span>
+        <span class="stat-label">Vehicles live</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+  SCENE 5 — CTA finale: truck + strong headline
+══════════════════════════════════════════════════════════════ -->
+<section class="scene scene-5" aria-label="Scene 5: Get a quote">
+  <div class="scene-inner">
+    <picture>
+      <source srcset="/1001502851.jpg" type="image/jpeg" />
+      <img
+        class="s5-truck rm-show"
+        src="/1001502851.jpg"
+        alt="Trunkline fleet truck"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+    <div class="scrim scrim-full scrim-dark"></div>
+
+    <div class="s5-content">
+      <h2 class="s5-headline rm-show">Ready to move?</h2>
+      <a class="s5-cta cta-btn cta-btn--large rm-show" [routerLink]="brand.ctaRoute">
+        {{ brand.ctaLabel }}
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <p class="s5-fine rm-show">No commitment. Response in 2 hours.</p>
+    </div>
+  </div>
+</section>
+

@@ -29,6 +29,9 @@ app.use(
   })
 );
 
+// Resend signatures require the exact unparsed request bytes.
+app.use('/api/v1/webhooks/resend', express.raw({ type: 'application/json', limit: '1mb' }));
+
 // Payload parsers
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));

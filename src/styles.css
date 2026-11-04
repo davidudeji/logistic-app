@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────── */
 
 /* leaflet CSS is loaded via angular.json styles array */
+@import './app/features/invoices/invoices-page.component.css';
 
 /* ─── block.xyz Design Tokens ────────────────────────────────
    Minimal · High-contrast · Monochrome
@@ -101,6 +102,54 @@
   --shadow-lg: var(--shadow-2);
 }
 
+/* ─── Trunkline landing palette ──────────────────────────── */
+:root {
+  --tl-bg: #E6EAE8;
+  --tl-surface: #F4F6F3;
+  --tl-ink: #10202B;
+  --tl-muted: #566770;
+  --tl-line: #C8D1CE;
+  --tl-accent: #F0661A;
+  --tl-on-accent: #10202B;
+  --tl-photo-text: #F4F6F3;
+  --tl-photo-muted: color-mix(in srgb, #F4F6F3 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #10202B 84%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #10202B 52%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #F0661A 30%, transparent);
+}
+
+:root[data-theme='dark'] {
+  --tl-bg: #081017;
+  --tl-surface: #0E1A23;
+  --tl-ink: #E7EEF0;
+  --tl-muted: #8FA3AE;
+  --tl-line: #223540;
+  --tl-accent: #FF7A33;
+  --tl-on-accent: #10202B;
+  --tl-photo-text: #E7EEF0;
+  --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --tl-bg: #081017;
+    --tl-surface: #0E1A23;
+    --tl-ink: #E7EEF0;
+    --tl-muted: #8FA3AE;
+    --tl-line: #223540;
+    --tl-accent: #FF7A33;
+    --tl-on-accent: #10202B;
+    --tl-photo-text: #E7EEF0;
+    --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
+    --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
+    --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
+    --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+  }
+}
+
 /* ─── Base Reset ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -194,6 +243,32 @@ h4, h5, h6 {
   overflow: hidden;
   min-width: 0;
   background: var(--bg);
+}
+
+@media print {
+  html, body, .app-shell, .main-area {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  app-sidebar, app-toast-outlet, .invoice-header, .invoices-header, .mobile-tabs,
+  .editor-panel, .preview-toolbar, .preview-caption, .invoice-list-page {
+    display: none !important;
+  }
+  .invoice-editor {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  .preview-panel { display: flex !important; }
+  .invoice-paper {
+    width: 210mm !important;
+    min-height: 0 !important;
+    padding: 12mm !important;
+    border: 0 !important;
+  }
 }
 
 /* ─── Top Header ──────────────────────────────────────────── */
@@ -775,7 +850,31 @@ a { color: var(--text-primary); }
 }
 @media (max-width: 600px) {
   .kpi-grid { grid-template-columns: 1fr; }
-  .top-header { padding: 0 var(--space-sm); }
+  .top-header { height: auto; min-height: 52px; flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
+  .header-left { min-width: 0; flex-wrap: wrap; gap: 12px; }
+  .header-title-group { min-width: 0; }
+  .header-subtitle { white-space: normal; }
+  .header-right { flex-wrap: wrap; gap: 8px; }
+  .page-container { padding: 12px; gap: 14px; }
+  .search-bar { width: min(100%, 320px); }
+  .data-table-wrapper { overflow: visible; }
+  .data-table, .data-table tbody { display: block; width: 100%; }
+  .data-table thead { display: none; }
+  .data-table tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; padding: 4px 12px; }
+  .data-table tbody tr + tr { border-top: 1px solid var(--border-subtle); }
+  .data-table td { display: block; min-width: 0; padding: 8px 0; overflow-wrap: anywhere; }
+  .data-table td::before { content: attr(data-label); display: block; margin-bottom: 4px; color: var(--text-muted); font-size: 11px; }
+  .data-table td[colspan] { grid-column: 1 / -1; }
+  .data-table td[colspan]::before { display: none; }
+  .toast-container { right: 12px; bottom: 12px; left: 12px; }
+  .toast { width: 100%; min-width: 0; max-width: none; }
+}
+@media (max-width: 760px) {
+  .app-shell { height: 100dvh; min-height: 0; flex-direction: column; }
+  .main-area { width: 100%; min-width: 0; min-height: 0; }
+  .btn, .btn-sm, .btn-xs, .panel-action-btn, .icon-btn { min-height: 44px; }
+  .form-input, .form-select, .form-textarea { min-height: 44px; }
+  .rider-select, .code-field input, .cap-control input, .remittance-control input, .rider-cap-control input { min-height: 44px; }
 }
 
 /* ─── Page-level host fix ─────────────────────────────────── */
@@ -797,9 +896,16 @@ app-carriers-list,
 app-analytics-dashboard,
 app-fleet-monitoring-page,
 app-route-planning-page,
-app-delivery-detail-page {
+app-delivery-detail-page,
+app-logistics-operations-page {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+}
+
+/* Landing page — full-bleed, no overflow clipping */
+app-landing {
+  display: block;
+  width: 100%;
 }

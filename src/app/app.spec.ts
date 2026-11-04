@@ -6,7 +6,11 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+<<<<<<< HEAD
       providers: [provideRouter([])]
+=======
+      providers: [provideRouter([])],
+>>>>>>> c6169e28e22ba011136a29c0fe3802620e7eaf21
     }).compileComponents();
   });
 

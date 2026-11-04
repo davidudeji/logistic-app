@@ -44,6 +44,18 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
+## Invoicing workspace
+
+Open **Invoices** from the navigation to create and edit invoice drafts. The editor includes customer details, Nigerian VAT fields, integer-minor-unit totals with per-line rounding, autosave, and a Classic A4 print preview. Drafts are stored in this browser under the demo tenant; they are not shared or suitable as legal records.
+
+The invoice list includes email actions for invoices already finalized and stored by the backend. Sending and retrying require the Administrator or Operations Manager role. Browser-local drafts cannot be sent: server-backed finalization and draft synchronization are not implemented. Email delivery uses the customer email stored on the server; stored PDF support is still pending.
+
+## Live tracking
+
+The dispatcher dashboard is available at `/tracking`; driver tracking is at `/driver/tracking/:jobId`, and customer links use `/track/:token`. Tracking maps use OpenStreetMap tiles and need no paid map key. See [docs/tracking.md](./docs/tracking.md) and [docs/tracking-api.md](./docs/tracking-api.md) for backend setup and the deployment-specific identity/job-assignment integration.
+
+Mobile browsers cannot reliably track location in the background when the screen is off. Drivers must keep the tracking screen open while delivering. A future upgrade could use Capacitor with a background-geolocation plugin; that native app path is not implemented.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:

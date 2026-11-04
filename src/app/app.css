@@ -2,3 +2,15 @@
 
 /* The .app-shell and .main-area are defined globally in styles.css.
    This file is intentionally minimal. */
+
+/* ── Landing layout: no sidebar, full-bleed ── */
+.app-shell.landing-layout {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.app-shell.landing-layout .main-area {
+  min-height: 100vh;
+  overflow: visible;
+}

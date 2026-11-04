@@ -31,6 +31,11 @@ interface NavItem {
       padding: 20px 18px 18px;
       border-bottom: 1px solid #e5e7eb;
       flex-shrink: 0;
+      color: inherit; text-decoration: none;
+    }
+    .sidebar-logo:focus-visible {
+      outline: 2px solid #000000;
+      outline-offset: -2px;
     }
 
     /* 3×3 block mark — rigid square grid */
@@ -114,6 +119,16 @@ interface NavItem {
       border-top: 1px solid #e5e7eb;
       flex-shrink: 0;
     }
+
+    @media (max-width: 760px) {
+      :host { width: 100%; min-width: 0; height: auto; }
+      .sidebar { width: 100%; min-width: 0; height: auto; overflow: hidden; border-right: 0; border-bottom: 1px solid #e5e7eb; }
+      .sidebar-logo { padding: 8px 12px; border-bottom: 0; }
+      .nav-section { display: flex; flex: none; gap: 2px; overflow-x: auto; overflow-y: hidden; padding: 4px 8px 8px; white-space: nowrap; }
+      .nav-label { display: none; }
+      .nav-item { flex: 0 0 auto; min-height: 44px; margin-bottom: 0; padding: 8px 10px; }
+      .sidebar-footer { display: none; }
+    }
   `]
 })
 export class SidebarComponent {
@@ -127,8 +142,8 @@ export class SidebarComponent {
   readonly opsNav = [
     { label: 'Fleet',         icon: 'fleet',     route: '/fleet' },
     { label: 'Drivers',       icon: 'drivers',   route: '/drivers' },
-    { label: 'Routes',        icon: 'routes',    route: '/routes' },
     { label: 'Live Tracking', icon: 'tracking',  route: '/tracking' },
+    { label: 'Routes',        icon: 'routes',    route: '/routes' },
   ];
 
   readonly deliveryNav = [

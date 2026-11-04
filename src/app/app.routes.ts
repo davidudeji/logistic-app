@@ -4,6 +4,18 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
+      import('./features/landing/landing.component').then(m => m.LandingComponent),
+    data: { hideSidebar: true, layout: 'landing' },
+  },
+  {
+    path: 'landing',
+    loadComponent: () =>
+      import('./features/landing/landing.component').then(m => m.LandingComponent),
+    data: { hideSidebar: true, layout: 'landing' },
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
       import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
   },
   {
@@ -15,6 +27,11 @@ export const routes: Routes = [
     path: 'orders/:id',
     loadComponent: () =>
       import('./features/orders/order-detail.component').then(m => m.OrderDetailComponent),
+  },
+  {
+    path: 'invoices',
+    loadComponent: () =>
+      import('./features/invoices/invoices-page.component').then(m => m.InvoicesPageComponent),
   },
   {
     path: 'loads',
@@ -52,9 +69,25 @@ export const routes: Routes = [
       import('./features/drivers/driver-detail.component').then(m => m.DriverDetailComponent),
   },
   {
+    path: 'track/:token',
+    loadComponent: () =>
+      import('./features/tracking/public-tracking.component').then(
+        (m) => m.PublicTrackingComponent
+      ),
+  },
+  {
     path: 'tracking',
     loadComponent: () =>
-      import('./features/tracking/tracking-map.component').then(m => m.TrackingMapComponent),
+      import('./features/tracking/dispatcher-tracking.component').then(
+        (m) => m.DispatcherTrackingComponent
+      ),
+  },
+  {
+    path: 'driver/tracking/:jobId',
+    loadComponent: () =>
+      import('./features/tracking/driver-tracking.component').then(
+        (m) => m.DriverTrackingComponent
+      ),
   },
   {
     path: 'routes/plan',

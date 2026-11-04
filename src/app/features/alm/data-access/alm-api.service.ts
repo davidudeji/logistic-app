@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
 import { AlmErrorHandlerService } from './alm-error-handler.service';
-import { FleetTelemetryPing } from '../models/fleet-telemetry.model';
 import {
   OptimizeRouteRequest,
   OptimizedRouteResponse,
@@ -23,62 +22,6 @@ export class AlmApiService {
   private readonly errorHandler = inject(AlmErrorHandlerService);
 
   private readonly baseUrl = 'http://localhost:5000/api/v1';
-
-  // ── Fleet Telemetry ──────────────────────────────────────────
-  getFleetTelemetry(): Observable<FleetTelemetryPing[]> {
-    return this.http.get<FleetTelemetryPing[]>(`${this.baseUrl}/fleet/telemetry`).pipe(
-      catchError(() =>
-        of([
-          {
-            eventId: 'evt-001',
-            assetId: 'VEH-TRK-101',
-            longitude: 3.3515,
-            latitude: 6.6018,
-            telemetryTimestamp: new Date().toISOString(),
-            receivedAt: new Date().toISOString(),
-            heading: 45,
-            speedKph: 62,
-          },
-          {
-            eventId: 'evt-002',
-            assetId: 'VEH-VAN-201',
-            longitude: 7.498,
-            latitude: 9.062,
-            telemetryTimestamp: new Date().toISOString(),
-            receivedAt: new Date().toISOString(),
-            heading: 20,
-            speedKph: 88,
-          },
-          {
-            eventId: 'evt-003',
-            assetId: 'VEH-TRK-102',
-            longitude: 8.54,
-            latitude: 11.97,
-            telemetryTimestamp: new Date().toISOString(),
-            receivedAt: new Date().toISOString(),
-            heading: 0,
-            speedKph: 0,
-          },
-          {
-            eventId: 'evt-004',
-            assetId: 'VEH-VAN-202',
-            longitude: 7.04,
-            latitude: 4.815,
-            telemetryTimestamp: new Date().toISOString(),
-            receivedAt: new Date().toISOString(),
-            heading: 180,
-            speedKph: 55,
-          },
-        ])
-      )
-    );
-  }
-
-  getVehicleTelemetryHistory(assetId: string): Observable<FleetTelemetryPing[]> {
-    return this.http
-      .get<FleetTelemetryPing[]>(`${this.baseUrl}/fleet/${assetId}/telemetry`)
-      .pipe(catchError((err) => this.errorHandler.handleError(err)));
-  }
 
   // ── Route Optimization ────────────────────────────────────────
   optimizeRoute(request: OptimizeRouteRequest): Observable<OptimizedRouteResponse> {
