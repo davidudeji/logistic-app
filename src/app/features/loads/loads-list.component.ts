@@ -65,8 +65,8 @@ import { loadStatusBadge, loadStatusLabel } from '../../shared/utils/status.util
               @for (load of filteredLoads(); track load.id) {
                 <tr>
                   <td data-label="Reference"><span class="data-mono" style="color:var(--brand);font-weight:600;">{{ load.reference }}</span></td>
-                  <td data-label="Driver" class="muted">{{ load.driverId ?? '—' }}</td>
-                  <td data-label="Vehicle" class="muted">{{ load.vehicleId ?? '—' }}</td>
+                  <td data-label="Driver" class="muted">{{ load.driverId ?? '-' }}</td>
+                  <td data-label="Vehicle" class="muted">{{ load.vehicleId ?? '-' }}</td>
                   <td data-label="Stops" class="muted">{{ load.completedStops }} / {{ load.totalStops }}</td>
                   <td data-label="Progress" style="min-width:110px;">
                     <div class="progress-bar"><div class="progress-fill" [style.width]="progress(load) + '%'"></div></div>

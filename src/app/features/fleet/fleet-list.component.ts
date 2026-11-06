@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { vehicleStatusBadge, vehicleStatusLabel, vehicleTypeLabel } from '../../shared/utils/status.utils';
 import { ActionOverflowMenuComponent } from '../alm/components/action-overflow-menu/action-overflow-menu.component';
@@ -9,7 +9,7 @@ import { ToastService } from '../../core/services/toast.service';
 @Component({
   selector: 'app-fleet-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ActionOverflowMenuComponent],
+  imports: [CommonModule, ActionOverflowMenuComponent],
   template: `
     <header class="top-header">
       <div class="header-left">
@@ -66,9 +66,9 @@ import { ToastService } from '../../core/services/toast.service';
                         <div class="progress-fill" [class]="fuelClass(v.fuelLevel)" [style.width]="v.fuelLevel + '%'"></div>
                       </div>
                       <span style="font-size:11px;color:var(--text-muted);">{{ v.fuelLevel }}%</span>
-                    } @else { — }
+                    } @else { - }
                   </td>
-                  <td data-label="Driver" class="muted">{{ v.currentDriverId ?? '—' }}</td>
+                  <td data-label="Driver" class="muted">{{ v.currentDriverId ?? '-' }}</td>
                   <td data-label="Status"><span class="badge" [ngClass]="vehicleStatusBadge(v.status)">{{ vehicleStatusLabel(v.status) }}</span></td>
                   <td data-label="Actions" style="text-align: right;">
                     <app-action-overflow-menu

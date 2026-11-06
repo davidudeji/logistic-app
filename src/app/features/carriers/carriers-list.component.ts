@@ -37,8 +37,8 @@ import { CarrierService } from '../../core/services/carrier.service';
               </span>
             </div>
             <div class="carrier-metrics">
-              <div class="metric"><div class="metric-val data-mono">{{ carrier.onTimeRate ?? '—' }}%</div><div class="metric-lbl">On-Time Rate</div></div>
-              <div class="metric"><div class="metric-val data-mono">{{ carrier.failureRate ?? '—' }}%</div><div class="metric-lbl">Failure Rate</div></div>
+              <div class="metric"><div class="metric-val data-mono">{{ carrier.onTimeRate ?? '-' }}%</div><div class="metric-lbl">On-Time Rate</div></div>
+              <div class="metric"><div class="metric-val data-mono">{{ carrier.failureRate ?? '-' }}%</div><div class="metric-lbl">Failure Rate</div></div>
               <div class="metric"><div class="metric-val data-mono">{{ carrier.activeLoads ?? 0 }}</div><div class="metric-lbl">Active Loads</div></div>
               <div class="metric"><div class="metric-val data-mono">{{ carrier.totalDeliveries ?? 0 }}</div><div class="metric-lbl">Total Deliveries</div></div>
             </div>

@@ -4,7 +4,7 @@
 
 Design and implement a premium, modern landing page for an existing Logistics Management Platform.
 
-The visual direction should be inspired by the cinematic, editorial, premium website aesthetic demonstrated in the provided reference video.
+The visual direction should be inspired by the cinematic, editorial, premium website aesthetic demonstrated in the provided reference awwward websites.
 
 The objective is to transform the current application's public-facing experience into a sophisticated logistics technology website that communicates reliability, operational intelligence, efficiency, and technological innovation.
 

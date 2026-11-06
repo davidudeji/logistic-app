@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Active Loads', value: kpi.activeLoads.toString(),
         sub: 'In transit or dispatched', icon: 'loads',
-        colorVar: '--brand', color: '#2563EB',
+        colorVar: '--brand', color: '#00CCE5',
         trend: '+12 from yesterday', trendUp: true,
         sparkData: [98, 105, 112, 108, 120, 135, 128, 142],
       },

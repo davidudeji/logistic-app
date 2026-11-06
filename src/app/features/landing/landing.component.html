@@ -1,218 +1,254 @@
-<!-- ═══════════════════════════════════════════════════════════════
-     TRUNKLINE — 5-Scene Scroll-Story Landing Page
-     Scenes are stacked; each pins for its duration then unpins.
-     All scene content also has .rm-show for reduced-motion mode.
-════════════════════════════════════════════════════════════════ -->
+<header class="site-header" [class.is-scrolled]="isScrolled()">
+  <nav class="nav-inner" aria-label="Main navigation">
+    <a class="wordmark" href="#home" (click)="scrollToSection($event, 'home')" aria-label="LogiTrack home">
+      <img src="/logitrack-logo.png" alt="LogiTrack" />
+    </a>
 
-<!-- ── Sticky Quote Button (always reachable) ──────────────── -->
-<a class="sticky-cta rm-show" [routerLink]="brand.ctaRoute" aria-label="Get a quote">
-  {{ brand.ctaLabel }}
-</a>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-controls="primary-navigation"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Toggle navigation"
+      (click)="toggleMenu()"
+    >
+      <span></span><span></span>
+    </button>
 
-<!-- ══════════════════════════════════════════════════════════════
-  SCENE 1 — Highway aerial: zoom-out + headline reveal
-══════════════════════════════════════════════════════════════ -->
-<section class="scene scene-1" aria-label="Scene 1: Highway">
-  <div class="scene-inner">
-    <!-- Cropped highway: show only x 228-468 of 600 px source -->
-    <div class="s1-img-wrap">
-      <picture>
-        <source srcset="/1001502850.jpg" type="image/jpeg" />
-        <img
-          class="s1-img"
-          src="/1001502850.jpg"
-          alt="Aerial highway view"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </picture>
-      <div class="scrim scrim-bottom"></div>
+    <div id="primary-navigation" class="nav-links" [class.is-open]="menuOpen()">
+      <a href="#platform" (click)="scrollToSection($event, 'platform')">Platform</a>
+      <a href="#dispatch" (click)="scrollToSection($event, 'dispatch')">Dispatch</a>
+      <a href="#features" (click)="scrollToSection($event, 'features')">Features</a>
+      <a href="#about" (click)="scrollToSection($event, 'about')">About</a>
     </div>
 
-    <div class="s1-content rm-show">
-      <span class="s1-eyebrow">{{ brand.name }}</span>
-      <h1 class="s1-headline rm-show">{{ brand.tagline }}</h1>
-      <p class="s1-sub rm-show">
-        Real-time dispatch. Live tracking. Zero surprises.
+    <a class="nav-cta" href="#platform" (click)="scrollToSection($event, 'platform')">See the workflow <span aria-hidden="true">↓</span></a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="home" aria-labelledby="hero-title">
+    <span class="scroll-sentinel" aria-hidden="true"></span>
+    <img
+      class="hero-image"
+      src="/1001502850.jpg"
+      alt="A line of freight trucks travelling along a highway."
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="hero-shade"></div>
+    <div class="hero-content">
+      <p class="eyebrow" data-reveal="up"><span class="eyebrow-line"></span> Smarter logistics. Better operations.</p>
+      <h1 id="hero-title" data-reveal="right">Moving goods forward.<br /><span>Managing every mile.</span></h1>
+      <p class="hero-copy" data-reveal="up">
+        Connect your fleet, coordinate deliveries and bring every part of your operation into view.
       </p>
-      <a class="s1-cta cta-btn rm-show" [routerLink]="brand.ctaRoute">
-        {{ brand.ctaLabel }}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <div class="hero-actions" data-reveal="up">
+        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">Explore the platform <span aria-hidden="true">↓</span></a>
+        <a class="button button-outline" href="#dispatch" (click)="scrollToSection($event, 'dispatch')">See the workflow <span aria-hidden="true">↓</span></a>
+      </div>
     </div>
-  </div>
-</section>
+    <div class="hero-foot">
+      <span>One connected view of your operation</span>
+      <span class="hero-index">01 <i></i> 06</span>
+    </div>
+  </section>
 
-<!-- ══════════════════════════════════════════════════════════════
-  SCENE 2 — Truck top-view + feature callouts
-══════════════════════════════════════════════════════════════ -->
-<section class="scene scene-2" aria-label="Scene 2: Fleet overview">
-  <div class="scene-inner s2-layout">
-    <picture>
-      <source srcset="/1001502851.jpg" type="image/jpeg" />
-      <img
-        class="s2-truck rm-show"
-        src="/1001502851.jpg"
-        alt="Top-down view of closed truck cab"
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-    <div class="scrim scrim-top"></div>
+  <section class="platform section-dark" id="platform" aria-labelledby="platform-title">
+    <div class="section-shell">
+      <div class="platform-intro">
+      <div data-reveal="right">
+          <p class="eyebrow"><span class="chapter-tag">02 / 06</span><span class="eyebrow-line"></span> The platform</p>
+          <h2 id="platform-title">Everything your operation needs.<br /><span>All in one place.</span></h2>
+        </div>
+        <div class="platform-copy" data-reveal="up">
+          <p>
+            From vehicle allocation to delivery completion, manage your logistics workflow
+            through one connected operational platform.
+          </p>
+          <a class="text-link text-link-light" routerLink="/dashboard">
+            Explore the dashboard <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="product-frame dashboard-frame" data-reveal="up">
+        <div class="frame-bar">
+          <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>LOGITRACK / OPERATIONS</span>
+          <a routerLink="/dashboard">Open dashboard <span aria-hidden="true">↗</span></a>
+          <span class="preview-only">Preview only</span>
+        </div>
+        <iframe
+          src="/dashboard"
+          title="Non-interactive preview of the LogiTrack operations dashboard"
+          loading="lazy"
+          referrerpolicy="same-origin"
+          tabindex="-1"
+          aria-hidden="true"
+          inert
+        ></iframe>
+      </div>
+      <div class="capability-strip" aria-label="Platform capabilities" data-reveal="up">
+        <span>Fleet management</span>
+        <span>Dispatch coordination</span>
+        <span>Delivery visibility</span>
+        <span>Operational insights</span>
+      </div>
+    </div>
+  </section>
 
-    <!-- Feature callouts -->
-    <div class="s2-callout s2-callout--tl rm-show" data-label="Live GPS">
-      <div class="callout-dot"></div>
-      <div class="callout-line"></div>
-      <span class="callout-text">Live GPS</span>
-    </div>
-    <div class="s2-callout s2-callout--tr rm-show" data-label="ETA Engine">
-      <div class="callout-dot"></div>
-      <div class="callout-line"></div>
-      <span class="callout-text">ETA Engine</span>
-    </div>
-    <div class="s2-callout s2-callout--bl rm-show" data-label="Driver App">
-      <div class="callout-dot"></div>
-      <div class="callout-line"></div>
-      <span class="callout-text">Driver App</span>
-    </div>
-    <div class="s2-callout s2-callout--br rm-show" data-label="Load Planner">
-      <div class="callout-dot"></div>
-      <div class="callout-line"></div>
-      <span class="callout-text">Load Planner</span>
-    </div>
-
-    <div class="s2-title rm-show">
-      <h2>Every vehicle. Every load. One view.</h2>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════════
-  SCENE 3 — Iris reveal: open truck + crate inventory
-══════════════════════════════════════════════════════════════ -->
-<section class="scene scene-3" aria-label="Scene 3: Cargo visibility">
-  <div class="scene-inner">
-    <!-- Base: closed truck (already shown in bg) -->
-    <picture>
-      <source srcset="/1001502851.jpg" type="image/jpeg" />
-      <img class="s3-base" src="/1001502851.jpg" alt="" aria-hidden="true" loading="lazy" />
-    </picture>
-
-    <!-- Iris overlay: open truck -->
-    <div class="s3-iris">
-      <picture>
-        <source srcset="/1001502858.jpg" type="image/jpeg" />
+  <section class="fleet section-light" id="features" aria-labelledby="fleet-title">
+    <div class="section-shell fleet-layout">
+      <div class="fleet-visual" data-reveal="left">
         <img
-          class="s3-truck-open rm-show"
-          src="/1001502858.jpg"
-          alt="Truck with rear doors open showing cargo"
+          src="/logistic%20img1.jpg"
+          alt="Freight trucks moving together on an open road."
           loading="lazy"
           decoding="async"
         />
-      </picture>
-    </div>
-
-    <!-- Crates cut-out (multiply blend) -->
-    <picture>
-      <source srcset="/1001502863.png" type="image/png" />
-      <img
-        class="s3-crates rm-show"
-        src="/1001502863.png"
-        alt="Stacked freight crates"
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-
-    <div class="scrim scrim-bottom"></div>
-
-    <div class="s3-caption rm-show">
-      <h2>Cargo visibility from door to door.</h2>
-      <p>Track every unit. Spot exceptions before customers do.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════════
-  SCENE 4 — Container sweep + stats
-══════════════════════════════════════════════════════════════ -->
-<section class="scene scene-4" aria-label="Scene 4: Scale">
-  <div class="scene-inner">
-    <div class="scrim scrim-full"></div>
-
-    <!-- Container image (only show from x 121 right) -->
-    <picture>
-      <source srcset="/1001502862.webp" type="image/webp" />
-      <img
-        class="s4-container rm-show"
-        src="/1001502862.webp"
-        alt="Shipping containers"
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-
-    <!-- Crates multiply -->
-    <picture>
-      <source srcset="/1001502863.png" type="image/png" />
-      <img
-        class="s4-crates rm-show"
-        src="/1001502863.png"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-
-    <!-- Stats overlay -->
-    <div class="s4-stats">
-      <div class="s4-stat rm-show">
-        <span class="stat-value">142</span>
-        <span class="stat-label">Active loads today</span>
+        <span class="image-caption">A clearer view from the first mile</span>
       </div>
-      <div class="s4-stat rm-show">
-        <span class="stat-value">91%</span>
-        <span class="stat-label">On-time delivery</span>
-      </div>
-      <div class="s4-stat rm-show">
-        <span class="stat-value">61</span>
-        <span class="stat-label">Vehicles live</span>
+      <div class="fleet-content" data-reveal="right">
+        <p class="eyebrow eyebrow-dark"><span class="chapter-tag">03 / 06</span><span class="eyebrow-line"></span> Fleet operations</p>
+        <h2 id="fleet-title">Your fleet.<br /><span>Your control.</span></h2>
+        <p class="body-copy">
+          Understand vehicle availability, assign drivers and keep your team informed as work moves forward.
+        </p>
+        <ul class="feature-list">
+          <li><span>01</span> Vehicle management</li>
+          <li><span>02</span> Fleet availability</li>
+          <li><span>03</span> Driver assignment</li>
+          <li><span>04</span> Operational monitoring</li>
+        </ul>
+        <a class="text-link" routerLink="/fleet">Explore fleet management <span aria-hidden="true">↗</span></a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══════════════════════════════════════════════════════════════
-  SCENE 5 — CTA finale: truck + strong headline
-══════════════════════════════════════════════════════════════ -->
-<section class="scene scene-5" aria-label="Scene 5: Get a quote">
-  <div class="scene-inner">
-    <picture>
-      <source srcset="/1001502851.jpg" type="image/jpeg" />
-      <img
-        class="s5-truck rm-show"
-        src="/1001502851.jpg"
-        alt="Trunkline fleet truck"
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
-    <div class="scrim scrim-full scrim-dark"></div>
+  <section class="dispatch section-paper" id="dispatch" aria-labelledby="dispatch-title">
+    <div class="section-shell">
+      <div class="dispatch-heading" data-reveal="right">
+        <div>
+          <p class="eyebrow eyebrow-dark"><span class="chapter-tag">04 / 06</span><span class="eyebrow-line"></span> Dispatch management</p>
+          <h2 id="dispatch-title">From dispatch to delivery.<br /><span>Every step connected.</span></h2>
+        </div>
+        <p class="body-copy">
+          Move from order selection to driver and vehicle assignment in the dispatch workflow already built into the platform.
+        </p>
+      </div>
+      <div class="workflow-steps" aria-label="Dispatch workflow">
+        <span data-reveal="step"><i>01</i> Select orders</span>
+        <span data-reveal="step"><i>02</i> Assign a driver</span>
+        <span data-reveal="step"><i>03</i> Choose a vehicle</span>
+        <span data-reveal="step"><i>04</i> Review dispatch</span>
+      </div>
+      <div class="product-frame dispatch-frame" data-reveal>
+        <div class="frame-bar">
+          <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>LOGITRACK / NEW DISPATCH</span>
+          <a routerLink="/dispatch">Open dispatch <span aria-hidden="true">↗</span></a>
+          <span class="preview-only">Preview only</span>
+        </div>
+        <iframe
+          src="/dispatch"
+          title="Non-interactive preview of the LogiTrack dispatch workflow"
+          loading="lazy"
+          referrerpolicy="same-origin"
+          tabindex="-1"
+          aria-hidden="true"
+          inert
+        ></iframe>
+      </div>
+    </div>
+  </section>
 
-    <div class="s5-content">
-      <h2 class="s5-headline rm-show">Ready to move?</h2>
-      <a class="s5-cta cta-btn cta-btn--large rm-show" [routerLink]="brand.ctaRoute">
-        {{ brand.ctaLabel }}
-        <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <section class="invoicing section-dark" id="invoicing" aria-labelledby="invoicing-title">
+    <div class="section-shell invoice-layout">
+      <div class="invoice-copy" data-reveal="left">
+        <p class="eyebrow"><span class="chapter-tag">05 / 06</span><span class="eyebrow-line"></span> Invoice management</p>
+        <h2 id="invoicing-title">Invoices,<br /><span>clearly in control.</span></h2>
+        <p class="body-copy body-copy-light">
+          Create, review and manage customer invoices in one workspace. Build line items, set payment and tax details, then check a print-ready preview.
+        </p>
+        <a class="text-link text-link-light" routerLink="/invoices">
+          Explore invoicing <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <div class="product-frame invoice-frame" data-reveal="right">
+        <div class="frame-bar">
+          <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>LOGITRACK / INVOICES</span>
+          <a routerLink="/invoices">Open invoices <span aria-hidden="true">↗</span></a>
+          <span class="preview-only">Preview only</span>
+        </div>
+        <img
+          class="invoice-preview-image"
+          src="/logitrack-invoice-preview.jpg"
+          alt="LogiTrack invoice editor with billing details, line items and a live invoice preview."
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="intelligence section-light" aria-labelledby="intelligence-title">
+    <div class="section-shell intelligence-layout">
+      <div data-reveal="left">
+        <p class="eyebrow eyebrow-dark"><span class="chapter-tag">06 / 06</span><span class="eyebrow-line"></span> Operational intelligence</p>
+        <h2 id="intelligence-title">Make every<br /><span>operation count.</span></h2>
+        <p class="body-copy">
+          Bring operational signals together to help your team prioritize work and respond to exceptions.
+        </p>
+      </div>
+      <div class="intelligence-list" data-reveal="right">
+        <div class="intelligence-row" data-reveal="step"><span class="intelligence-step-number">01</span><strong>Delivery performance</strong></div>
+        <a routerLink="/fleet" data-reveal="step"><span class="intelligence-step-number">02</span><strong>Fleet availability</strong><i aria-hidden="true">↗</i></a>
+        <a routerLink="/dispatch" data-reveal="step"><span class="intelligence-step-number">03</span><strong>Dispatch activity</strong><i aria-hidden="true">↗</i></a>
+        <a routerLink="/exceptions" data-reveal="step"><span class="intelligence-step-number">04</span><strong>Operational exceptions</strong><i aria-hidden="true">↗</i></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <img src="/1001502850.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+    <div class="closing-shade"></div>
+    <div class="closing-content" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-line"></span> Take the next step</p>
+      <h2 id="closing-title">Take your logistics<br /><span>operations further.</span></h2>
+      <p>Connect your fleet, coordinate your deliveries and bring greater visibility to your operation.</p>
+      <div class="hero-actions">
+        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">See the workflow <span aria-hidden="true">↑</span></a>
+        <a class="button button-outline" href="#platform" (click)="scrollToSection($event, 'platform')">Explore capabilities <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="about">
+  <div class="section-shell footer-layout">
+    <div class="footer-brand">
+      <a class="wordmark wordmark-footer" href="#home" (click)="scrollToSection($event, 'home')" aria-label="LogiTrack home">
+        <img src="/logitrack-logo.png" alt="LogiTrack" />
       </a>
-      <p class="s5-fine rm-show">No commitment. Response in 2 hours.</p>
+      <p>A connected platform for managing the movement of goods.</p>
+    </div>
+    <div class="footer-nav">
+      <div>
+        <span class="footer-label">Platform</span>
+        <a href="#platform" (click)="scrollToSection($event, 'platform')">Workflow</a>
+        <a routerLink="/dispatch">Dispatch</a>
+        <a routerLink="/tracking">Tracking</a>
+      </div>
+      <div>
+        <span class="footer-label">Explore</span>
+        <a routerLink="/fleet">Fleet</a>
+        <a routerLink="/deliveries">Deliveries</a>
+        <a routerLink="/analytics">Analytics</a>
+      </div>
     </div>
   </div>
-</section>
-
+  <div class="footer-bottom">
+    <div class="section-shell"><span>© {{ currentYear }} LogiTrack</span><a href="#home" (click)="scrollToSection($event, 'home')">Back to top ↑</a></div>
+  </div>
+</footer>

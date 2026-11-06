@@ -1,0 +1,15 @@
+.invoice-layout { display: grid; grid-template-columns: .65fr 1.2fr; align-items: center; gap: clamp(50px, 9vw, 130px); }
+.invoice-copy h2 { font-size: clamp(42px, 5.2vw, 70px); }
+.invoice-copy .body-copy { margin-bottom: 26px; }
+.invoice-frame { border-color: rgb(255 255 255 / 24%); }
+.invoice-preview-image { display: block; width: 100%; height: auto; }
+.intelligence-layout { display: grid; grid-template-columns: .8fr 1fr; align-items: center; gap: clamp(60px, 10vw, 150px); }
+.intelligence-layout .body-copy { margin-bottom: 25px; }
+.intelligence-list { position: relative; border-top: 1px solid #dce1e8; }
+.intelligence-list::before { position: absolute; top: 27px; bottom: 27px; left: 17px; width: 1px; background: #dce1e8; content: ""; }
+.intelligence-list a, .intelligence-row { position: relative; display: grid; grid-template-columns: 38px 1fr 20px; align-items: center; gap: 12px; padding: 22px 0; border-bottom: 1px solid #dce1e8; }
+.intelligence-row { grid-template-columns: 38px 1fr; }
+.intelligence-list .intelligence-step-number { z-index: 1; width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #dce1e8; border-radius: 50%; background: #fff; color: #8895a4; font-size: 10px; font-variant-numeric: tabular-nums; }
+.intelligence-list strong { font-size: 15px; font-weight: 560; }
+.intelligence-list i { color: var(--blue); font-size: 16px; font-style: normal; transition: transform .2s; }
+.intelligence-list a:hover i { transform: translate(3px, -3px); }

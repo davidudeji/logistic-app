@@ -22,7 +22,7 @@ export class RouteService {
   }
 
   /**
-   * Simulated route optimization — in production calls POST /api/routes/optimize.
+   * Simulated route optimization - in production calls POST /api/routes/optimize.
    */
   optimizeRoute(loadId: string): Observable<Route | undefined> {
     const route = this._routes().find(r => r.loadId === loadId);

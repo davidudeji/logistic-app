@@ -69,10 +69,10 @@ import { TrackingShareService } from '../../core/tracking/tracking-share.service
             <div class="panel-header"><h2 class="panel-title">Load Details</h2></div>
             <div class="panel-body" style="display:grid;gap:12px;">
               <div><div class="form-label">Reference</div><div class="data-mono" style="font-weight:600;">{{ l.reference }}</div></div>
-              <div><div class="form-label">Driver</div><div>{{ l.driverId ?? '—' }}</div></div>
-              <div><div class="form-label">Vehicle</div><div>{{ l.vehicleId ?? '—' }}</div></div>
+              <div><div class="form-label">Driver</div><div>{{ l.driverId ?? '-' }}</div></div>
+              <div><div class="form-label">Vehicle</div><div>{{ l.vehicleId ?? '-' }}</div></div>
               <div><div class="form-label">Scheduled Date</div><div>{{ l.scheduledDate | date:'d MMMM yyyy' }}</div></div>
-              <div><div class="form-label">Total Weight</div><div>{{ l.totalWeight ?? '—' }} kg</div></div>
+              <div><div class="form-label">Total Weight</div><div>{{ l.totalWeight ?? '-' }} kg</div></div>
               <div>
                 <div class="form-label">Progress</div>
                 <div class="progress-bar" style="margin-top:6px;">

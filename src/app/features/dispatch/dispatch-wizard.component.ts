@@ -124,7 +124,7 @@ export class DispatchWizardComponent {
           this.step.set('done');
           this.toast.success(`Load ${load.id} dispatched to ${drv.name}`);
         } else {
-          this.toast.error('Dispatch failed — validation error. Please review and retry.');
+          this.toast.error('Dispatch failed - validation error. Please review and retry.');
         }
       });
     });

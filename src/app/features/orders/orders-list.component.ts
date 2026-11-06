@@ -74,7 +74,7 @@ import { orderStatusBadge, orderStatusLabel } from '../../shared/utils/status.ut
                   <td data-label="Delivery window" class="muted" style="font-size:12px;">
                     @if (order.deliveryWindow) {
                       {{ order.deliveryWindow.start | date:'HH:mm' }} – {{ order.deliveryWindow.end | date:'HH:mm' }}
-                    } @else { — }
+                    } @else { - }
                   </td>
                   <td data-label="Status"><span class="badge" [ngClass]="orderStatusBadge(order.status)">{{ orderStatusLabel(order.status) }}</span></td>
                   <td data-label="Action">

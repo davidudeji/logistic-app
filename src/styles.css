@@ -12,15 +12,15 @@
    No shadows · No gradients · Times New Roman body
    ──────────────────────────────────────────────────────────── */
 :root {
-  /* ── Spec colors ── */
-  --color-primary:    #000000;
-  --color-secondary:  #000000;
+  /* ── LogiTrack colors ── */
+  --color-primary:    #061432;
+  --color-secondary:  #061432;
   --color-tertiary:   #e5e7eb;
   --color-neutral:    #fbfbfb;
   --color-surface:    #fbfbfb;
-  --color-on-surface: #000000;
+  --color-on-surface: #061432;
 
-  /* ── Canvas & Surfaces — off-white ── */
+  /* ── Canvas & Surfaces - off-white ── */
   --bg:             #fbfbfb;
   --surface:        #fbfbfb;
   --surface-raised: #f4f4f5;
@@ -30,20 +30,20 @@
   --surface-muted:  #f7f7f7;
 
   /* ── Sidebar ── */
-  --sidebar-bg:          #fbfbfb;
+  --sidebar-bg:          #061432;
   --sidebar-width:       220px;
-  --sidebar-hover:       rgba(0,0,0,0.04);
-  --sidebar-active:      rgba(0,0,0,0.07);
-  --sidebar-text:        #555555;
-  --sidebar-active-text: #000000;
-  --sidebar-border:      #e5e7eb;
+  --sidebar-hover:       rgba(0,204,229,0.08);
+  --sidebar-active:      rgba(0,204,229,0.14);
+  --sidebar-text:        #bec9da;
+  --sidebar-active-text: #00cce5;
+  --sidebar-border:      #1d2b49;
 
-  /* ── Brand = black ── */
-  --brand:          #000000;
-  --brand-hover:    #222222;
-  --brand-active:   #111111;
-  --brand-tint:     rgba(0,0,0,0.06);
-  --brand-border:   rgba(0,0,0,0.18);
+  /* ── Brand accents ── */
+  --brand:          #00cce5;
+  --brand-hover:    #00b4ca;
+  --brand-active:   #008da3;
+  --brand-tint:     rgba(0,204,229,0.10);
+  --brand-border:   rgba(0,204,229,0.32);
 
   /* ── Typography ── */
   --text-primary:   #000000;
@@ -57,7 +57,7 @@
   --border-subtle: #f0f0f0;
   --border-strong: #cccccc;
 
-  /* ── Semantic: restrained, near-black tones — no bright accents ── */
+  /* ── Semantic: restrained, near-black tones - no bright accents ── */
   --success:        #2d6a4f;
   --success-bg:     rgba(45,106,79,0.07);
   --success-border: rgba(45,106,79,0.20);
@@ -74,7 +74,7 @@
   --info-bg:        rgba(26,60,94,0.07);
   --info-border:    rgba(26,60,94,0.20);
 
-  /* ── Radius — spec: buttons 4px, cards 8px ── */
+  /* ── Radius - spec: buttons 4px, cards 8px ── */
   --radius-none: 0px;
   --radius-xs:   4px;
   --radius-sm:   4px;
@@ -90,7 +90,7 @@
   --space-lg:  36px;
   --space-xl:  98px;
 
-  /* ── Shadows — NONE per spec ── */
+  /* ── Shadows - NONE per spec ── */
   --shadow-0:  none;
   --shadow-1:  none;
   --shadow-2:  none;
@@ -102,51 +102,51 @@
   --shadow-lg: var(--shadow-2);
 }
 
-/* ─── Trunkline landing palette ──────────────────────────── */
+/* ─── LogiTrack brand palette ────────────────────────────── */
 :root {
-  --tl-bg: #E6EAE8;
-  --tl-surface: #F4F6F3;
-  --tl-ink: #10202B;
-  --tl-muted: #566770;
-  --tl-line: #C8D1CE;
-  --tl-accent: #F0661A;
-  --tl-on-accent: #10202B;
-  --tl-photo-text: #F4F6F3;
-  --tl-photo-muted: color-mix(in srgb, #F4F6F3 78%, transparent);
-  --tl-scrim: color-mix(in srgb, #10202B 84%, transparent);
-  --tl-scrim-soft: color-mix(in srgb, #10202B 52%, transparent);
-  --tl-accent-halo: color-mix(in srgb, #F0661A 30%, transparent);
+  --tl-bg: #061432;
+  --tl-surface: #0c1e3d;
+  --tl-ink: #f5f8ff;
+  --tl-muted: #a7b5ca;
+  --tl-line: #263757;
+  --tl-accent: #00cce5;
+  --tl-on-accent: #061432;
+  --tl-photo-text: #f5f8ff;
+  --tl-photo-muted: color-mix(in srgb, #f5f8ff 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #061432 84%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #061432 52%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #00cce5 30%, transparent);
 }
 
 :root[data-theme='dark'] {
-  --tl-bg: #081017;
-  --tl-surface: #0E1A23;
-  --tl-ink: #E7EEF0;
-  --tl-muted: #8FA3AE;
-  --tl-line: #223540;
-  --tl-accent: #FF7A33;
-  --tl-on-accent: #10202B;
-  --tl-photo-text: #E7EEF0;
-  --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
-  --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
-  --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
-  --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+  --tl-bg: #061432;
+  --tl-surface: #0c1e3d;
+  --tl-ink: #f5f8ff;
+  --tl-muted: #a7b5ca;
+  --tl-line: #263757;
+  --tl-accent: #00cce5;
+  --tl-on-accent: #061432;
+  --tl-photo-text: #f5f8ff;
+  --tl-photo-muted: color-mix(in srgb, #f5f8ff 78%, transparent);
+  --tl-scrim: color-mix(in srgb, #061432 88%, transparent);
+  --tl-scrim-soft: color-mix(in srgb, #061432 56%, transparent);
+  --tl-accent-halo: color-mix(in srgb, #00cce5 30%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --tl-bg: #081017;
-    --tl-surface: #0E1A23;
-    --tl-ink: #E7EEF0;
-    --tl-muted: #8FA3AE;
-    --tl-line: #223540;
-    --tl-accent: #FF7A33;
-    --tl-on-accent: #10202B;
-    --tl-photo-text: #E7EEF0;
-    --tl-photo-muted: color-mix(in srgb, #E7EEF0 78%, transparent);
-    --tl-scrim: color-mix(in srgb, #081017 88%, transparent);
-    --tl-scrim-soft: color-mix(in srgb, #081017 56%, transparent);
-    --tl-accent-halo: color-mix(in srgb, #FF7A33 30%, transparent);
+    --tl-bg: #061432;
+    --tl-surface: #0c1e3d;
+    --tl-ink: #f5f8ff;
+    --tl-muted: #a7b5ca;
+    --tl-line: #263757;
+    --tl-accent: #00cce5;
+    --tl-on-accent: #061432;
+    --tl-photo-text: #f5f8ff;
+    --tl-photo-muted: color-mix(in srgb, #f5f8ff 78%, transparent);
+    --tl-scrim: color-mix(in srgb, #061432 88%, transparent);
+    --tl-scrim-soft: color-mix(in srgb, #061432 56%, transparent);
+    --tl-accent-halo: color-mix(in srgb, #00cce5 30%, transparent);
   }
 }
 
@@ -164,7 +164,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings — editorial, Times New Roman, regular weight */
+/* Headings - editorial, Times New Roman, regular weight */
 h1 {
   font-family: 'Times New Roman', Times, serif;
   font-size: 47.25px; font-weight: 400;
@@ -189,13 +189,13 @@ h4, h5, h6 {
   color: var(--text-primary);
 }
 
-/* ─── Data identifiers — Times New Roman, no special mono ── */
+/* ─── Data identifiers - Times New Roman, no special mono ── */
 .data-mono, .metric-value, .currency, .sku-code, .load-id, .order-id {
   font-family: 'Times New Roman', Times, serif;
   letter-spacing: 0;
 }
 
-/* ─── Scrollbar — minimal, square ──────────────────────────── */
+/* ─── Scrollbar - minimal, square ──────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 0; }
@@ -213,7 +213,7 @@ h4, h5, h6 {
 .leaflet-popup-tip { background: var(--surface) !important; }
 .leaflet-popup-tip-container { margin-top: -1px; }
 
-/* ─── Animations — subtle, no scale/spring ──────────────── */
+/* ─── Animations - subtle, no scale/spring ──────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -306,7 +306,7 @@ h4, h5, h6 {
   letter-spacing: 0;
 }
 
-/* ─── Search Bar — flat, square-ish ─────────────────────── */
+/* ─── Search Bar - flat, square-ish ─────────────────────── */
 .search-bar {
   display: flex;
   align-items: center;
@@ -334,7 +334,7 @@ h4, h5, h6 {
 }
 .search-input::placeholder { color: var(--text-muted); }
 
-/* ─── Header Buttons — flat, square ─────────────────────── */
+/* ─── Header Buttons - flat, square ─────────────────────── */
 .filter-btn {
   display: flex;
   align-items: center;
@@ -414,7 +414,7 @@ h4, h5, h6 {
   gap: var(--space-md);
 }
 
-/* ─── KPI Cards — flat, bordered, no shadow ─────────────── */
+/* ─── KPI Cards - flat, bordered, no shadow ─────────────── */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -475,7 +475,7 @@ h4, h5, h6 {
   color: var(--text-muted);
 }
 
-/* ─── Panel — flat, bordered, no elevation ────────────────── */
+/* ─── Panel - flat, bordered, no elevation ────────────────── */
 .panel {
   background: var(--surface-card);
   border: 1px solid var(--border);
@@ -537,7 +537,7 @@ h4, h5, h6 {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* ─── Buttons — block.xyz flat spec ─────────────────────── */
+/* ─── Buttons - block.xyz flat spec ─────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px;
@@ -555,8 +555,8 @@ h4, h5, h6 {
 
 /* Primary: solid black bg, off-white text */
 .btn-primary {
-  background: var(--color-primary);
-  color: var(--color-neutral);
+  background: var(--brand);
+  color: var(--color-secondary);
   border: none;
 }
 .btn-primary:hover { opacity: 0.85; }
@@ -564,15 +564,15 @@ h4, h5, h6 {
 /* Secondary: transparent, black border + text */
 .btn-secondary {
   background: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary) !important;
+  color: var(--color-secondary);
+  border: 1px solid var(--brand) !important;
 }
 .btn-secondary:hover { background: var(--surface-hover); }
 
-/* Brand — same as primary in this monochrome system */
+/* Brand - same as primary in this monochrome system */
 .btn-brand {
-  background: var(--color-primary);
-  color: var(--color-neutral);
+  background: var(--brand);
+  color: var(--color-secondary);
   border: none;
 }
 .btn-brand:hover { opacity: 0.82; }
@@ -597,7 +597,7 @@ h4, h5, h6 {
 .btn-sm { font-size: 14px; padding: 6px 12px; min-height: 32px; min-width: 80px; }
 .btn-xs { font-size: 13px; padding: 4px 10px; min-height: 28px; min-width: 0; }
 
-/* ─── Status Badges — flat, bordered, no fill ────────────── */
+/* ─── Status Badges - flat, bordered, no fill ────────────── */
 .badge {
   display: inline-flex; align-items: center;
   padding: 1px 6px;
@@ -627,7 +627,7 @@ h4, h5, h6 {
 .badge-medium      { border-color: var(--text-muted); color: var(--text-muted); }
 .badge-low         { border-color: var(--border-strong); color: var(--text-muted); }
 
-/* ─── Data Table — flat, serif, no excess weight ───────── */
+/* ─── Data Table - flat, serif, no excess weight ───────── */
 .data-table-wrapper { overflow-x: auto; }
 
 .data-table {
@@ -667,7 +667,7 @@ h4, h5, h6 {
 
 .data-table td.muted { color: var(--text-muted); font-size: 13px; }
 
-/* ─── Progress Bar — flat, no radius ────────────────────── */
+/* ─── Progress Bar - flat, no radius ────────────────────── */
 .progress-bar {
   height: 2px;
   background: var(--border);
@@ -774,7 +774,7 @@ h4, h5, h6 {
 .fleet-marker.delivered { background: var(--text-disabled); border-color: var(--border-strong); color: var(--text-primary); }
 .fleet-marker.unassigned{ background: var(--border-strong); color: var(--text-primary); }
 
-/* ─── Toast Notifications — flat, monochrome ─────────────── */
+/* ─── Toast Notifications - flat, monochrome ─────────────── */
 .toast-container {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 9999; display: flex; flex-direction: column-reverse; gap: 8px;
@@ -904,7 +904,7 @@ app-logistics-operations-page {
   overflow: hidden;
 }
 
-/* Landing page — full-bleed, no overflow clipping */
+/* Landing page - full-bleed, no overflow clipping */
 app-landing {
   display: block;
   width: 100%;

@@ -39,8 +39,8 @@ import { switchMap } from 'rxjs';
           </div>
           <div class="panel-body" style="display:grid;gap:12px;">
             <div><div class="form-label">Phone</div><div>{{ d.phone }}</div></div>
-            <div><div class="form-label">On-Time Rate</div><div>{{ d.onTimeRate ?? '—' }}%</div></div>
-            <div><div class="form-label">Total Deliveries</div><div>{{ d.totalDeliveries ?? '—' }}</div></div>
+            <div><div class="form-label">On-Time Rate</div><div>{{ d.onTimeRate ?? '-' }}%</div></div>
+            <div><div class="form-label">Total Deliveries</div><div>{{ d.totalDeliveries ?? '-' }}</div></div>
             @if (d.currentLoadId) {
               <div><div class="form-label">Current Load</div>
                 <a [routerLink]="['/loads', d.currentLoadId]" class="data-mono" style="color:var(--brand);">{{ d.currentLoadId }}</a>

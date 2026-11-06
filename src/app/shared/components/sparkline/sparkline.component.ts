@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/c
 import { CommonModule } from '@angular/common';
 
 /**
- * Sparkline — a lightweight inline SVG line chart.
+ * Sparkline - a lightweight inline SVG line chart.
  * No external deps. Pass an array of numbers and a color.
  */
 @Component({

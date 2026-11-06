@@ -60,7 +60,7 @@ function deliveryStatusLabel(s: string): string {
                   <td data-label="Destination" class="muted">{{ destinationCity(del.orderId) }}</td>
                   <td data-label="Status"><span class="badge" [ngClass]="deliveryStatusBadge(del.status)">{{ statusLabel(del.status) }}</span></td>
                   <td data-label="Completed" class="muted" style="font-size:12px;">
-                    {{ del.completedAt ? (del.completedAt | date:'d MMM, HH:mm') : '—' }}
+                    {{ del.completedAt ? (del.completedAt | date:'d MMM, HH:mm') : '-' }}
                   </td>
                   <td data-label="Actions" style="text-align: right;">
                     <app-action-overflow-menu
@@ -92,11 +92,11 @@ export class DeliveriesListComponent {
   readonly deliveries = this.deliveryService.deliveries;
 
   customerName(orderId: string): string {
-    return this.orderService.orders().find(o => o.id === orderId)?.customerName ?? '—';
+    return this.orderService.orders().find(o => o.id === orderId)?.customerName ?? '-';
   }
 
   destinationCity(orderId: string): string {
-    return this.orderService.orders().find(o => o.id === orderId)?.deliveryAddress.city ?? '—';
+    return this.orderService.orders().find(o => o.id === orderId)?.deliveryAddress.city ?? '-';
   }
 
   onView(id?: string): void {
