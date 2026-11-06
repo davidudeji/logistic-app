@@ -129,5 +129,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/analytics/analytics-dashboard.component').then(m => m.AnalyticsDashboardComponent),
   },
+  {
+    path: 'inventory',
+    loadChildren: () =>
+      import('./features/inventory/inventory.routes').then(m => m.inventoryRoutes),
+  },
   { path: '**', redirectTo: '' },
 ];

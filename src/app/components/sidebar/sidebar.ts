@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { InventoryService } from '../../features/inventory/inventory.service';
 
 interface NavItem {
   label: string;
@@ -132,6 +133,9 @@ interface NavItem {
   `]
 })
 export class SidebarComponent {
+  private readonly inventoryService = inject(InventoryService);
+  readonly invLowStock = this.inventoryService.lowStockTotal;
+
   readonly mainNav = [
     { label: 'Dashboard',     icon: 'dashboard', route: '/' },
     { label: 'Orders',        icon: 'orders',    route: '/orders' },

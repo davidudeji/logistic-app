@@ -69,6 +69,90 @@
       <span>Dispatch</span>
     </a>
 
+    <!-- Inventory -->
+    <div class="nav-label">Inventory</div>
+
+    <a class="nav-item" routerLink="/inventory" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+      </span>
+      <span>Inventory</span>
+      @if (invLowStock() > 0) {
+        <span class="nav-badge">{{ invLowStock() }}</span>
+      }
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/grn" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </span>
+      <span>Receiving (GRN)</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/dispatch-orders" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/><path d="M12 5l7 7-7 7"/>
+        </svg>
+      </span>
+      <span>Dispatch Orders</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/transfer" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+      </span>
+      <span>Transfer Stock</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/adjustments" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+      </span>
+      <span>Adjustments</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/alerts" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </span>
+      <span>Low-Stock Alerts</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/reports" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      </span>
+      <span>Inv. Reports</span>
+    </a>
+
+    <a class="nav-item" routerLink="/inventory/returns" routerLinkActive="active-link">
+      <span class="icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 14l-5-5 5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>
+        </svg>
+      </span>
+      <span>Returns / RMA</span>
+    </a>
+
     <!-- Fleet & Field -->
     <div class="nav-label">Fleet & Field</div>
 

@@ -7,6 +7,7 @@ import { LoadService } from '../../core/services/load.service';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { MapComponent } from '../../components/map/map';
 import { SparklineComponent } from '../../shared/components/sparkline/sparkline.component';
+import { InventoryDashboardWidgetComponent } from '../../features/inventory/inventory-dashboard-widget.component';
 import { DashboardKpi, DeliveryException, Load } from '../../shared/models';
 import {
   exceptionSeverityBadge, exceptionTypeLabel, loadStatusBadge, loadStatusLabel
@@ -27,7 +28,7 @@ interface KpiCard {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, MapComponent, SparklineComponent],
+  imports: [CommonModule, RouterLink, MapComponent, SparklineComponent, InventoryDashboardWidgetComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
