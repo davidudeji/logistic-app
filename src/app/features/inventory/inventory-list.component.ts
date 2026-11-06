@@ -9,6 +9,7 @@ import {
   InventoryCategory,
   MovementType,
   AdjustmentReason,
+  StockLevel,
   StockMovement,
   UnitOfMeasure,
 } from './inventory.model';
@@ -45,6 +46,7 @@ type StockFilter = 'ALL' | 'LOW' | 'OK' | 'OUT';
     <a class="sub-nav-link" routerLink="/inventory/transfer" routerLinkActive="sub-nav-active">Transfer</a>
     <a class="sub-nav-link" routerLink="/inventory/adjustments" routerLinkActive="sub-nav-active">Adjustments</a>
     <a class="sub-nav-link" routerLink="/inventory/alerts" routerLinkActive="sub-nav-active">Alerts</a>
+    <a class="sub-nav-link" routerLink="/inventory/cycle-count" routerLinkActive="sub-nav-active">Cycle Count</a>
     <a class="sub-nav-link" routerLink="/inventory/reports" routerLinkActive="sub-nav-active">Reports</a>
     <a class="sub-nav-link" routerLink="/inventory/returns" routerLinkActive="sub-nav-active">Returns</a>
   </nav>
@@ -212,9 +214,9 @@ type StockFilter = 'ALL' | 'LOW' | 'OK' | 'OUT';
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input class="search-input" type="text" [(ngModel)]="searchQuery" placeholder="Search by name or SKU…" />
+      <input class="search-input" type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" placeholder="Search by name or SKU…" />
     </div>
-    <select class="filter-select" [(ngModel)]="categoryFilter">
+    <select class="filter-select" [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event)">
       <option value="">All Categories</option>
       @for (cat of categories; track cat.value) {
         <option [value]="cat.value">{{ cat.label }}</option>
@@ -642,8 +644,8 @@ export class InventoryListComponent {
   readonly warehouseFilter = signal<string>('');
   readonly alertsExpanded = signal(true);
 
-  searchQuery = '';
-  categoryFilter = '';
+  readonly searchQuery = signal('');
+  readonly categoryFilter = signal('');
 
   // ── KPI (live) ───────────────────────────────────────────
   readonly kpi = this.inventoryService.getDashboardKpi;
@@ -658,21 +660,18 @@ export class InventoryListComponent {
   readonly filteredItems = computed(() => {
     const items = this.inventoryService.items();
     const levels = this.inventoryService.stockLevels();
-    const q = this.searchQuery.toLowerCase();
-    const catF = this.categoryFilter;
+    const q = this.searchQuery().trim().toLowerCase();
+    const catF = this.categoryFilter();
     const statusF = this.stockFilter();
     const whF = this.warehouseFilter();
 
     return items.filter(item => {
       if (q && !item.name.toLowerCase().includes(q) && !item.sku.toLowerCase().includes(q)) return false;
       if (catF && item.category !== catF) return false;
-      if (whF) {
-        const hasStock = levels.some(l => l.itemId === item.id && l.warehouseId === whF);
-        if (!hasStock) return false;
-      }
+      const stock = this.stockLevelFor(item.id, levels, whF);
+      if (whF && !stock) return false;
       if (statusF !== 'ALL') {
-        const level = levels.find(l => l.itemId === item.id);
-        const avail = level?.available ?? 0;
+        const avail = stock?.available ?? 0;
         if (statusF === 'OUT' && avail !== 0) return false;
         if (statusF === 'LOW' && (avail === 0 || avail > item.reorderPoint)) return false;
         if (statusF === 'OK' && avail <= item.reorderPoint) return false;
@@ -729,7 +728,24 @@ export class InventoryListComponent {
 
   // ── Helpers ───────────────────────────────────────────────
   stockFor(itemId: string) {
-    return this.inventoryService.getItemStockLevel(itemId);
+    return this.stockLevelFor(itemId, this.inventoryService.stockLevels(), this.warehouseFilter());
+  }
+
+  private stockLevelFor(itemId: string, levels: StockLevel[], warehouseId: string): StockLevel | null {
+    const matchingLevels = levels.filter(level =>
+      level.itemId === itemId && (!warehouseId || level.warehouseId === warehouseId)
+    );
+    if (matchingLevels.length === 0) return null;
+
+    return matchingLevels.reduce((total, level) => ({
+      ...total,
+      onHand: total.onHand + level.onHand,
+      reserved: total.reserved + level.reserved,
+      available: total.available + level.available,
+      inTransit: total.inTransit + level.inTransit,
+      damaged: total.damaged + level.damaged,
+      lastUpdated: total.lastUpdated > level.lastUpdated ? total.lastUpdated : level.lastUpdated,
+    }));
   }
 
   movementsFor(itemId: string) {
@@ -839,7 +855,7 @@ export class InventoryListComponent {
     const movement: StockMovement = {
       id: 'MOV-' + Date.now(),
       itemId,
-      warehouseId: this.inventoryService.getItemStockLevel(itemId)?.warehouseId ?? 'WH-001',
+      warehouseId: this.warehouseFilter() || this.inventoryService.getItemStockLevel(itemId)?.warehouseId || 'WH-001',
       type,
       quantity,
       reference: reference.trim() || '—',
