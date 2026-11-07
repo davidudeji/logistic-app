@@ -9,7 +9,8 @@
 .intelligence-list::before { position: absolute; top: 27px; bottom: 27px; left: 17px; width: 1px; background: #dce1e8; content: ""; }
 .intelligence-list a, .intelligence-row { position: relative; display: grid; grid-template-columns: 38px 1fr 20px; align-items: center; gap: 12px; padding: 22px 0; border-bottom: 1px solid #dce1e8; }
 .intelligence-row { grid-template-columns: 38px 1fr; }
-.intelligence-list .intelligence-step-number { z-index: 1; width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #dce1e8; border-radius: 50%; background: #fff; color: #8895a4; font-size: 10px; font-variant-numeric: tabular-nums; }
+.intelligence-list .intelligence-icon { z-index: 1; width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #dce1e8; border-radius: 50%; background: #fff; color: #8895a4; }
+.intelligence-list .intelligence-icon svg { width: 14px; height: 14px; }
 .intelligence-list strong { font-size: 15px; font-weight: 560; }
-.intelligence-list i { color: var(--blue); font-size: 16px; font-style: normal; transition: transform .2s; }
-.intelligence-list a:hover i { transform: translate(3px, -3px); }
+.intelligence-list .intelligence-link-icon { color: var(--blue); width: 16px; height: 16px; transition: transform .2s; }
+.intelligence-list a:hover .intelligence-link-icon { transform: translate(3px, -3px); }

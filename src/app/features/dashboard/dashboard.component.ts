@@ -43,6 +43,26 @@ export class DashboardComponent implements OnInit {
   readonly activeLoads = computed(() => this.loadService.loads().filter(
     l => l.status === 'IN_TRANSIT' || l.status === 'DISPATCHED'
   ));
+  readonly activeLoadPage = signal(1);
+  readonly activeLoadsPageSize = 10;
+  readonly activeLoadPageCount = computed(() =>
+    Math.max(1, Math.ceil(this.activeLoads().length / this.activeLoadsPageSize))
+  );
+  readonly activeLoadPageIndex = computed(() =>
+    Math.min(this.activeLoadPage(), this.activeLoadPageCount())
+  );
+  readonly pagedActiveLoads = computed(() => {
+    const start = (this.activeLoadPageIndex() - 1) * this.activeLoadsPageSize;
+    return this.activeLoads().slice(start, start + this.activeLoadsPageSize);
+  });
+  readonly activeLoadPageStart = computed(() =>
+    this.activeLoads().length === 0
+      ? 0
+      : (this.activeLoadPageIndex() - 1) * this.activeLoadsPageSize + 1
+  );
+  readonly activeLoadPageEnd = computed(() =>
+    Math.min(this.activeLoadPageIndex() * this.activeLoadsPageSize, this.activeLoads().length)
+  );
   readonly kpiCards    = signal<KpiCard[]>([]);
   readonly currentDate = new Date();
   readonly searchQuery = signal('');
@@ -117,5 +137,13 @@ export class DashboardComponent implements OnInit {
 
   acknowledgeException(exc: DeliveryException): void {
     this.exceptionService.acknowledge(exc.id, 'Dispatcher').subscribe();
+  }
+
+  previousActiveLoadPage(): void {
+    this.activeLoadPage.set(Math.max(1, this.activeLoadPageIndex() - 1));
+  }
+
+  nextActiveLoadPage(): void {
+    this.activeLoadPage.set(Math.min(this.activeLoadPageCount(), this.activeLoadPageIndex() + 1));
   }
 }

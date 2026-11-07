@@ -22,7 +22,13 @@
       <a href="#about" (click)="scrollToSection($event, 'about')">About</a>
     </div>
 
-    <a class="nav-cta" href="#platform" (click)="scrollToSection($event, 'platform')">See the workflow <span aria-hidden="true">↓</span></a>
+    <a class="nav-cta" href="#platform" (click)="scrollToSection($event, 'platform')">
+      See the workflow
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14"/>
+        <path d="m5 12 7 7 7-7"/>
+      </svg>
+    </a>
   </nav>
 </header>
 
@@ -44,13 +50,24 @@
         Connect your fleet, coordinate deliveries and bring every part of your operation into view.
       </p>
       <div class="hero-actions" data-reveal="up">
-        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">Explore the platform <span aria-hidden="true">↓</span></a>
-        <a class="button button-outline" href="#dispatch" (click)="scrollToSection($event, 'dispatch')">See the workflow <span aria-hidden="true">↓</span></a>
+        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">
+          Explore the platform
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/>
+            <path d="m5 12 7 7 7-7"/>
+          </svg>
+        </a>
+        <a class="button button-outline" href="#dispatch" (click)="scrollToSection($event, 'dispatch')">
+          See the workflow
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/>
+            <path d="m5 12 7 7 7-7"/>
+          </svg>
+        </a>
       </div>
     </div>
     <div class="hero-foot">
       <span>One connected view of your operation</span>
-      <span class="hero-index">01 <i></i> 06</span>
     </div>
   </section>
 
@@ -58,7 +75,7 @@
     <div class="section-shell">
       <div class="platform-intro">
       <div data-reveal="right">
-          <p class="eyebrow"><span class="chapter-tag">02 / 06</span><span class="eyebrow-line"></span> The platform</p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> The platform</p>
           <h2 id="platform-title">Everything your operation needs.<br /><span>All in one place.</span></h2>
         </div>
         <div class="platform-copy" data-reveal="up">
@@ -67,7 +84,11 @@
             through one connected operational platform.
           </p>
           <a class="text-link text-link-light" routerLink="/dashboard">
-            Explore the dashboard <span aria-hidden="true">↗</span>
+            Explore the dashboard
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17 17 7"/>
+              <path d="M7 7h10v10"/>
+            </svg>
           </a>
         </div>
       </div>
@@ -75,7 +96,13 @@
         <div class="frame-bar">
           <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>LOGITRACK / OPERATIONS</span>
-          <a routerLink="/dashboard">Open dashboard <span aria-hidden="true">↗</span></a>
+          <a routerLink="/dashboard">
+            Open dashboard
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17 17 7"/>
+              <path d="M7 7h10v10"/>
+            </svg>
+          </a>
           <span class="preview-only">Preview only</span>
         </div>
         <iframe
@@ -109,18 +136,49 @@
         <span class="image-caption">A clearer view from the first mile</span>
       </div>
       <div class="fleet-content" data-reveal="right">
-        <p class="eyebrow eyebrow-dark"><span class="chapter-tag">03 / 06</span><span class="eyebrow-line"></span> Fleet operations</p>
+        <p class="eyebrow eyebrow-dark"><span class="eyebrow-line"></span> Fleet operations</p>
         <h2 id="fleet-title">Your fleet.<br /><span>Your control.</span></h2>
         <p class="body-copy">
           Understand vehicle availability, assign drivers and keep your team informed as work moves forward.
         </p>
         <ul class="feature-list">
-          <li><span>01</span> Vehicle management</li>
-          <li><span>02</span> Fleet availability</li>
-          <li><span>03</span> Driver assignment</li>
-          <li><span>04</span> Operational monitoring</li>
+          <li>
+            <svg class="feature-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h18"/>
+              <path d="M12 3v18"/>
+            </svg>
+            <span>Vehicle management</span>
+          </li>
+          <li>
+            <svg class="feature-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="13" rx="2"/>
+              <path d="M7 9h10M7 13h6"/>
+            </svg>
+            <span>Fleet availability</span>
+          </li>
+          <li>
+            <svg class="feature-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="10" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>Driver assignment</span>
+          </li>
+          <li>
+            <svg class="feature-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h4l3-6 4 12 3-6h4"/>
+            </svg>
+            <span>Operational monitoring</span>
+          </li>
         </ul>
-        <a class="text-link" routerLink="/fleet">Explore fleet management <span aria-hidden="true">↗</span></a>
+        <a class="text-link" routerLink="/fleet">
+          Explore fleet management
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -129,7 +187,7 @@
     <div class="section-shell">
       <div class="dispatch-heading" data-reveal="right">
         <div>
-          <p class="eyebrow eyebrow-dark"><span class="chapter-tag">04 / 06</span><span class="eyebrow-line"></span> Dispatch management</p>
+          <p class="eyebrow eyebrow-dark"><span class="eyebrow-line"></span> Dispatch management</p>
           <h2 id="dispatch-title">From dispatch to delivery.<br /><span>Every step connected.</span></h2>
         </div>
         <p class="body-copy">
@@ -137,16 +195,49 @@
         </p>
       </div>
       <div class="workflow-steps" aria-label="Dispatch workflow">
-        <span data-reveal="step"><i>01</i> Select orders</span>
-        <span data-reveal="step"><i>02</i> Assign a driver</span>
-        <span data-reveal="step"><i>03</i> Choose a vehicle</span>
-        <span data-reveal="step"><i>04</i> Review dispatch</span>
+        <span data-reveal="step">
+          <svg class="step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3h8l5 5v13H3V3h5z"/>
+            <path d="M15 3v5h5"/>
+          </svg>
+          Select orders
+        </span>
+        <span data-reveal="step">
+          <svg class="step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="10" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Assign a driver
+        </span>
+        <span data-reveal="step">
+          <svg class="step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="7" width="18" height="12" rx="2"/>
+            <path d="M3 11h18"/>
+            <path d="m7 7 5-4 5 4"/>
+          </svg>
+          Choose a vehicle
+        </span>
+        <span data-reveal="step">
+          <svg class="step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+            <path d="m12 5 7 7-7 7"/>
+          </svg>
+          Review dispatch
+        </span>
       </div>
       <div class="product-frame dispatch-frame" data-reveal>
         <div class="frame-bar">
           <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>LOGITRACK / NEW DISPATCH</span>
-          <a routerLink="/dispatch">Open dispatch <span aria-hidden="true">↗</span></a>
+          <a routerLink="/dispatch">
+            Open dispatch
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17 17 7"/>
+              <path d="M7 7h10v10"/>
+            </svg>
+          </a>
           <span class="preview-only">Preview only</span>
         </div>
         <iframe
@@ -165,20 +256,30 @@
   <section class="invoicing section-dark" id="invoicing" aria-labelledby="invoicing-title">
     <div class="section-shell invoice-layout">
       <div class="invoice-copy" data-reveal="left">
-        <p class="eyebrow"><span class="chapter-tag">05 / 06</span><span class="eyebrow-line"></span> Invoice management</p>
+        <p class="eyebrow"><span class="eyebrow-line"></span> Invoice management</p>
         <h2 id="invoicing-title">Invoices,<br /><span>clearly in control.</span></h2>
         <p class="body-copy body-copy-light">
           Create, review and manage customer invoices in one workspace. Build line items, set payment and tax details, then check a print-ready preview.
         </p>
         <a class="text-link text-link-light" routerLink="/invoices">
-          Explore invoicing <span aria-hidden="true">↗</span>
+          Explore invoicing
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
         </a>
       </div>
       <div class="product-frame invoice-frame" data-reveal="right">
         <div class="frame-bar">
           <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>LOGITRACK / INVOICES</span>
-          <a routerLink="/invoices">Open invoices <span aria-hidden="true">↗</span></a>
+          <a routerLink="/invoices">
+            Open invoices
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17 17 7"/>
+              <path d="M7 7h10v10"/>
+            </svg>
+          </a>
           <span class="preview-only">Preview only</span>
         </div>
         <img
@@ -195,17 +296,62 @@
   <section class="intelligence section-light" aria-labelledby="intelligence-title">
     <div class="section-shell intelligence-layout">
       <div data-reveal="left">
-        <p class="eyebrow eyebrow-dark"><span class="chapter-tag">06 / 06</span><span class="eyebrow-line"></span> Operational intelligence</p>
+        <p class="eyebrow eyebrow-dark"><span class="eyebrow-line"></span> Operational intelligence</p>
         <h2 id="intelligence-title">Make every<br /><span>operation count.</span></h2>
         <p class="body-copy">
           Bring operational signals together to help your team prioritize work and respond to exceptions.
         </p>
       </div>
       <div class="intelligence-list" data-reveal="right">
-        <div class="intelligence-row" data-reveal="step"><span class="intelligence-step-number">01</span><strong>Delivery performance</strong></div>
-        <a routerLink="/fleet" data-reveal="step"><span class="intelligence-step-number">02</span><strong>Fleet availability</strong><i aria-hidden="true">↗</i></a>
-        <a routerLink="/dispatch" data-reveal="step"><span class="intelligence-step-number">03</span><strong>Dispatch activity</strong><i aria-hidden="true">↗</i></a>
-        <a routerLink="/exceptions" data-reveal="step"><span class="intelligence-step-number">04</span><strong>Operational exceptions</strong><i aria-hidden="true">↗</i></a>
+        <div class="intelligence-row" data-reveal="step">
+          <span class="intelligence-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h18"/>
+              <path d="M12 3v18"/>
+            </svg>
+          </span>
+          <strong>Delivery performance</strong>
+        </div>
+        <a routerLink="/fleet" data-reveal="step">
+          <span class="intelligence-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="13" rx="2"/>
+              <path d="M7 9h10M7 13h6"/>
+            </svg>
+          </span>
+          <strong>Fleet availability</strong>
+          <svg class="intelligence-link-icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
+        </a>
+        <a routerLink="/dispatch" data-reveal="step">
+          <span class="intelligence-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14"/>
+              <path d="m5 12 7 7 7-7"/>
+            </svg>
+          </span>
+          <strong>Dispatch activity</strong>
+          <svg class="intelligence-link-icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
+        </a>
+        <a routerLink="/exceptions" data-reveal="step">
+          <span class="intelligence-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <path d="M12 9v4"/>
+              <path d="M12 17h.01"/>
+            </svg>
+          </span>
+          <strong>Operational exceptions</strong>
+          <svg class="intelligence-link-icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -218,8 +364,20 @@
       <h2 id="closing-title">Take your logistics<br /><span>operations further.</span></h2>
       <p>Connect your fleet, coordinate your deliveries and bring greater visibility to your operation.</p>
       <div class="hero-actions">
-        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">See the workflow <span aria-hidden="true">↑</span></a>
-        <a class="button button-outline" href="#platform" (click)="scrollToSection($event, 'platform')">Explore capabilities <span aria-hidden="true">↑</span></a>
+        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">
+          See the workflow
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5"/>
+            <path d="m5 12 7-7 7 7"/>
+          </svg>
+        </a>
+        <a class="button button-outline" href="#platform" (click)="scrollToSection($event, 'platform')">
+          Explore capabilities
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5"/>
+            <path d="m5 12 7-7 7 7"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -249,6 +407,15 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="section-shell"><span>© {{ currentYear }} LogiTrack</span><a href="#home" (click)="scrollToSection($event, 'home')">Back to top ↑</a></div>
+    <div class="section-shell">
+      <span>© {{ currentYear }} LogiTrack</span>
+      <a href="#home" (click)="scrollToSection($event, 'home')">
+        Back to top
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19V5"/>
+          <path d="m5 12 7-7 7 7"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </footer>

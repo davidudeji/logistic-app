@@ -214,7 +214,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (load of activeLoads(); track load.id) {
+          @for (load of pagedActiveLoads(); track load.id) {
             <tr>
               <td>
                 <span class="load-id data-mono" style="color:var(--brand);font-weight:600;">
@@ -253,6 +253,20 @@
           }
         </tbody>
       </table>
+    </div>
+    <div class="dashboard-pagination" aria-label="Active loads pagination">
+      <span>Showing {{ activeLoadPageStart() }} to {{ activeLoadPageEnd() }} of {{ activeLoads().length }}</span>
+      <div class="dashboard-pagination-controls">
+        <button type="button" class="btn btn-xs btn-secondary"
+                aria-label="Previous active loads page"
+                [disabled]="activeLoadPageIndex() === 1"
+                (click)="previousActiveLoadPage()">Previous</button>
+        <span>Page {{ activeLoadPageIndex() }} of {{ activeLoadPageCount() }}</span>
+        <button type="button" class="btn btn-xs btn-secondary"
+                aria-label="Next active loads page"
+                [disabled]="activeLoadPageIndex() >= activeLoadPageCount()"
+                (click)="nextActiveLoadPage()">Next</button>
+      </div>
     </div>
   </section>
 
