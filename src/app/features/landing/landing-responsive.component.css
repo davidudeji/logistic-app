@@ -19,12 +19,15 @@
   .wordmark { font-size: 17px; }
   .wordmark img { width: 155px; height: 35px; }
   .nav-cta { margin-left: auto; padding: 10px 11px; font-size: 11px; }
-  .menu-toggle { order: 3; width: 40px; height: 40px; display: grid; align-content: center; justify-items: center; gap: 5px; border: 1px solid rgb(255 255 255 / 44%); background: transparent; color: #fff; }
+  .menu-toggle { order: 3; width: 40px; height: 40px; display: grid; align-content: center; justify-items: center; gap: 5px; border: 1px solid rgb(255 255 255 / 44%); background: transparent; color: #fff; border-radius: 10px; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+  .menu-toggle:active { transform: scale(0.98); }
   .is-scrolled .menu-toggle { border-color: #d7dee7; color: var(--navy); }
-  .menu-toggle span { width: 15px; height: 1px; background: currentColor; }
-  .nav-links { position: absolute; top: calc(100% + 1px); right: 20px; left: 20px; display: none; align-items: stretch; gap: 0; padding: 8px 16px; background: #fff; box-shadow: 0 12px 30px rgb(0 0 0 / 14%); }
-  .nav-links.is-open { display: flex; flex-direction: column; }
-  .nav-links a, .is-scrolled .nav-links a { padding: 14px 0; border-bottom: 1px solid #edf0f3; color: var(--ink); }
+  .menu-toggle span { width: 15px; height: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+  .nav-links { position: absolute; top: calc(100% + 1px); right: 20px; left: 20px; display: none; align-items: stretch; gap: 0; padding: 8px 16px; background: rgba(255,255,255,0.98); box-shadow: 0 12px 30px rgb(0 0 0 / 14%); border-radius: 0 0 14px 14px; opacity: 0; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
+  .nav-links.is-open,
+  .nav-links[data-open='true'] { display: flex !important; flex-direction: column; opacity: 1; transform: translateY(0); }
+  .nav-links a, .is-scrolled .nav-links a { padding: 14px 0; border-bottom: 1px solid #edf0f3; color: var(--ink); transition: color .2s ease, background .2s ease; }
+  .nav-links a:hover { background: rgba(0,204,229,0.04); }
   .nav-links a:last-child { border-bottom: 0; }
   .hero { min-height: 690px; height: 100svh; }
   .hero-image { object-position: 57% center; }

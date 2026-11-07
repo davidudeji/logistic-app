@@ -15,7 +15,7 @@
       <span></span><span></span>
     </button>
 
-    <div id="primary-navigation" class="nav-links" [class.is-open]="menuOpen()">
+    <div id="primary-navigation" class="nav-links" [class.is-open]="menuOpen()" [attr.data-open]="menuOpen()">
       <a href="#platform" (click)="scrollToSection($event, 'platform')">Platform</a>
       <a href="#dispatch" (click)="scrollToSection($event, 'dispatch')">Dispatch</a>
       <a href="#features" (click)="scrollToSection($event, 'features')">Features</a>

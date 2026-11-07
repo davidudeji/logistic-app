@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet, ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { RouterOutlet, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { ToastOutletComponent } from './shared/components/toast-outlet/toast-outlet.component';
@@ -16,16 +16,22 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class App {
   private router = inject(Router);
 
-  /** True when the active route has data.hideSidebar = true */
+  private hasLandingLayout(route: ActivatedRouteSnapshot | null): boolean {
+    if (!route) return false;
+
+    if (route.data['hideSidebar'] || route.data['layout'] === 'landing') {
+      return true;
+    }
+
+    return this.hasLandingLayout(route.firstChild);
+  }
+
+  /** True when the active route has data.hideSidebar = true or layout = landing */
   readonly isLandingLayout = toSignal(
     this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       startWith(null),
-      map(() => {
-        let route = this.router.routerState.snapshot.root;
-        while (route.firstChild) route = route.firstChild;
-        return !!route.data['hideSidebar'];
-      }),
+      map(() => this.hasLandingLayout(this.router.routerState.snapshot.root)),
     ),
     { initialValue: false },
   );
