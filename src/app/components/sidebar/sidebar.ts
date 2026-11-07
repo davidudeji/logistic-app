@@ -171,6 +171,7 @@ import { InventoryService } from '../../features/inventory/inventory.service';
         top: 16px;
         left: 16px;
         z-index: 90;
+        pointer-events: auto;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -183,20 +184,15 @@ import { InventoryService } from '../../features/inventory/inventory.service';
         cursor: pointer;
       }
 
-      .mobile-menu-toggle span,
-      .mobile-menu-toggle::before,
-      .mobile-menu-toggle::after {
-        content: "";
-        position: absolute;
-        width: 18px;
-        height: 2px;
-        border-radius: 2px;
-        background: currentColor;
+      .mobile-menu-toggle:focus-visible {
+        outline: 2px solid #00cce5;
+        outline-offset: 3px;
       }
 
-      .mobile-menu-toggle span { transform: translateY(0); }
-      .mobile-menu-toggle::before { transform: translateY(-6px); }
-      .mobile-menu-toggle::after { transform: translateY(6px); }
+      .mobile-menu-toggle svg {
+        width: 22px;
+        height: 22px;
+      }
 
       .sidebar-shell.mobile-open .mobile-menu-toggle {
         background: #061432;
@@ -204,7 +200,7 @@ import { InventoryService } from '../../features/inventory/inventory.service';
 
       .sidebar-logo {
         min-height: 62px;
-        padding: 12px 16px;
+        padding: 12px 16px 12px 68px;
         border-bottom: 0;
       }
       .logo-image { max-width: 156px; }
@@ -231,7 +227,19 @@ export class SidebarComponent {
   });
 
   toggleMobileMenu(): void {
-    this.mobileMenuOpen.update(open => !open);
+    if (this.mobileMenuOpen()) {
+      this.closeMobileMenu();
+      return;
+    }
+
+    this.expandedGroups.set({
+      Operations: true,
+      Inventory: true,
+      'Fleet & Field': true,
+      'Automated Logistics': true,
+      Delivery: true,
+    });
+    this.mobileMenuOpen.set(true);
   }
 
   closeMobileMenu(): void {
