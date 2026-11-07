@@ -3,13 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { InventoryService } from '../../features/inventory/inventory.service';
 
-interface NavItem {
-  label: string;
-  icon: string; // SVG path
-  route: string;
-  badgeSignal?: () => number;
-}
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -18,12 +11,26 @@ interface NavItem {
   styles: [`
     :host { display: flex; flex-direction: column; height: 100%; }
 
+    .sidebar-shell {
+      position: relative;
+      height: 100%;
+    }
+
     .sidebar {
       width: 220px; min-width: 220px;
       background: #061432;
       display: flex; flex-direction: column;
       height: 100%; overflow-y: auto; overflow-x: hidden;
       border-right: 1px solid #1d2b49;
+      transition: transform 180ms ease;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
     }
 
     /* ── Logo ── */
@@ -43,13 +50,38 @@ interface NavItem {
 
     /* ── Nav ── */
     .nav-section { padding: 12px 12px 6px; flex: 1; }
+    .nav-group { margin-bottom: 4px; }
+
+    .nav-group-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; border: 0; background: transparent; color: inherit;
+      padding: 0 8px; margin: 14px 0 4px; cursor: pointer;
+    }
 
     .nav-label {
       font-family: 'Times New Roman', Times, serif;
       font-size: 11px; font-weight: 400;
       color: #8594ae;
       letter-spacing: 0; text-transform: uppercase;
-      padding: 0 8px; margin: 16px 0 4px;
+      padding: 0 8px;
+      text-align: left;
+    }
+
+    .nav-group-toggle .chevron {
+      width: 16px; height: 16px; color: #8594ae; transition: transform 150ms ease;
+    }
+    .nav-group.collapsed .nav-group-toggle .chevron {
+      transform: rotate(-90deg);
+    }
+
+    .nav-group-items {
+      display: flex; flex-direction: column;
+      gap: 1px;
+      overflow: hidden;
+    }
+
+    .nav-group.collapsed .nav-group-items {
+      display: none;
     }
 
     .nav-item {
@@ -78,7 +110,6 @@ interface NavItem {
     .nav-item:hover .icon-wrap    { opacity: 0.7; }
     .nav-item.active-link .icon-wrap { opacity: 1; }
 
-    /* ── Alert badge ── */
     .nav-badge {
       margin-left: auto;
       background: transparent;
@@ -90,7 +121,6 @@ interface NavItem {
       min-width: 16px; text-align: center;
     }
 
-    /* ── Footer ── */
     .sidebar-footer {
       padding: 10px 12px 16px;
       border-top: 1px solid #1d2b49;
@@ -99,38 +129,123 @@ interface NavItem {
 
     @media (max-width: 760px) {
       :host { width: 100%; min-width: 0; height: auto; }
-      .sidebar { width: 100%; min-width: 0; height: auto; overflow: hidden; border-right: 0; border-bottom: 1px solid #1d2b49; }
-      .sidebar-logo { min-height: 54px; padding: 8px 12px; border-bottom: 0; }
+
+      .sidebar-shell {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(82vw, 320px);
+        z-index: 80;
+        pointer-events: none;
+      }
+
+      .sidebar {
+        width: min(82vw, 320px);
+        min-width: 0;
+        height: 100%;
+        border-right: 1px solid #1d2b49;
+        transform: translateX(-102%);
+        pointer-events: auto;
+      }
+
+      .sidebar-shell.mobile-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 10, 19, 0.62);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+
+      .sidebar-shell.mobile-open .sidebar-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .mobile-menu-toggle {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 90;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 10px;
+        background: rgba(6,20,50,0.9);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .mobile-menu-toggle span,
+      .mobile-menu-toggle::before,
+      .mobile-menu-toggle::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 2px;
+        border-radius: 2px;
+        background: currentColor;
+      }
+
+      .mobile-menu-toggle span { transform: translateY(0); }
+      .mobile-menu-toggle::before { transform: translateY(-6px); }
+      .mobile-menu-toggle::after { transform: translateY(6px); }
+
+      .sidebar-shell.mobile-open .mobile-menu-toggle {
+        background: #061432;
+      }
+
+      .sidebar-logo {
+        min-height: 62px;
+        padding: 12px 16px;
+        border-bottom: 0;
+      }
       .logo-image { max-width: 156px; }
-      .nav-section { display: flex; flex: none; gap: 2px; overflow-x: auto; overflow-y: hidden; padding: 4px 8px 8px; white-space: nowrap; }
-      .nav-label { display: none; }
-      .nav-item { flex: 0 0 auto; min-height: 44px; margin-bottom: 0; padding: 8px 10px; }
-      .sidebar-footer { display: none; }
+      .nav-section { padding: 10px 10px 8px; }
+      .nav-label {
+        padding: 0 8px;
+        margin: 4px 0;
+      }
+      .nav-item { min-height: 42px; }
+      .sidebar-footer { display: block; }
     }
   `]
 })
 export class SidebarComponent {
   private readonly inventoryService = inject(InventoryService);
   readonly invLowStock = this.inventoryService.lowStockTotal;
+  readonly mobileMenuOpen = signal(false);
+  readonly expandedGroups = signal<Record<string, boolean>>({
+    Operations: true,
+    'Inventory': true,
+    'Fleet & Field': true,
+    'Automated Logistics': true,
+    Delivery: true,
+  });
 
-  readonly mainNav = [
-    { label: 'Dashboard',     icon: 'dashboard', route: '/' },
-    { label: 'Orders',        icon: 'orders',    route: '/orders' },
-    { label: 'Loads',         icon: 'loads',     route: '/loads' },
-    { label: 'Dispatch',      icon: 'dispatch',  route: '/dispatch' },
-  ];
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen.update(open => !open);
+  }
 
-  readonly opsNav = [
-    { label: 'Fleet',         icon: 'fleet',     route: '/fleet' },
-    { label: 'Drivers',       icon: 'drivers',   route: '/drivers' },
-    { label: 'Live Tracking', icon: 'tracking',  route: '/tracking' },
-    { label: 'Routes',        icon: 'routes',    route: '/routes' },
-  ];
+  closeMobileMenu(): void {
+    this.mobileMenuOpen.set(false);
+  }
 
-  readonly deliveryNav = [
-    { label: 'Deliveries',    icon: 'deliveries', route: '/deliveries' },
-    { label: 'Exceptions',    icon: 'exceptions', route: '/exceptions', badge: 3 },
-    { label: 'Carriers',      icon: 'carriers',   route: '/carriers' },
-    { label: 'Analytics',     icon: 'analytics',  route: '/analytics' },
-  ];
+  toggleGroup(group: string): void {
+    this.expandedGroups.update(current => ({
+      ...current,
+      [group]: !(current[group] ?? true),
+    }));
+  }
+
+  isExpanded(group: string): boolean {
+    return this.expandedGroups()[group] ?? true;
+  }
 }

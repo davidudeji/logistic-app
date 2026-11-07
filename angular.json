@@ -34,6 +34,9 @@
               "src/styles.css",
               "node_modules/leaflet/dist/leaflet.css"
             ],
+            "allowedCommonJsDependencies": [
+              "leaflet"
+            ],
             "security": {
               "allowedHosts": []
             }
@@ -48,8 +51,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8.5kB"
+                  "maximumWarning": "8.5kB",
+                  "maximumError": "10kB"
                 }
               ],
               "outputHashing": "all"

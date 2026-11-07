@@ -50,7 +50,7 @@
         Connect your fleet, coordinate deliveries and bring every part of your operation into view.
       </p>
       <div class="hero-actions" data-reveal="up">
-        <a class="button button-light" href="#platform" (click)="scrollToSection($event, 'platform')">
+        <a class="button button-light" routerLink="/dashboard" aria-label="Open the dashboard">
           Explore the platform
           <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 5v14"/>
@@ -83,13 +83,6 @@
             From vehicle allocation to delivery completion, manage your logistics workflow
             through one connected operational platform.
           </p>
-          <a class="text-link text-link-light" routerLink="/dashboard">
-            Explore the dashboard
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17 17 7"/>
-              <path d="M7 7h10v10"/>
-            </svg>
-          </a>
         </div>
       </div>
       <div class="product-frame dashboard-frame" data-reveal="up">
